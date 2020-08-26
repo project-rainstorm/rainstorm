@@ -1,0 +1,11 @@
+version: '3'
+services:
+    skyfactory:
+        restart: always
+        container_name: skyfactory4
+        volumes:
+            - '/mnt/I/Minecraft/skyfactory/:/sky_server/world'
+            - '/mnt/I/Minecraft/Backups/skyfactory4/:/sky_server/backups'
+        ports:
+            - '40404:25565'
+        image: newswangerd/skyfactory

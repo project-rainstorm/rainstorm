@@ -1,0 +1,55 @@
+version: '3'
+services:
+    gitlab-ce:
+        hostname: 'git.lyberry.com'
+        environment:
+            GITLAB_OMNIBUS_CONFIG: |
+                gitlab_rails['gitlab_shell_ssh_port'] = 9002
+                gitlab_rails['smtp_enable'] = true
+                gitlab_rails['smtp_address'] = "smtp.zoho.com"
+                gitlab_rails['smtp_port'] = 587
+                gitlab_rails['smtp_authentication'] = "plain"
+                gitlab_rails['smtp_enable_starttls_auto'] = true
+                gitlab_rails['smtp_user_name'] = "alex@lyberry.com"
+                gitlab_rails['smtp_password'] = "0h7iajG2Fh9M"
+                gitlab_rails['smtp_domain'] = "smtp.zoho.com"
+                gitlab_rails['gitlab_email_from'] = 'alex@lyberry.com'
+                gitlab_rails['gitlab_email_reply_to'] = 'alex@lyberry.com'
+                user['git_user_email'] = "alex@lyberry.com"
+                gitlab_rails['registry_enabled'] = true
+                gitlab_rails['registry_host'] = "registry.lyberry.com"
+                gitlab_rails['registry_port'] = "443"
+                gitlab_rails['registry_path'] = "/var/opt/gitlab/gitlab-rails/shared/registry"
+                gitlab_rails['registry_api_url'] = "https://registry.lyberry.com"
+                gitlab_rails['registry_key_path'] = "/etc/gitlab/ssl/git.lyberry.com.key"
+        ports:
+            - '9001:80'
+            - '9002:22'
+        container_name: gitlab
+        restart: always
+        volumes:
+            - '/var/run/docker.sock:/var/run/docker.sock'
+            - '/opt/container_data/Gitlab/config:/etc/gitlab'
+            - '/opt/container_data/Gitlab/logs:/var/log/gitlab'
+            - '/opt/container_data/Gitlab/data:/var/opt/gitlab'
+            - '/opt/container_data/Gitlab/certs:/etc/gitlab/ssl'
+            - '/opt/container_data/Gitlab/registry_data:/var/opt/gitlab/gitlab-rails/shared/registry'
+        image: 'gitlab/gitlab-ce:latest'
+    registry:
+      image: registry
+      restart: always
+      expose:
+        - '5000'
+      ports:
+        - '5000:5000'
+      volumes:
+        - '/opt/container_data/Gitlab/registry/registry:/registry'
+        - '/opt/container_data/Gitlab/certs:/certs'
+      environment:
+            REGISTRY_LOG_LEVEL: 'info'
+            REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: '/registry'
+            REGISTRY_AUTH_TOKEN_REALM: 'https://git.lyberry.com/jwt/auth'
+            REGISTRY_AUTH_TOKEN_SERVICE: 'container_registry'
+            REGISTRY_AUTH_TOKEN_ISSUER: 'omnibus-gitlab-issuer'
+            REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: '/certs/git.lyberry.com.crt'
+            REGISTRY_STORAGE_DELETE_ENABLED: 'true'

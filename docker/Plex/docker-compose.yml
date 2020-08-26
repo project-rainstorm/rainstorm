@@ -1,0 +1,17 @@
+---
+version: "2"
+services:
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    volumes:
+      - /home/YOUR_USER/plex/library:/config
+      - /home/YOUR_USER/plex/tvseries:/data/tvshows
+      - /home/YOUR_USER/plex/movies:/data/movies
+      - /home/YOUR_USER/plex:/transcode
+    restart: unless-stopped

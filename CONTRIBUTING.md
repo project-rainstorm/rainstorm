@@ -9,10 +9,11 @@ The codebase and content is maintained using the "contributor workflow" where ev
 exception contributes patch proposals using "pull requests" (PRs). This facilitates
 social contribution, easy testing and peer review.
 To contribute a patch, the workflow is as follows:
-Fork repository (only for the first time)
-Create topic branch
-Commit patches
-The project coding conventions in the developer notes must be followed.
+
+1. Fork repository (only for the first time)
+2. Create topic branch
+3. Commit patches
+4. The project coding conventions in the developer notes must be followed.
 
 ## Types of Contributions
 

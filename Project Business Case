@@ -12,8 +12,6 @@ You could create an app store for it that would essentially just be some cherry 
 4. Have your own chat server5. Run your own email server
 6. Make your own VPN
 7. Run a Tor node
-8. Set up a Bitcoin node
-9. Run a Lightning node
 10. MineCraft
 11. Plex Box
 
@@ -27,8 +25,13 @@ Business Model:
 
 Make the interface easy as using Phillips Hue, but leave it open for experts to hack. Release the .IMG files for free for people to install on their own Pi, but disable 1-click updates unless they buy the license.
 You could sell a subscription service for a VPN that users could use to access their servers from anywhere and a backup service that backs your container volumes up to the cloud so you can restore them if the drives fail
-Sell complete kits in our branded 3d printed cases for huge markup
+Sell complete kits in our branded 3d printed cases for possible profit
+The repo will welcome commits adding new apps from the community. Once tested for compatibility, they'll get added.
 
 Similar Products:
 
-Pogoplug: Similar but ours will have more functionality and hopefully a better UI.
+pogoplug: Similar but ours will have more functionality and hopefully a better UI.
+mynodebtc.com: meant for lightning and bitcoin.
+freenas.org: Superior but not optimized for pi yet (possible competition)
+
+

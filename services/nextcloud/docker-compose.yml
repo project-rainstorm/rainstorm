@@ -15,7 +15,7 @@ services:
     networks:
       - nextcloud
     volumes:
-      - /opt/container_data/Nextcloud/db:/var/lib/mysql
+      - /mnt/usb/apps/nextcloud/db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=pass
       - MYSQL_PASSWORD=pass
@@ -36,5 +36,5 @@ services:
     links:
       - db
     volumes:
-      - /opt/container_data/Nextcloud/app:/var/www/html
+      - /mnt/usb/apps/nextcloud/app:/var/www/html
     restart: always

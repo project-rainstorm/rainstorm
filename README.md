@@ -53,7 +53,7 @@ You can run Rainstorm on your own device in just a few easy steps!
 
 3. Insert SD card and attach external HD (highly recommended) to device
 
-4. Boot your device and visit http://rainstrom.local or http://ip_of_device/
+4. Boot your device and visit http://rainstorm.local or http://ip_of_device/
 
 ## Build Instructions
 

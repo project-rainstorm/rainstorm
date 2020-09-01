@@ -1,20 +1,26 @@
 #!/bin/bash
+# shellcheck disable=SC2034
+
+
+#
+# Configuration
+#
+DEFAULT_USER="drop"
+DEFAULT_PASS="drop"
+HOSTNAME="rainstorm"
+REPO_NAME="project_rainstorm"
 
 #
 # Package dependencies associative array
 #
 declare -A package_dependencies=(
-    [python3]=python3
-    [ifconfig]=net-tools
-    [htop]=htop
     [vim]=vim
-    [unzip]=unzip
-    [which]=which
-    [wget]=wget
-    [docker]=docker
-    [docker-compose]=docker-compose
-    [ufw]=ufw
-    [rsync]=rsync
+    [git]=git
+    [python3]=python3
+    [python3-dev]=python3-dev
+    [python3-pip]=python3-pip
+    [libffi-dev]=libffi-dev
+    [libssl-dev]=libssl-dev
 )
 
 #
@@ -25,6 +31,38 @@ YELLOW=$(tput setaf 3)
 NC=$(tput sgr0)
 # No Color
 
+#
+# Countdown timer
+# Usage: _sleep <seconds> --msg "your message"
+#
+_sleep() {
+    local secs msg verbose
+    secs=1 verbose=false
+
+    # Parse Arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            (*[0-9]*)
+                secs="$1"
+                shift
+                ;;
+            --msg)
+                msg="$2"
+                verbose=true
+                shift 2
+                ;;
+        esac
+    done
+
+    while [ "$secs" -gt 0 ]; do
+        if $verbose; then
+            echo -ne "${msg} $secs\033[0K seconds...\r"
+        fi
+        sleep 1
+        : $((secs--))
+    done
+    echo -e "\n" # Add new line
+}
 
 echo -e "${RED}"
 echo "***"
@@ -33,11 +71,17 @@ echo "***"
 echo -e "${NC}"
 _sleep 10
 
-~/project_rainstorm/scripts/motd
-# Show the logo
-
-cp ~/project_rainstorm/scripts/motd /etc/motd
-# create the motd
+cat <<EOF
+${RED}
+***
+Create "${DEFAULT_USER}" user with defualt password
+***
+${NC}
+EOF
+useradd -m $DEFAULT_USER
+echo -e "${DEFAULT_PASS}\n${DEFAULT_PASS}" | passwd $DEFAULT_USER
+usermod -aG sudo $DEFAULT_USER
+cp -r /root/$REPO_NAME /home/drop
 
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
@@ -59,12 +103,37 @@ Installing ${package_dependencies[$pkg]}...
 ${NC}
 EOF
     _sleep
-    sudo pacman -S --noconfirm "${package_dependencies[$pkg]}"
+    apt install -y "${package_dependencies[$pkg]}"
   fi
 done
-# install system dependencies, see defaults.sh
 # websearch "bash associative array" for info
 
+cat <<EOF
+${RED}
+***
+Install docker from get.docker.com...
+***
+${NC}
+EOF
+curl -sSL https://get.docker.com | sh
+
+cat <<EOF
+${RED}
+***
+Install docker-compose from pip...
+***
+${NC}
+EOF
+pip3 install docker-compose
+
+cat <<EOF
+${RED}
+***
+Add user to docker group...
+***
+${NC}
+EOF
+usermod -aG docker $DEFAULT_USER
 
 cat <<EOF
 ${RED}
@@ -74,7 +143,7 @@ Creating /mnt/usb directory...
 ${NC}
 EOF
 
-test -d /mnt/usb || sudo mkdir /mnt/usb
+test -d /mnt/usb || mkdir /mnt/usb
 _sleep 2
 # test for /mnt/usb directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
@@ -85,7 +154,7 @@ echo "Mounting drive..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo mount /dev/sda1 /mnt/usb
+mount /dev/sda1 /mnt/usb
 _sleep
 # mount main storage drive to /mnt/usb directory
 
@@ -125,3 +194,30 @@ else
     echo "***"
     echo -e "${NC}"
 fi
+
+cat <<EOF
+${RED}
+***
+Set hostname to "${HOSTNAME}"
+***
+${NC}
+EOF
+hostnamectl set-hostname $HOSTNAME
+
+echo -e "${RED}"
+echo "***"
+echo "Finished with setup!"
+echo "***"
+echo -e "${NC}"
+_sleep 3
+
+echo -e "${RED}"
+echo "***"
+echo "You will be logged out of root in 10s..."
+echo "***"
+echo -e "${NC}"
+_sleep 10
+rm -r /root/$REPO_NAME
+cd /home/$DEFAULT_USER
+su $DEFAULT_USER
+bash # start a new shell to apply hostname changes

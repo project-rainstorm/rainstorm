@@ -59,13 +59,13 @@ You can run Rainstorm on your own device in just a few easy steps!
 
 You can also run Rainstorm on your own to modify, and update the software yourself.
 
-`cd ~`
+`sudo su -`
 
 `git clone https://github.com/project-rainstorm/project_rainstorm.git`
 
-`./project_rainstorm/scripts/setup.sh`
+**WARNING** Running this script will make changes to your system. This is meant to be run on a dedicated device with a freshly installed OS (RPi4 running Raspberry Pi OS Lite recommended)
 
-_TODO: finish Instructions_
+`bash project_rainstorm/scripts/setup.sh`
 
 ## Screenshots
 

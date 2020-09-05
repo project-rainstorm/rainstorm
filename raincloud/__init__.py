@@ -24,9 +24,95 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    # TODO: validate login password
+    @app.route('/login', methods=['POST'])
+    def login():
+        # the current password is stored in ~/.dropcloud/pw_sha256
+        # the password is sha256 hashed
+        # hash whatever password gets passed to this route and compare it to what's stored in the file
+        # if it's valid, log the user in... i don't know what they entails... 
+        return 
+
+    # TODO: logout the user
+    @app.route('/settings/logout', methods=['POST'])
+    def logout():
+        # however we "log in" the user... do the opposite of that
+        return 
+
+    # TODO: change the password
+    @app.route('/settings/password', methods=['POST'])
+    def chpasswd():
+        # Accepts 2 params 1. new password 2. cofirm new password
+        # check that param1 === param2
+        # if they match
+        # pass the password as an argument to the ~/project_rainstorm/scripts/pw_change.sh
+        # else return an error message
+        return 
+
+    # TODO: set the license key
+    @app.route('/settings/activate', methods=['POST'])
+    def setLicense():
+        # when a user buys a license, they will get a key via email
+        # they then activate the license by posting it here
+        # this route will store the license in a file somewhere for validating premium actions
+        return 
+
+    # TODO: enable backups on the device
+    @app.route('/backups/enable', methods=['POST'])
+    def enableBackups():
+        # call the ~/project_rainstorm/scripts/backups_enable.sh script
+        return 
+    
+    # TODO: create a backup snapshot
+    @app.route('/backups/snapshot', methods=['POST'])
+    def createBackup():
+        # call the ~/project_rainstorm/scripts/backups_backup.sh script
+        return 
+
+    # TODO: restore from last  snapshot
+    @app.route('/backups/restore', methods=['POST'])
+    def restoreBackup():
+        # call the ~/project_rainstorm/scripts/backups_restore.sh script
+        return 
+
+    # TODO: get list of services
+    @app.route('/service/list', methods=['GET'])
+    def getServices():
+        # return all the folder names in ~/project_rainstorm/services
+        return 
+ 
+    # TODO: enable a service
+    @app.route('/service/<service_name>/enable', methods=['POST'])
+    def enableService():
+        # run the command `docker-compose up -d` inside the services/<service_name> folder
+        # or pass the compose file as an argument like this: `docker-compose up -d -f ~/project_rainstorm/services/<service_name>/docker-compose.yml`
+        return 
+
+    # TODO: get service status
+    @app.route('/service/<service_name>/status', methods=['GET'])
+    def getServiceStatus():
+        # ask docker if the service is running, not running, etc.
+        return 
+ 
+    # TODO: disable a service
+    @app.route('/service/<service_name>/disable', methods=['POST'])
+    def disableService():
+        # run the command `docker-compose down` inside the sercice folder 
+        # see enableService() above
+        return 
+ 
+    # TODO: get system info
+    @app.route('/settings/system/info', methods=['GET'])
+    def getSysInfo():
+        # return some basic system info
+        # size of HDD /dev/sda1, HDD usage, CPU percent, Mem, temp, uptime, etc.
+        return 
+    
+    # TODO: shutdown the system
+    @app.route('/settings/system/poweroff', methods=['POST'])
+    def poweroff():
+        # safely shutdown the system
+        return 
+  
 
     return app

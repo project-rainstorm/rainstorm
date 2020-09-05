@@ -42,11 +42,12 @@ def create_app(test_config=None):
     # TODO: change the password
     @app.route('/settings/password', methods=['POST'])
     def chpasswd():
-        # Accepts 2 params 1. new password 2. cofirm new password
-        # check that param1 === param2
+        # Accepts 2 params: one for the new password and one for the current password
+        # check that sha256(current_pass) ==== contents of ~/.dropcloud/pw_sha256
         # if they match
-        # pass the password as an argument to the ~/project_rainstorm/scripts/pw_change.sh
-        # else return an error message
+        # pass the new_pass as an argument to the change password script like this:
+        # bash ~/project_rainstorm/scripts/pw_change.sh new_pass
+        # else return an error message: wrong current_pass
         return 
 
     # TODO: set the license key

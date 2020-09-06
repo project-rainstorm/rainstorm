@@ -7,9 +7,20 @@ class Service(object):
     
     @classmethod
     def all(cls):
-        base_dir = os.getcwd()
-        services_folder = os.path.join(base_dir, 'services')
-        folders = os.listdir(services_folder)
+        folders = os.listdir(cls.__services_folder())
 
         return [Service(folder) for folder in folders]
+
+    def enable(self):
+        command = "docker-compose up -d -f {0}".format(self.name)
+        return os.system(command)
+    
+    @classmethod
+    def __services_folder(cls):
+        base_dir = os.getcwd()
+        
+        return os.path.join(base_dir, 'services')
+
+    def __service_folder(self):
+        return os.path.join(Service.__services_folder(), self.name)
 

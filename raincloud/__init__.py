@@ -1,7 +1,8 @@
 import os
 
 from flask import Flask
-
+from raincloud.models.service import Service
+import json
 
 def create_app(test_config=None):
     # create and configure the app
@@ -77,11 +78,11 @@ def create_app(test_config=None):
         return 
 
     # TODO: get list of services
-    @app.route('/service/list', methods=['GET'])
+    @app.route('/services', methods=['GET'])
     def getServices():
         # return all the folder names in ~/project_rainstorm/services
-        return 
- 
+        return json.dumps([service.__dict__ for service in Service.all()])
+
     # TODO: enable a service
     @app.route('/service/<service_name>/enable', methods=['POST'])
     def enableService():

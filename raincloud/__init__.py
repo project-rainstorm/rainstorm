@@ -77,18 +77,21 @@ def create_app(test_config=None):
         # call the ~/project_rainstorm/scripts/backups_restore.sh script
         return 
 
-    # TODO: get list of services
     @app.route('/services', methods=['GET'])
     def getServices():
         # return all the folder names in ~/project_rainstorm/services
         return json.dumps([service.__dict__ for service in Service.all()])
 
-    # TODO: enable a service
-    @app.route('/service/<service_name>/enable', methods=['POST'])
-    def enableService():
-        # run the command `docker-compose up -d` inside the services/<service_name> folder
-        # or pass the compose file as an argument like this: `docker-compose up -d -f ~/project_rainstorm/services/<service_name>/docker-compose.yml`
-        return 
+    @app.route('/services/<service_name>/enable', methods=['POST'])
+    def enableService(service_name):
+        service = Service(service_name)
+        command = service.enable()
+        
+        if command:
+            return json.dumps({'status': 'failed'})
+        else:
+            # TODO: we probably want to return the object
+            return json.dumps({'status': 'success'})
 
     # TODO: get service status
     @app.route('/service/<service_name>/status', methods=['GET'])

@@ -1,0 +1,6 @@
+{
+"name": "Minecfart Server",
+"author": "count-null",
+"description": "Run a minecraft server",
+"links": ["https://github.com/itzg/docker-minecraft-server"]
+}

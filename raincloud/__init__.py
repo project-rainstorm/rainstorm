@@ -2,11 +2,13 @@ import os
 
 from flask import Flask
 from raincloud.models.service import Service
+from flask_json import FlaskJSON, as_json
 import json
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    json = FlaskJSON(app)
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
@@ -78,9 +80,10 @@ def create_app(test_config=None):
         return 
 
     @app.route('/services', methods=['GET'])
+    @as_json
     def getServices():
         # return all the folder names in ~/project_rainstorm/services
-        return json.dumps([service.__dict__ for service in Service.all()])
+        return [service.__dict__ for service in Service.all()]
 
     @app.route('/services/<service_name>/enable', methods=['POST'])
     def enableService(service_name):

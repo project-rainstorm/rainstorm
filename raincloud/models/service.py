@@ -13,7 +13,6 @@ class Service(object):
 
     def enable(self):
         command = "docker-compose -f {0}/docker-compose.yml up -d".format(self.__service_folder())
-        print(command)
         return os.system(command)
     
     @classmethod

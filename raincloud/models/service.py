@@ -1,5 +1,4 @@
 import os
-import json
 
 class Service(object):
     def __init__(self, name):

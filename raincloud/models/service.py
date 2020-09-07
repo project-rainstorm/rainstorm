@@ -12,7 +12,8 @@ class Service(object):
         return [Service(folder) for folder in folders]
 
     def enable(self):
-        command = "docker-compose up -d -f {0}".format(self.name)
+        command = "docker-compose -f {0}/docker-compose.yml up -d".format(self.__service_folder())
+        print(command)
         return os.system(command)
     
     @classmethod

@@ -14,6 +14,10 @@ class Service(object):
         command = "docker-compose -f {0}/docker-compose.yml up -d".format(self.__service_folder())
         return os.system(command)
     
+    def disable(self):
+        command = "docker-compose -f {0}/docker-compose.yml down".format(self.__service_folder())
+        return os.system(command)
+    
     @classmethod
     def __services_folder(cls):
         base_dir = os.getcwd()

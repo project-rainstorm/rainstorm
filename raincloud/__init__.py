@@ -102,12 +102,17 @@ def create_app(test_config=None):
         # ask docker if the service is running, not running, etc.
         return 
  
-    # TODO: disable a service
-    @app.route('/service/<service_name>/disable', methods=['POST'])
-    def disableService():
-        # run the command `docker-compose down` inside the sercice folder 
-        # see enableService() above
-        return 
+    @app.route('/services/<service_name>/disable', methods=['POST'])
+    @as_json
+    def disableService(service_name):
+        service = Service(service_name)
+        command = service.disable()
+        
+        if command:
+            return {'status': 'failed'}
+        else:
+            return { 'data': service.__dict__ }
+
  
     # TODO: get system info
     @app.route('/settings/system/info', methods=['GET'])

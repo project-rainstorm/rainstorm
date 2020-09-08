@@ -83,7 +83,7 @@ def create_app(test_config=None):
     @as_json
     def getServices():
         # return all the folder names in ~/project_rainstorm/services
-        return [service.__dict__ for service in Service.all()]
+        return { 'data': [service.__dict__ for service in Service.all()] }
 
     # TODO: enable a service
     @app.route('/service/<service_name>/enable', methods=['POST'])

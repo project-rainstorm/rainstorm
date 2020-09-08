@@ -96,11 +96,12 @@ def create_app(test_config=None):
         else:
             return { 'data': service.__dict__ }
 
-    # TODO: get service status
-    @app.route('/service/<service_name>/status', methods=['GET'])
-    def getServiceStatus():
-        # ask docker if the service is running, not running, etc.
-        return 
+    @app.route('/services/<service_name>/status', methods=['GET'])
+    @as_json
+    def getServiceStatus(service_name):
+        service = Service(service_name)
+
+        return { 'data': { 'status': service.get_status() } }
  
     @app.route('/services/<service_name>/disable', methods=['POST'])
     @as_json

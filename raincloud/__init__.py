@@ -86,15 +86,15 @@ def create_app(test_config=None):
         return [service.__dict__ for service in Service.all()]
 
     @app.route('/services/<service_name>/enable', methods=['POST'])
+    @as_json
     def enableService(service_name):
         service = Service(service_name)
         command = service.enable()
         
         if command:
-            return json.dumps({'status': 'failed'})
+            return {'status': 'failed'}
         else:
-            # TODO: we probably want to return the object
-            return json.dumps({'status': 'success'})
+            return { 'data': service.__dict__ }
 
     # TODO: get service status
     @app.route('/service/<service_name>/status', methods=['GET'])

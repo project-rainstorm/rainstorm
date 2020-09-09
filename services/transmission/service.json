@@ -1,0 +1,10 @@
+{
+	"name": "Transmission Torrent Client",
+	"maintainer": "count-null",
+	"description": "Download and seed torrents directly from your device.",
+	"links": ["https://github.com/Secretmapper/combustion"],
+	"var_fields": [
+		{"name": "In Progress Downloads", "field": "input", "value": "/mnt/usb/files/torrents/incomplete"},
+		{"name": "Completed Downloads", "field": "input", "value": "/mnt/usb/files/torrents/complete"}
+	]
+}

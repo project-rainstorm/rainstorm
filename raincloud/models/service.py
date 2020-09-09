@@ -18,19 +18,19 @@ class Service(object):
     def enable(self):
         command = "{0} up -d".format(self.__docker_command())
         output = self.__run_command(command)
-        self.set_status('enabled')
+        self.set_status()
 
         return output
     
     def disable(self):
         command = "{0} down".format(self.__docker_command())
         output = self.__run_command(command)
-        self.set_status('disabled')
+        self.set_status()
 
         return output
 
     def set_status(self, status):
-        self.status = status
+        self.status = self.get_status()
 
     def get_status(self):
         # try to attach to logs

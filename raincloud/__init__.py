@@ -1,11 +1,14 @@
 import os
 
 from flask import Flask
-
+from raincloud.models.service import Service
+from flask_json import FlaskJSON, as_json
+import json
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    json = FlaskJSON(app)
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
@@ -76,31 +79,41 @@ def create_app(test_config=None):
         # call the ~/project_rainstorm/scripts/backups_restore.sh script
         return 
 
-    # TODO: get list of services
-    @app.route('/service/list', methods=['GET'])
+    @app.route('/services', methods=['GET'])
+    @as_json
     def getServices():
         # return all the folder names in ~/project_rainstorm/services
-        return 
- 
-    # TODO: enable a service
-    @app.route('/service/<service_name>/enable', methods=['POST'])
-    def enableService():
-        # run the command `docker-compose up -d` inside the services/<service_name> folder
-        # or pass the compose file as an argument like this: `docker-compose up -d -f ~/project_rainstorm/services/<service_name>/docker-compose.yml`
-        return 
+        return [service.__dict__ for service in Service.all()]
 
-    # TODO: get service status
-    @app.route('/service/<service_name>/status', methods=['GET'])
-    def getServiceStatus():
-        # ask docker if the service is running, not running, etc.
-        return 
+    @app.route('/services/<service_name>/enable', methods=['POST'])
+    @as_json
+    def enableService(service_name):
+        service = Service(service_name)
+        command = service.enable()
+        
+        if command:
+            return {'status': 'failed'}
+        else:
+            return { 'data': service.__dict__ }
+
+    @app.route('/services/<service_name>/status', methods=['GET'])
+    @as_json
+    def getServiceStatus(service_name):
+        service = Service(service_name)
+
+        return { 'data': { 'status': service.get_status() } }
  
-    # TODO: disable a service
-    @app.route('/service/<service_name>/disable', methods=['POST'])
-    def disableService():
-        # run the command `docker-compose down` inside the sercice folder 
-        # see enableService() above
-        return 
+    @app.route('/services/<service_name>/disable', methods=['POST'])
+    @as_json
+    def disableService(service_name):
+        service = Service(service_name)
+        command = service.disable()
+        
+        if command:
+            return {'status': 'failed'}
+        else:
+            return { 'data': service.__dict__ }
+
  
     # TODO: get system info
     @app.route('/settings/system/info', methods=['GET'])

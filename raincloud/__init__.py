@@ -96,13 +96,6 @@ def create_app(test_config=None):
         else:
             return { 'data': service.__dict__ }
 
-    @app.route('/services/<service_name>/status', methods=['GET'])
-    @as_json
-    def getServiceStatus(service_name):
-        service = Service(service_name)
-
-        return { 'data': { 'status': service.get_status() } }
- 
     @app.route('/services/<service_name>/disable', methods=['POST'])
     @as_json
     def disableService(service_name):

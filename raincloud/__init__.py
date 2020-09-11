@@ -83,7 +83,7 @@ def create_app(test_config=None):
     @as_json
     def getServices():
         # return all the folder names in ~/project_rainstorm/services
-        return [service.__dict__ for service in Service.all()]
+        return { 'data': [service.__dict__ for service in Service.all()] }
 
     @app.route('/services/<service_name>/enable', methods=['POST'])
     @as_json
@@ -96,13 +96,6 @@ def create_app(test_config=None):
         else:
             return { 'data': service.__dict__ }
 
-    @app.route('/services/<service_name>/status', methods=['GET'])
-    @as_json
-    def getServiceStatus(service_name):
-        service = Service(service_name)
-
-        return { 'data': { 'status': service.get_status() } }
- 
     @app.route('/services/<service_name>/disable', methods=['POST'])
     @as_json
     def disableService(service_name):

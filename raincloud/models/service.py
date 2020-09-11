@@ -1,9 +1,11 @@
 import os
 import subprocess
+import docker
 
 class Service(object):
     def __init__(self, name):
         self.name = name
+        self.status = self.get_status()
 
     @classmethod
     def all(cls):
@@ -15,22 +17,32 @@ class Service(object):
 
     def enable(self):
         command = "{0} up -d".format(self.__docker_command())
-        return self.__run_command(command)
+        output = self.__run_command(command)
+        self.set_status()
+
+        return output
     
     def disable(self):
         command = "{0} down".format(self.__docker_command())
-        return self.__run_command(command)
+        output = self.__run_command(command)
+        self.set_status()
+
+        return output
+
+    def set_status(self, status):
+        self.status = self.get_status()
 
     def get_status(self):
         # try to attach to logs
-        command = "{0} logs".format(self.__docker_command())
-        output = self.__run_command(command)
+        client = docker.from_env()
 
-        if self.name in str(output):
-            return 'Enabled'
-        else:
-            return 'Disabled'
-    
+        try:
+            if client.containers.get(self.name).status == 'running':
+                return 'enabled'
+            else:
+                return 'disabled'
+        except docker.errors.NotFound:
+            return 'disabled'
     
     @classmethod
     def __services_folder(cls):

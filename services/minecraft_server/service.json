@@ -1,6 +1,10 @@
 {
-"name": "Minecfart Server",
-"author": "count-null",
-"description": "Run a minecraft server",
-"links": ["https://github.com/itzg/docker-minecraft-server"]
+	"name": "Minecfart Server",
+	"maintainer": "count-null",
+	"description": "Run a minecraft server.",
+	"links": ["https://github.com/itzg/docker-minecraft-server"],
+	"var_fields": [
+		{"name": "Server Type", "field": "select", "value": "SPIGOT", "options": ["SPIGOT","FORGE","PAPER","TUINITY","MAGMA","MOHIST","CATSERVER","SPONGEVANILLA","FABRIC"]},
+		{"name": "Minecraft Version", "field": "select", "value": "LATEST", "options": ["LATEST", "SNAPSHOT", "1.16.3", "1.16.2", "1.16.1", "1.16"]}
+	]
 }

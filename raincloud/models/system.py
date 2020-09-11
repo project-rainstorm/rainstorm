@@ -4,7 +4,6 @@ Get system running status including CPU load, memory usage, network traffic.
 import time
 
 import psutil
-import six
 import socket
 
 

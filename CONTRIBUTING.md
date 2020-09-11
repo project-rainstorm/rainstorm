@@ -31,8 +31,16 @@ by the peers, someone may create a pull request that addresses the issue.
 
 Anyone may participate in peer review which is expressed by comments in the
 pull request or issue. Typically reviewers will review the code for obvious errors,
-and discuss the merits of a particular issue and how it should be resolved. Project
-maintainers take into account the peer review when determining if there is consensus
+and discuss the merits of a particular issue and how it should be resolved. 
+
+Peer reviewers can simply comment with one of these to express the level of review they gave:
+
+- Concept ACK - agree with the concept but haven't reviewed the changes
+- utACK (Untested ACK) - agree with the changes and reviewed them but didn't test
+- Tested ACK - agree with changes, reviewed and tested
+- NACK - Disagree with changes, please provide reasoning
+
+Project maintainers take into account the peer review when determining if there is consensus
 to merge a pull request.
 
 ## Code Commits

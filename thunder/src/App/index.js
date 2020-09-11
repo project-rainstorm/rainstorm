@@ -1,12 +1,7 @@
-import "babel-polyfill";
 import React, { useEffect, useState } from "react";
-import style from './style.css';
-import Tabs from "./components/Tabs";
-// pages
-import Market from "./pages/Market";
-import NewJob from "./pages/NewJob";
+import style from './style.module.css';
 
-function App() {
+export default function App() {
   const [services, setServices] = useState(null);
 
   useEffect(() => {
@@ -24,5 +19,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

@@ -7,7 +7,6 @@ class Service(object):
         self.name = name
         self.status = self.get_status()
         self.settings = self.get_settings()
-        self.icon = "{}.jpg".format(name)
 
     @classmethod
     def all(cls):

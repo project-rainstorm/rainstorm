@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, redirect, url_for
+from flask import Flask
 from raincloud.models.service import Service
 from flask_json import FlaskJSON, as_json
 import json
@@ -106,10 +106,6 @@ def create_app(test_config=None):
             return {'status': 'failed'}
         else:
             return { 'data': service.__dict__ }
-
-    @app.route('/services/<service_name>/icon', methods=['GET'])
-    def getIcon(service_name):
-        return redirect(url_for('static', filename='images/' + service_name + ".jpg"), code=301)
 
     # TODO: get system info
     @app.route('/settings/system/info', methods=['GET'])

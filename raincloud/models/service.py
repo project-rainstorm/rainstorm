@@ -1,7 +1,6 @@
 import os
 import subprocess
 import docker
-import flask
 
 class Service(object):
     def __init__(self, name):

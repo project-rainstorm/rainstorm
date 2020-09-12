@@ -1,11 +1,14 @@
 import os
 import subprocess
 import docker
+import flask
 
 class Service(object):
     def __init__(self, name):
         self.name = name
         self.status = self.get_status()
+        self.settings = self.get_settings()
+        self.icon = "{}.jpg".format(name)
 
     @classmethod
     def all(cls):
@@ -13,7 +16,7 @@ class Service(object):
 
     @classmethod
     def all_folders(cls):
-        return os.listdir(cls.__services_folder()) 
+        return os.listdir(cls.__services_folder())
 
     def enable(self):
         command = "{0} up -d".format(self.__docker_command())
@@ -21,7 +24,7 @@ class Service(object):
         self.set_status()
 
         return output
-    
+
     def disable(self):
         command = "{0} down".format(self.__docker_command())
         output = self.__run_command(command)
@@ -33,9 +36,7 @@ class Service(object):
         self.status = self.get_status()
 
     def get_status(self):
-        # try to attach to logs
         client = docker.from_env()
-
         try:
             if client.containers.get(self.name).status == 'running':
                 return 'enabled'
@@ -43,17 +44,23 @@ class Service(object):
                 return 'disabled'
         except docker.errors.NotFound:
             return 'disabled'
-    
+
+    def get_settings(self):
+        settingsFile = "{}/{}/{}".format(self.__services_folder(), self.name, "service.json")
+        if os.path.isfile(settingsFile):
+            return open(settingsFile, "r").read()
+        return {}
+
     @classmethod
     def __services_folder(cls):
         base_dir = os.getcwd()
-        
+
         return os.path.join(base_dir, 'services')
 
     def __run_command(self, command):
         if self.name not in Service.all_folders():
             raise Exception('Service not enabled')
-        
+
         return subprocess.check_output(command, shell=True)
 
 
@@ -62,4 +69,3 @@ class Service(object):
 
     def __docker_command(self):
         return "docker-compose -f {0}/docker-compose.yml".format(self.__service_folder())
-

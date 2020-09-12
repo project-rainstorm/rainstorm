@@ -63,9 +63,43 @@ You can also run Rainstorm on your own to modify, and update the software yourse
 
 `git clone https://github.com/project-rainstorm/project_rainstorm.git`
 
-**WARNING** Running this script will make changes to your system. This is meant to be run on a dedicated device with a freshly installed OS (RPi4 running Raspberry Pi OS Lite recommended)
+`cd project_rainstorm`
 
-`bash project_rainstorm/scripts/setup.sh`
+**WARNING** Running this script will make changes to your system. This is meant to be run on a dedicated device with a freshly installed OS (RPi4 running Raspberry Pi OS Lite or Ubuntu Core recommended)
+
+`bash scripts/setup.sh`
+
+OR
+
+`bash scripts/setup.sh --dev` if you are a developer
+
+## Development
+
+Create a new virtual environment
+
+`python3 -m venv venv`
+
+`source venv/bin/activate`
+
+Install API dependencies
+
+`pip3 -r requirements.txt`
+
+Run the API server
+
+`bash run_server.sh`
+
+In a new shell, install frontend dependencies
+
+`cd project_rainstorm/thunder`
+
+`yarn install`
+
+Run the frontend server
+
+`yarn start`
+
+Visit http://rainstorm.local:3000 or http://ip_of_device/:3000
 
 ## Screenshots
 

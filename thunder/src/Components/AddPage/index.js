@@ -28,7 +28,7 @@ export default function AddPage() {
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                   <Avatar
-                    alt="Remy Sharp"
+                    alt={service.name}
                     src={
                       "http://nuve.local:5000/static/images/" +
                       service.name +

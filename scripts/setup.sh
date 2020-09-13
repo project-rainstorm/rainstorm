@@ -113,6 +113,7 @@ then
       exit 1
   fi
 fi
+# Get FS_TYPE again just in case it was unreadable the first time
 FS_TYPE=$(df -Th | grep "^${PRIMARY_STORAGE}" | awk '{print $2}')
 if [ $FS_TYPE != 'ext4' ]; then
   echo "Your external drive is using an unsupported format (${FS_TYPE})."
@@ -305,7 +306,7 @@ ${NC}
 EOF
 usermod -aG docker $DEFAULT_USER
 
-
+# BEGIN developer install
 if [ $INSTALL_DEV -eq 1 ]
 then
   # Install system dependencies
@@ -345,7 +346,7 @@ EOF
   echo "***"
   echo -e "${NC}"
   pip3 install virtualenv
-fi
+fi # END developer install
 
 cat <<EOF
 ${RED}

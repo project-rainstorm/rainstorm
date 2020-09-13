@@ -18,6 +18,10 @@ declare -A package_dependencies=(
     [libssl-dev]=libssl-dev
 )
 
+declare -A dev_package_dependencies=(
+    [nodejs]=nodejs
+)
+
 #
 # Terminal Colors
 #
@@ -304,6 +308,30 @@ usermod -aG docker $DEFAULT_USER
 
 if [ $INSTALL_DEV -eq 1 ]
 then
+  # Install system dependencies
+  for pkg in "${!dev_package_dependencies[@]}"; do
+    if hash "${pkg}" 2>/dev/null; then
+      cat <<EOF
+${RED}
+***
+${package_dependencies[$pkg]} already installed...
+***
+${NC}
+EOF
+      _sleep
+    else
+      cat <<EOF
+${RED}
+***
+Installing ${dev_package_dependencies[$pkg]}...
+***
+${NC}
+EOF
+      _sleep
+      apt install -y "${dev_package_dependencies[$pkg]}"
+    fi
+  done
+  # websearch "bash associative array" for info
   echo -e "${RED}"
   echo "***"
   echo "DEVELOPER: Installing yarn from yarnpkg.com..."

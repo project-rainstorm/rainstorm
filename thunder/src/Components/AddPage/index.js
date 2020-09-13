@@ -24,8 +24,6 @@ export default function AddPage() {
       <List className={style.root}>
         {services &&
           services.map(service => {
-            const settings = JSON.parse(service.settings);
-
             return (
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>
@@ -39,7 +37,7 @@ export default function AddPage() {
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={settings.name}
+                  primary={service.settings.name}
                   secondary={
                     <React.Fragment>
                       <Typography
@@ -48,7 +46,7 @@ export default function AddPage() {
                         className={style.inline}
                         color="textPrimary"
                       ></Typography>
-                      {settings.description}
+                      {service.settings.description}
                     </React.Fragment>
                   }
                 />

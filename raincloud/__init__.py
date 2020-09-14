@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from raincloud.models.service import Service
+from raincloud.models.system import SystemStatus
 from flask_json import FlaskJSON, as_json
 import json
 
@@ -107,13 +108,13 @@ def create_app(test_config=None):
         else:
             return { 'data': service.__dict__ }
 
-    # TODO: get system info
     @app.route('/settings/system/info', methods=['GET'])
+    @as_json
     def getSysInfo():
         # return some basic system info
         # size of HDD /dev/sda1, HDD usage, CPU percent, Mem, temp, uptime, etc.
-        return
-
+        return { 'data': SystemStatus().__dict__ }
+    
     # TODO: shutdown the system
     @app.route('/settings/system/poweroff', methods=['POST'])
     def poweroff():

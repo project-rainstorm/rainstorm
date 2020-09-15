@@ -1,0 +1,17 @@
+.flexGrow {
+  flex-grow: 1;
+}
+
+.marginRight {
+  margin-right: 1em;
+}
+
+.fullList {
+  width: auto;
+}
+
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

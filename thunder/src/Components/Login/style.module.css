@@ -1,0 +1,7 @@
+.textField {
+  width: 50%;
+}
+.login {
+  display: flex;
+  justify-content: center;
+}

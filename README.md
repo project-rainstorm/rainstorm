@@ -65,7 +65,7 @@ You can also run Rainstorm on your own to modify, and update the software yourse
 
 `cd project_rainstorm`
 
-**WARNING** Running this script will make changes to your system. This is meant to be run on a dedicated device with a freshly installed OS (RPi4 running Raspberry Pi OS Lite or Ubuntu Core recommended)
+**WARNING** Running this script will make changes to your system. This is meant to be run on a dedicated device with a freshly installed OS (RPi4 running Raspberry Pi OS Lite recommended)
 
 `bash scripts/setup.sh`
 

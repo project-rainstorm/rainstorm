@@ -27,6 +27,6 @@ access_grant = ${ACCESS}" > $RCLONE_CONFIG_FOLDER/rclone.conf
 #
 # configure restic
 #
-restic --repo rclone:dropcloud:backups/$USER_KEY init --password-file $PW_HASH_FILE
+restic --repo $RESTIC_REPO init --password-file $PW_HASH_FILE
 
 # TODO: create backup cron if none

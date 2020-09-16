@@ -23,6 +23,7 @@ BACKUP_TARGET_FOLDER=$SERVICE_DATA
 
 # Files
 PW_HASH_FILE=$USER_CONFIG_FOLDER/pw_sha256
+NEW_PW_HASH_FILE=$USER_CONFIG_FOLDER/pw_sha256.new
 BACKUPS_ACCESS_FILE=$USER_CONFIG_FOLDER/backups.access
 PREMIUM_KEY_FILE=$USER_CONFIG_FOLDER/key
 
@@ -33,3 +34,5 @@ if [ -f "$PREMIUM_KEY_FILE" ]; then
 else
     echo "Premium license not activated!"
 fi
+
+RESTIC_REPO=rclone:dropcloud:backups/$USER_KEY

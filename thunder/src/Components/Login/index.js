@@ -12,9 +12,9 @@ import Input from "@material-ui/core/Input";
 export default function Login(props) {
   const [values, setValues] = React.useState({
     password: "",
-    showPassword: false
+    showPassword: false,
   });
-  const handleChange = prop => event => {
+  const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
@@ -22,7 +22,7 @@ export default function Login(props) {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-  const handleMouseDownPassword = event => {
+  const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   return (

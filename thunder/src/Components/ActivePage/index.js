@@ -13,8 +13,8 @@ export default function ActivePage() {
 
   useEffect(() => {
     fetch("/services")
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setServices(data.data);
       });
   }, []);
@@ -23,7 +23,7 @@ export default function ActivePage() {
     <div>
       <List className={style.root}>
         {services &&
-          services.map(service => {
+          services.map((service) => {
             return (
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>

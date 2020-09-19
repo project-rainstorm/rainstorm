@@ -41,7 +41,7 @@ export default function App(props) {
   // open/close the drawer
   const [drawerState, setDrawerState] = React.useState(false);
 
-  const toggleDrawer = open => event => {
+  const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -54,10 +54,10 @@ export default function App(props) {
   const navKey = [
     <AddPage />,
     <ActivePage />,
-    <SettingsPage setAppState={props.setAppState} />
+    <SettingsPage setAppState={props.setAppState} />,
   ];
 
-  const list = anchor => (
+  const list = (anchor) => (
     <div
       className={style.fullList}
       role="presentation"

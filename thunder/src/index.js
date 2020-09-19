@@ -5,10 +5,7 @@ import AppWrapper from "./Components/AppWrapper/index.js";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <AppWrapper />
-  </React.StrictMode>,
-  document.getElementById("root")
+  <React.StrictMode><AppWrapper /></React.StrictMode>,document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

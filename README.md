@@ -83,7 +83,7 @@ Create a new virtual environment
 
 Install API dependencies
 
-`pip3 -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 Run the API server
 

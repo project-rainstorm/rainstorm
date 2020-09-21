@@ -19,7 +19,8 @@ class SystemStatus(object):
         hostname = socket.gethostname()
         ip = socket.gethostbyname(hostname)
         self.ip = ip
-
+        self.serial = self.getserial()
+        
         partitions = psutil.disk_partitions()
         for p in partitions:
             if p.mountpoint in self.INCLUDED_PARTITIONS:
@@ -30,3 +31,16 @@ class SystemStatus(object):
                     'percent': usage.percent
                 }
 
+    def getserial(self):
+        # Extract serial from cpuinfo file
+        cpuserial = "0000000000000000"
+        try:
+            f = open('/proc/cpuinfo','r')
+            for line in f:
+                if line[0:6]=='Serial':
+                    cpuserial = line[10:26]
+            f.close()
+        except:
+            cpuserial = "ERROR000000000"
+
+        return cpuserial

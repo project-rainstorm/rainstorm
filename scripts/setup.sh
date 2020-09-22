@@ -1,6 +1,12 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
+# Check for root 
+if [ $EUID != 0 ]; then
+    sudo "$0" "$@"
+    exit $?
+fi
+
 source "$HOME"/project_rainstorm/scripts/defaults.sh
 source "$HOME"/project_rainstorm/scripts/functions.sh
 

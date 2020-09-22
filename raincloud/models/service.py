@@ -44,7 +44,7 @@ class Service(object):
             return 'disabled'
 
     def get_settings(self):
-    service_file = "{0}/service.json".format(self.__service_folder())
+        service_file = "{0}/service.json".format(self.__service_folder())
         if os.path.isfile(settingsFile):
             with open(service_file) as f:
                 return json.load(f)

@@ -35,7 +35,7 @@ export default function SettingsPage(props) {
           secondary="Change your master password"
         />
       </ListItem>
-      <ListItem button onClick={() => props.setAppState(2)}>
+      <ListItem button onClick={() => props.setAppState("shutdown")}>
         <ListItemAvatar>
           <Avatar>
             <PowerOffIcon />

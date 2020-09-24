@@ -1,7 +1,12 @@
 {
-	"name": "FileRun File Browser",
-	"maintainer": "count-null",
-	"description": "Manage your files.",
-	"links": ["https://filerun.com"],
-	"var_fields": []
+  "name": "FileRun File Browser",
+  "maintainer": "count-null",
+  "description": "Manage your files.",
+  "links": [
+    {
+      "label": "Official Site",
+      "url": "https://filerun.com"
+    }
+  ],
+  "var_fields": []
 }

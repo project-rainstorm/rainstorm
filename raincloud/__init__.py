@@ -108,13 +108,24 @@ def create_app(test_config=None):
         else:
             return { 'data': service.__dict__ }
 
+    @app.route('/services/<service_name>/vars', methods=['POST'])
+    @as_json
+    def setServiceVars(service_name):
+        service = Service(service_name)
+        vars = request.args.get('vars', default = 1, type = list)
+        status = service.setVars(vars)
+        if status == 1:
+            return {'status': 'error'}
+        else:
+            return { 'status': 'success' }
+
     @app.route('/settings/system/info', methods=['GET'])
     @as_json
     def getSysInfo():
         # return some basic system info
         # size of HDD /dev/sda1, HDD usage, CPU percent, Mem, temp, uptime, etc.
         return { 'data': SystemStatus().__dict__ }
-    
+
     # TODO: shutdown the system
     @app.route('/settings/system/poweroff', methods=['POST'])
     def poweroff():

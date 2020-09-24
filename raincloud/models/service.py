@@ -15,7 +15,7 @@ class Service(object):
 
     @classmethod
     def all_folders(cls):
-        return os.listdir(cls.__services_folder())
+        return [ f.name for f in os.scandir(cls.__services_folder()) if f.is_dir() ]
 
     def enable(self):
         command = "{0} up -d".format(self.__docker_command())
@@ -31,6 +31,21 @@ class Service(object):
 
         return output
 
+    def setVars(self, vars):
+        # example vars = [{name: ENV_VAR, value: ENV_VALUE}]
+        settings = self.get_settings()
+        new_fields = []
+        for var in vars:
+            old_field = next((x for x in settings.var_fields if x.value == var.value), None)
+            new_fields.append({**old_field, "value": var.value  })
+        new_settings = {**settings, 'var_fields': new_fields}
+        with open(self.get_service_file(), "w") as f:
+            try:
+                f.write(new_settings)
+                return 0
+            except:
+              return 1
+
     def set_status(self, status):
         self.status = self.get_status()
 
@@ -45,11 +60,14 @@ class Service(object):
             return 'disabled'
 
     def get_settings(self):
-        service_file = "{0}/service.json".format(self.__service_folder())
+        service_file = self.get_service_file()
         if os.path.isfile(service_file):
             with open(service_file) as f:
                 return json.load(f)
         return {}
+
+    def get_service_file(self):
+        return "{0}/service.json".format(self.__service_folder())
 
     @classmethod
     def __services_folder(cls):

@@ -5,3 +5,9 @@
 .inline {
   display: inline;
 }
+.off {
+  color: #898da3;
+}
+.on {
+  color: #00e676;
+}

@@ -1,7 +1,7 @@
 {
-	"name": "Nextcloud Office Suite",
-	"maintainer": "count-null",
-	"description": "The self-hosted productivity platform that keeps you in control",
-	"links": ["https://nextcloud.com"],
-	"var_fields": []
+  "name": "Nextcloud Office Suite",
+  "maintainer": "count-null",
+  "description": "The self-hosted productivity platform that keeps you in control",
+  "links": [{ "label": "Official Site", "url": "https://nextcloud.com" }],
+  "var_fields": []
 }

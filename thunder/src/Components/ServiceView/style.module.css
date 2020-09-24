@@ -1,0 +1,33 @@
+.flexGrow {
+  flex-grow: 1;
+}
+
+.marginRight {
+  margin-right: 1em;
+}
+
+.fullList {
+  width: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1em;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+}
+
+.links {
+  margin-top: 1.3em;
+}
+
+.icon {
+  height: 150px;
+  width: 150px;
+  margin-right: 1em;
+}

@@ -13,8 +13,8 @@ export default function AddPage() {
 
   useEffect(() => {
     fetch("/services")
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setServices(data.data);
       });
   }, []);
@@ -23,36 +23,38 @@ export default function AddPage() {
     <div>
       <List className={style.root}>
         {services &&
-          services.map(service => {
-            return (
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar
-                    alt={service.name}
-                    src={
-                      "http://nuve.local:5000/static/images/" +
-                      service.name +
-                      ".jpg"
+          services
+            .filter((service) => service.status !== "enabled")
+            .map((service) => {
+              return (
+                <ListItem button alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={service.name}
+                      src={
+                        "http://nuve.local:5000/static/images/" +
+                        service.name +
+                        ".jpg"
+                      }
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={service.settings.name}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={style.inline}
+                          color="textPrimary"
+                        ></Typography>
+                        {service.settings.description}
+                      </React.Fragment>
                     }
                   />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={service.settings.name}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className={style.inline}
-                        color="textPrimary"
-                      ></Typography>
-                      {service.settings.description}
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-            );
-          })}
+                </ListItem>
+              );
+            })}
       </List>
     </div>
   );

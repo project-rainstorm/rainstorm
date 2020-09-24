@@ -13,7 +13,7 @@ import style from "./style.module.css";
 export default function SettingsPage(props) {
   return (
     <List className={style.root}>
-      <ListItem>
+      <ListItem button onClick={() => props.setAppState("premium")}>
         <ListItemAvatar>
           <Avatar>
             <LocalActivityIcon />
@@ -24,7 +24,7 @@ export default function SettingsPage(props) {
           secondary="Access backups, auto-updates, and more!"
         />
       </ListItem>
-      <ListItem>
+      <ListItem button onClick={() => props.setAppState("password")}>
         <ListItemAvatar>
           <Avatar>
             <VpnKeyIcon />

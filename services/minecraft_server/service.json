@@ -8,6 +8,7 @@
       "url": "https://github.com/itzg/docker-minecraft-server"
     }
   ],
+  "open_link": false,
   "var_fields": [
     {
       "name": "SERVER_TYPE",

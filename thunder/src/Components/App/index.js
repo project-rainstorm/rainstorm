@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 // top nav
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -34,10 +35,14 @@ import SettingsPage from "../SettingsPage";
 
 import style from "./style.module.css";
 
-export default function App(props) {
-  // toggle active bottom nav
-  const [bottomNavValue, setBottomNavValue] = React.useState(1);
+App.propTypes = {
+  setService: PropTypes.func,
+  setAppState: PropTypes.func,
+  setBottomNavValue: PropTypes.func,
+  bottomNavValue: PropTypes.string,
+};
 
+function App(props) {
   // open/close the drawer
   const [drawerState, setDrawerState] = React.useState(false);
 
@@ -51,14 +56,18 @@ export default function App(props) {
     setDrawerState(open);
   };
 
-  const navKey = [
-    <AddPage />,
-    <ActivePage
-      setService={props.setService}
-      setAppState={props.setAppState}
-    />,
-    <SettingsPage setAppState={props.setAppState} />,
-  ];
+  const navKey = {
+    disabled: (
+      <AddPage setService={props.setService} setAppState={props.setAppState} />
+    ),
+    enabled: (
+      <ActivePage
+        setService={props.setService}
+        setAppState={props.setAppState}
+      />
+    ),
+    settings: <SettingsPage setAppState={props.setAppState} />,
+  };
 
   const list = (anchor) => (
     <div
@@ -68,13 +77,7 @@ export default function App(props) {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <GitHubIcon />
-          </ListItemIcon>
-          <ListItemText primary="Contribute" />
-        </ListItem>
-        <ListItem button>
+        <ListItem button onClick={() => props.setAppState("premium")}>
           <ListItemIcon>
             <LocalActivityIcon />
           </ListItemIcon>
@@ -110,22 +113,31 @@ export default function App(props) {
           </Toolbar>
         </AppBar>
       </div>
-      {navKey[bottomNavValue]}
+      {navKey[props.bottomNavValue]}
       <BottomNavigation
-        value={bottomNavValue}
+        value={props.bottomNavValue}
         onChange={(event, newValue) => {
-          setBottomNavValue(newValue);
+          props.setBottomNavValue(newValue);
         }}
         showLabels
         className={style.bottomNav}
       >
-        <BottomNavigationAction label="Add" icon={<PlaylistAddIcon />} />
+        <BottomNavigationAction
+          value="disabled"
+          label="Add"
+          icon={<PlaylistAddIcon />}
+        />
 
         <BottomNavigationAction
+          value="enabled"
           label="Active"
           icon={<PlaylistAddCheckIcon />}
         />
-        <BottomNavigationAction label="Settings" icon={<SettingsIcon />} />
+        <BottomNavigationAction
+          value="settings"
+          label="Settings"
+          icon={<SettingsIcon />}
+        />
       </BottomNavigation>
       <Drawer anchor="left" open={drawerState} onClose={toggleDrawer(false)}>
         {list()}
@@ -133,3 +145,5 @@ export default function App(props) {
     </div>
   );
 }
+
+export default App;

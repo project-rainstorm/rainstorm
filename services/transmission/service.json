@@ -5,6 +5,7 @@
   "links": [
     { "label": "GitHub", "url": "https://github.com/Secretmapper/combustion" }
   ],
+  "open_link": ":9091",
   "var_fields": [
     {
       "name": "DOWNLOAD_DIR",

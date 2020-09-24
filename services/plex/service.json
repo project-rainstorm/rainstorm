@@ -3,6 +3,7 @@
   "maintainer": "count-null",
   "description": "Plex brings together all the media that matters to you.",
   "links": [{ "label": "Offical Site", "url": "https://www.plex.tv/" }],
+  "open_link": ":32400/web/index.html",
   "var_fields": [
     {
       "name": "MEDIA_DIR",

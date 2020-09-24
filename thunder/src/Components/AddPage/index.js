@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import style from "./style.module.css";
+import PropTypes from "prop-types";
 
-export default function AddPage() {
-  const [services, setServices] = useState(null);
+import ServiceList from "../ServiceList";
+
+AddPage.propTypes = {
+  setAppState: PropTypes.func,
+  setService: PropTypes.func,
+};
+
+function AddPage(props) {
+  const [services, setServices] = useState([]);
 
   useEffect(() => {
     fetch("/services")
@@ -21,41 +21,13 @@ export default function AddPage() {
 
   return (
     <div>
-      <List className={style.root}>
-        {services &&
-          services
-            .filter((service) => service.status !== "enabled")
-            .map((service) => {
-              return (
-                <ListItem button alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={service.name}
-                      src={
-                        "http://nuve.local:5000/static/images/" +
-                        service.name +
-                        ".jpg"
-                      }
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={service.settings.name}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={style.inline}
-                          color="textPrimary"
-                        ></Typography>
-                        {service.settings.description}
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-              );
-            })}
-      </List>
+      <ServiceList
+        services={services.filter((s) => s.status !== "enabled")}
+        setAppState={props.setAppState}
+        setService={props.setService}
+      />
     </div>
   );
 }
+
+export default AddPage;

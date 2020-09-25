@@ -16,6 +16,14 @@ ServiceView.propTypes = {
 };
 
 function ServiceView(props) {
+  const disableService = () => {
+    fetch(`/services/${props.service.name}/disable`, { method: "post" })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
   return (
     <div>
       <BackAppBar backTo="app" setAppState={props.setAppState} />
@@ -23,7 +31,11 @@ function ServiceView(props) {
         <Header service={props.service} />
         <VariableForm service={props.service} />
         {props.service.status === "enabled" && (
-          <Button variant="contained" color="secondary">
+          <Button
+            onClick={disableService}
+            variant="contained"
+            color="secondary"
+          >
             Disable
           </Button>
         )}

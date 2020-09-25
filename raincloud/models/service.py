@@ -46,7 +46,7 @@ class Service(object):
             except:
               return 1
 
-    def set_status(self, status):
+    def set_status(self):
         self.status = self.get_status()
 
     def get_status(self):
@@ -86,4 +86,4 @@ class Service(object):
         return os.path.join(Service.__services_folder(), self.name)
 
     def __docker_command(self):
-        return "docker-compose -f {0}/docker-compose.yml".format(self.__service_folder())
+        return "docker-compose -f {0}/docker-compose.yml --env-file {0}/.env ".format(self.__service_folder())

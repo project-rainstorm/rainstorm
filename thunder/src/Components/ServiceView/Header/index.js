@@ -12,9 +12,12 @@ Header.propTypes = {
 };
 
 function Header(props) {
-  const handleClick = () => {
-    // enable the service
-    console.log("hello");
+  const enableService = () => {
+    fetch(`/services/${props.service.name}/enable`, { method: "post" })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   return (
@@ -51,7 +54,7 @@ function Header(props) {
             variant="contained"
             color="primary"
             onClick={
-              props.service.status === "enabled" ? () => null : handleClick
+              props.service.status === "enabled" ? () => null : enableService
             }
             href={
               props.service.status === "enabled"

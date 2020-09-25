@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 // content
 import BackAppBar from "../BackAppBar";
 import Header from "./Header";
-import VariableForm from "./VariableForm";
+import ActionList from "./ActionList";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import Chip from "@material-ui/core/Chip";
@@ -16,29 +16,12 @@ ServiceView.propTypes = {
 };
 
 function ServiceView(props) {
-  const disableService = () => {
-    fetch(`/services/${props.service.name}/disable`, { method: "post" })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
   return (
     <div>
       <BackAppBar backTo="app" setAppState={props.setAppState} />
       <Container maxWidth="md">
         <Header service={props.service} />
-        <VariableForm service={props.service} />
-        {props.service.status === "enabled" && (
-          <Button
-            onClick={disableService}
-            variant="contained"
-            color="secondary"
-          >
-            Disable
-          </Button>
-        )}
+        <ActionList service={props.service} />
       </Container>
     </div>
   );

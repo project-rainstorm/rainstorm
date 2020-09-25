@@ -7,7 +7,7 @@
   "var_fields": [
     {
       "name": "MEDIA_DIR",
-      "label": "Media Directory (Movies, Shows, Music & Photos)",
+      "label": "Media Directory",
       "field": "input",
       "value": "/mnt/usb/files"
     }

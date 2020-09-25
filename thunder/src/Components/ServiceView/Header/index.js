@@ -12,14 +12,6 @@ Header.propTypes = {
 };
 
 function Header(props) {
-  const enableService = () => {
-    fetch(`/services/${props.service.name}/enable`, { method: "post" })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
   return (
     <div className={style.header}>
       <div className={style.hero}>
@@ -32,40 +24,20 @@ function Header(props) {
             ".jpg"
           }
         />
-        <div>
-          <Typography variant="h4">{props.service.settings.name}</Typography>
-          <Typography>{props.service.settings.description}</Typography>
-          <div className={style.links}>
-            {props.service.settings.links.map((link) => (
-              <Chip
-                key={link.label}
-                label={link.label}
-                component="a"
-                href={link.url}
-                clickable
-              />
-            ))}
-          </div>
+        <Typography variant="h4">{props.service.settings.name}</Typography>
+        <Typography>{props.service.settings.description}</Typography>
+        <div className={style.links}>
+          {props.service.settings.links.map((link) => (
+            <Chip
+              key={link.label}
+              label={link.label}
+              component="a"
+              href={link.url}
+              clickable
+            />
+          ))}
         </div>
       </div>
-      {props.service.settings.open_link && (
-        <div className={style.btns}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={
-              props.service.status === "enabled" ? () => null : enableService
-            }
-            href={
-              props.service.status === "enabled"
-                ? "http://nuve.local" + props.service.settings.open_link
-                : null
-            }
-          >
-            {props.service.status === "enabled" ? "Open" : "Enable"}
-          </Button>
-        </div>
-      )}
     </div>
   );
 }

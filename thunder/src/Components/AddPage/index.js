@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import Container from "@material-ui/core/Container";
 
 import ServiceList from "../ServiceList";
 
@@ -20,13 +21,13 @@ function AddPage(props) {
   }, []);
 
   return (
-    <div>
+    <Container maxWidth="md">
       <ServiceList
         services={services.filter((s) => s.status !== "enabled")}
         setAppState={props.setAppState}
         setService={props.setService}
       />
-    </div>
+    </Container>
   );
 }
 

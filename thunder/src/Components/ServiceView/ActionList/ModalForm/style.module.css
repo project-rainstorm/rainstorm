@@ -1,0 +1,17 @@
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.paper {
+  background-color: #fff;
+  border: 2px solid #000;
+  box-shadow: #000;
+}
+.inner {
+  padding: 2em 2em 0em 2em;
+}
+.btns {
+  display: flex;
+  justify-content: flex-end;
+}

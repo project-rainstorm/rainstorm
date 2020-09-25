@@ -51,6 +51,16 @@ class Service(object):
                 return json.load(f)
         return {}
 
+    def update_settings(self, variables):
+        service_file = "{0}/service.json".format(self.__service_folder())
+        settings = self.get_settings()
+        settings['var_fields'] = variables
+
+        with open(service_file, mode='w') as f:
+            f.write(json.dumps(settings))
+
+        return self.get_settings()
+
     @classmethod
     def __services_folder(cls):
         base_dir = os.getcwd()

@@ -99,7 +99,7 @@ function App(props) {
   return (
     <div>
       <div className={style.flexGrow}>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <IconButton
               edge="start"

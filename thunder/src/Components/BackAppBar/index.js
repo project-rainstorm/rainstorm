@@ -18,7 +18,7 @@ BackAppBar.propTypes = {
 function BackAppBar(props) {
   return (
     <div className={style.flexGrow}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             edge="start"

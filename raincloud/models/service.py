@@ -1,6 +1,7 @@
 import os
 import subprocess
 import docker
+import json
 
 class Service(object):
     def __init__(self, name):
@@ -30,7 +31,7 @@ class Service(object):
 
         return output
 
-    def set_status(self, status):
+    def set_status(self):
         self.status = self.get_status()
 
     def get_status(self):
@@ -45,7 +46,7 @@ class Service(object):
 
     def get_settings(self):
         service_file = "{0}/service.json".format(self.__service_folder())
-        if os.path.isfile(settingsFile):
+        if os.path.isfile(service_file):
             with open(service_file) as f:
                 return json.load(f)
         return {}

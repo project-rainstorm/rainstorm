@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 services:
   db:
@@ -13,6 +13,7 @@ services:
 
   web:
     image: afian/filerun:arm32v7
+    container_name: filerun
     environment:
       FR_DB_HOST: db
       FR_DB_PORT: 3306

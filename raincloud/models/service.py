@@ -47,6 +47,8 @@ class Service(object):
               return 1
 
     def set_status(self):
+        print("muh status")
+        print(self.get_status())
         self.status = self.get_status()
 
     def get_status(self):

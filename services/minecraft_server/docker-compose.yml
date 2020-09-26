@@ -11,5 +11,5 @@ services:
       - "/mnt/usb/apps/minecraft_server/data:/data"
     ports:
       - "25565:25565"
-    container_name: mc
+    container_name: minecraft_server
     image: itzg/minecraft-server:multiarch

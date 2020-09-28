@@ -9,9 +9,5 @@
   box-shadow: #000;
 }
 .inner {
-  padding: 2em 2em 0em 2em;
-}
-.btns {
-  display: flex;
-  justify-content: flex-end;
+  padding: 2em 1em 0em 1em;
 }

@@ -2,21 +2,53 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+
+import style from "./style.module.css";
 
 Input.propTypes = {
   field: PropTypes.object,
+  service: PropTypes.object,
+  closeModal: PropTypes.func,
 };
 
 function Input(props) {
   const [value, setValue] = useState(props.field.value);
 
+  const submit = () => {
+    let field = props.field;
+    field.value = value;
+    console.log(field);
+    fetch(`/services/${props.service.name}/vars`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: field,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+    props.closeModal();
+  };
+
   return (
     <div>
-      <TextField
-        label={props.field.label}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
+      <div className={style.field}>
+        <TextField
+          label={props.field.label}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+      </div>
+      <div className={style.btns}>
+        <Button onClick={props.closeModal}>Cancel</Button>
+        <Button color="primary" onClick={submit}>
+          Save
+        </Button>
+      </div>
     </div>
   );
 }

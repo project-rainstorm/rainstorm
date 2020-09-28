@@ -114,8 +114,8 @@ def create_app(test_config=None):
     def vars(service_name):
         if request.is_json:
             service = Service(service_name)
-            variables = request.get_json()
-            return { 'data': service.update_settings(variables) }
+            variable = request.get_json()
+            return { 'data': service.update_settings(variable) }
 
     @app.route('/settings/system/info', methods=['GET'])
     @as_json

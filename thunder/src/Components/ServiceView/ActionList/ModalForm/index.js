@@ -12,6 +12,7 @@ ModalForm.propTypes = {
   trigger: PropTypes.object,
   onClose: PropTypes.func,
   btnText: PropTypes.string,
+  children: PropTypes.node,
 };
 
 function ModalForm(props) {
@@ -25,6 +26,14 @@ function ModalForm(props) {
     setOpen(false);
     props.onClose && props.onClose();
   };
+
+  const modalBody = React.Children.map(props.children, (child) => {
+    // If it's just dom element (like div) don't pass closeModal
+    if (!child || typeof child.type === "string") {
+      return child;
+    }
+    return React.cloneElement(child, { closeModal: handleClose });
+  });
 
   return (
     <div>
@@ -43,13 +52,7 @@ function ModalForm(props) {
       >
         <Fade in={open}>
           <div className={style.paper}>
-            <div className={style.inner}>{props.children}</div>
-            <div className={style.btns}>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button color="primary" onClick={handleClose}>
-                {props.btnText ? props.btnText : "Done"}
-              </Button>
-            </div>
+            <div className={style.inner}>{modalBody}</div>
           </div>
         </Fade>
       </Modal>

@@ -10,8 +10,3 @@
   display: flex;
   justify-content: space-around;
 }
-.field {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 3em;
-}

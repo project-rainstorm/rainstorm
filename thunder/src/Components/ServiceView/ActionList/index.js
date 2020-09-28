@@ -28,7 +28,6 @@ ActionList.propTypes = {
 
 function ActionList(props) {
   const [services, setServices] = useState([]);
-  const handleClick = (field) => console.log("hello");
 
   const enableService = () => {
     fetch(`/services/${props.service.name}/enable`, { method: "post" })
@@ -48,9 +47,9 @@ function ActionList(props) {
 
   const getField = (field) => {
     if (field.field === "input") {
-      return <Input field={field} />;
+      return <Input field={field} service={props.service} />;
     }
-    return <Select field={field} />;
+    return <Select field={field} service={props.service} />;
   };
 
   const showBtn =
@@ -87,11 +86,7 @@ function ActionList(props) {
       <List className={style.root}>
         {props.service.settings.var_fields.map((field) => {
           const List = (
-            <ListItem
-              button
-              onClick={() => handleClick(field)}
-              alignItems="center"
-            >
+            <ListItem button alignItems="center">
               <ListItemAvatar>
                 <Avatar alt={field.label}>
                   <FolderIcon />
@@ -115,7 +110,7 @@ function ActionList(props) {
           );
           return (
             <ModalForm key={field.name} trigger={List} btnText="Save">
-              <div className={style.field}>{getField(field)}</div>
+              {getField(field)}
             </ModalForm>
           );
         })}

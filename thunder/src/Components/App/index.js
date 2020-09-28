@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 // top nav
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 // drawer
 import Drawer from "@material-ui/core/Drawer";
@@ -18,7 +16,6 @@ import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 
 // icons
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import LockIcon from "@material-ui/icons/Lock";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";

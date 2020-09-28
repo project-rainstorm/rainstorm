@@ -30,5 +30,6 @@ export default function AppWrapper() {
     password: <ChangePass setAppState={setAppState} />,
     premium: <Premium setAppState={setAppState} />,
   };
+
   return appKey[appState];
 }

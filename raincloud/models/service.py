@@ -31,24 +31,7 @@ class Service(object):
 
         return output
 
-    def setVars(self, vars):
-        # example vars = [{name: ENV_VAR, value: ENV_VALUE}]
-        settings = self.get_settings()
-        new_fields = []
-        for var in vars:
-            old_field = next((x for x in settings.var_fields if x.value == var.value), None)
-            new_fields.append({**old_field, "value": var.value  })
-        new_settings = {**settings, 'var_fields': new_fields}
-        with open(self.get_service_file(), "w") as f:
-            try:
-                f.write(new_settings)
-                return 0
-            except:
-              return 1
-
     def set_status(self):
-        print("muh status")
-        print(self.get_status())
         self.status = self.get_status()
 
     def get_status(self):
@@ -70,6 +53,16 @@ class Service(object):
 
     def get_service_file(self):
         return "{0}/service.json".format(self.__service_folder())
+
+    def update_settings(self, variables):
+        service_file = "{0}/service.json".format(self.__service_folder())
+        settings = self.get_settings()
+        settings['var_fields'] = variables
+
+        with open(service_file, mode='w') as f:
+            f.write(json.dumps(settings))
+
+        return self.get_settings()
 
     @classmethod
     def __services_folder(cls):

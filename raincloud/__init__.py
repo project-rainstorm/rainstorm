@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask import request
 from raincloud.models.service import Service
 from raincloud.models.system import SystemStatus
 from flask_json import FlaskJSON, as_json
@@ -110,14 +111,11 @@ def create_app(test_config=None):
 
     @app.route('/services/<service_name>/vars', methods=['POST'])
     @as_json
-    def setServiceVars(service_name):
-        service = Service(service_name)
-        vars = request.args.get('vars', default = 1, type = list)
-        status = service.setVars(vars)
-        if status == 1:
-            return {'status': 'error'}
-        else:
-            return { 'status': 'success' }
+    def vars(service_name):
+        if request.is_json:
+            service = Service(service_name)
+            variables = request.get_json()
+            return { 'data': service.update_settings(variables) }
 
     @app.route('/settings/system/info', methods=['GET'])
     @as_json

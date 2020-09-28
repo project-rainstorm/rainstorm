@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,8 +12,8 @@ export default function ActivePage() {
 
   useEffect(() => {
     fetch("/services")
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setServices(data.data);
       });
   }, []);
@@ -23,7 +22,7 @@ export default function ActivePage() {
     <div>
       <List className={style.root}>
         {services &&
-          services.map(service => {
+          services.map((service) => {
             return (
               <ListItem alignItems="flex-start">
                 <ListItemAvatar>

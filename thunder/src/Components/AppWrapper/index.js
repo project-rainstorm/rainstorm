@@ -10,7 +10,7 @@ export default function AppWrapper() {
   const appKey = [
     <Login setAppState={setAppState} />,
     <App setAppState={setAppState} />,
-    <Shutdown />
+    <Shutdown />,
   ];
   return appKey[appState];
 }

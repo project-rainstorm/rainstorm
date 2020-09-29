@@ -25,7 +25,7 @@ function Input(props) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: field,
+      body: JSON.stringify(field),
     })
       .then((res) => res.json())
       .then((data) => {

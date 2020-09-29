@@ -57,12 +57,9 @@ class Service(object):
     def update_settings(self, variable):
         service_file = "{0}/service.json".format(self.__service_folder())
         settings = self.get_settings()
-        unchanged_vars = filter(lambda v: v['name'] != variable['name'], settings['var_fields'])
-        print("unchanged")
-        print(unchanged_vars)
-        new_vars = unchanged_vars.append(variable)
-        print("vars")
-        print(new_vars)
+        unchanged_vars = list(filter(lambda v: v['name'] != variable['name'], settings['var_fields']))
+        new_vars = unchanged_vars
+        new_vars.append(variable)
         settings['var_fields'] = new_vars
 
         with open(service_file, mode='w') as f:

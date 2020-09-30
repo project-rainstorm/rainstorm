@@ -23,7 +23,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import SettingsIcon from "@material-ui/icons/Settings";
 import MenuIcon from "@material-ui/icons/Menu";
 import LocalActivityIcon from "@material-ui/icons/LocalActivity";
-import GitHubIcon from "@material-ui/icons/GitHub";
 
 // pages
 import ActivePage from "../ActivePage";

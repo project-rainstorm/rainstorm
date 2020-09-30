@@ -4,11 +4,7 @@ import PropTypes from "prop-types";
 import BackAppBar from "../BackAppBar";
 import Header from "./Header";
 import ActionList from "./ActionList";
-import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
-import Chip from "@material-ui/core/Chip";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 ServiceView.propTypes = {
   url: PropTypes.object,

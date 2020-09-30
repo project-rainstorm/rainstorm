@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import { Alert, AlertTitle } from "@material-ui/lab";
 // Icons
 import LaunchIcon from "@material-ui/icons/Launch";
 import LoopIcon from "@material-ui/icons/Loop";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import CheckIcon from "@material-ui/icons/Check";
 import FolderIcon from "@material-ui/icons/Folder";
 import Input from "./Input";

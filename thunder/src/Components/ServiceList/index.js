@@ -13,6 +13,7 @@ import Skeleton from "react-loading-skeleton";
 import style from "./style.module.css";
 
 ServiceList.propTypes = {
+  url: PropTypes.object,
   setService: PropTypes.func,
   setAppState: PropTypes.func,
   services: PropTypes.array,
@@ -40,7 +41,8 @@ function ServiceList(props) {
                     <Avatar
                       alt={service.name}
                       src={
-                        "http://nuve.local:5000/static/images/" +
+                        props.url.api +
+                        "/static/images/" +
                         service.name +
                         ".jpg"
                       }

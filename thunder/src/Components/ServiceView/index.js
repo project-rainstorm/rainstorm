@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 ServiceView.propTypes = {
+  url: PropTypes.object,
   setAppState: PropTypes.func,
   service: PropTypes.object,
 };
@@ -21,7 +22,7 @@ function ServiceView(props) {
       <BackAppBar backTo="app" setAppState={props.setAppState} />
       <Container maxWidth="md">
         <Header service={props.service} />
-        <ActionList service={props.service} />
+        <ActionList url={props.url} service={props.service} />
       </Container>
     </div>
   );

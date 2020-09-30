@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 // Icons
 import LaunchIcon from "@material-ui/icons/Launch";
+import LoopIcon from "@material-ui/icons/Loop";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import CheckIcon from "@material-ui/icons/Check";
 import FolderIcon from "@material-ui/icons/Folder";
@@ -23,37 +24,64 @@ import ModalForm from "./ModalForm";
 import style from "./style.module.css";
 
 ActionList.propTypes = {
+  url: PropTypes.object,
   service: PropTypes.object,
 };
 
 function ActionList(props) {
-  const [services, setServices] = useState([]);
+  const [service, setService] = useState(props.service);
+  const [loading, setLoading] = useState(false);
 
   const enableService = () => {
+    setLoading(true);
     fetch(`/services/${props.service.name}/enable`, { method: "post" })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        setService(data.data);
+        setLoading(false);
       });
   };
 
   const disableService = () => {
+    setLoading(true);
     fetch(`/services/${props.service.name}/disable`, { method: "post" })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        setService(data.data);
+        setLoading(false);
       });
   };
 
   const getField = (field) => {
     if (field.field === "input") {
-      return <Input field={field} service={props.service} />;
+      return <Input field={field} service={service} />;
     }
-    return <Select field={field} service={props.service} />;
+    return <Select field={field} service={service} />;
   };
 
-  const showBtn =
-    props.service.settings.open_link || props.service.status !== "enabled";
+  const showBtn = service.settings.open_link || service.status !== "enabled";
+
+  const getTopBtnIcon = () => {
+    if (loading) {
+      return <LoopIcon className={style.spin} />;
+    }
+    if (service.status === "enabled") {
+      return <LaunchIcon />;
+    } else {
+      return <CheckIcon />;
+    }
+  };
+
+  const getTopBtnText = () => {
+    if (loading) {
+      if (service.status === "enabled") {
+        return "Stopping";
+      } else {
+        return "Starting";
+      }
+    }
+    return service.status === "enabled" ? "Open" : "Enable";
+  };
 
   return (
     <div>
@@ -63,28 +91,20 @@ function ActionList(props) {
             variant="contained"
             color="primary"
             size="large"
-            startIcon={
-              props.service.status === "enabled" ? (
-                <LaunchIcon />
-              ) : (
-                <CheckIcon />
-              )
-            }
-            onClick={
-              props.service.status === "enabled" ? () => null : enableService
-            }
+            startIcon={getTopBtnIcon()}
+            onClick={service.status === "enabled" ? () => null : enableService}
             href={
-              props.service.status === "enabled"
-                ? "http://nuve.local" + props.service.settings.open_link
+              service.status === "enabled"
+                ? props.url.base + props.service.settings.open_link
                 : null
             }
           >
-            {props.service.status === "enabled" ? "Open" : "Enable"}
+            {getTopBtnText()}
           </Button>
         )}
       </div>
       <List className={style.root}>
-        {props.service.settings.var_fields.map((field) => {
+        {service.settings.var_fields.map((field) => {
           const List = (
             <ListItem button alignItems="center">
               <ListItemAvatar>
@@ -116,7 +136,7 @@ function ActionList(props) {
         })}
       </List>
       <div className={style.bar}>
-        {props.service.status === "enabled" && (
+        {service.status === "enabled" && (
           <Button color="secondary" size="large" onClick={disableService}>
             Disable
           </Button>

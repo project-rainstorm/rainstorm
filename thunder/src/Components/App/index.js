@@ -33,6 +33,7 @@ import SettingsPage from "../SettingsPage";
 import style from "./style.module.css";
 
 App.propTypes = {
+  url: PropTypes.object,
   setService: PropTypes.func,
   setAppState: PropTypes.func,
   setBottomNavValue: PropTypes.func,
@@ -55,10 +56,15 @@ function App(props) {
 
   const navKey = {
     disabled: (
-      <AddPage setService={props.setService} setAppState={props.setAppState} />
+      <AddPage
+        url={props.url}
+        setService={props.setService}
+        setAppState={props.setAppState}
+      />
     ),
     enabled: (
       <ActivePage
+        url={props.url}
         setService={props.setService}
         setAppState={props.setAppState}
       />

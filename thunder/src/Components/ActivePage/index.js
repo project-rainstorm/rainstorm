@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import ServiceList from "../ServiceList";
 
 ActivePage.propTypes = {
+  url: PropTypes.object,
   setAppState: PropTypes.func,
   setService: PropTypes.func,
 };
@@ -24,6 +25,7 @@ function ActivePage(props) {
   return (
     <Container maxWidth="md">
       <ServiceList
+        url={props.url}
         services={services.filter((s) => s.status === "enabled")}
         setAppState={props.setAppState}
         setService={props.setService}

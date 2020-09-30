@@ -9,7 +9,15 @@
     }
   ],
   "open_link": false,
+  "needs_update": false,
   "var_fields": [
+    {
+      "name": "VERSION",
+      "label": "Version",
+      "field": "select",
+      "value": "LATEST",
+      "options": ["LATEST", "SNAPSHOT", "1.16.3", "1.16.2", "1.16.1", "1.16"]
+    },
     {
       "field": "select",
       "label": "Server Type",
@@ -25,21 +33,7 @@
         "SPONGEVANILLA",
         "FABRIC"
       ],
-      "value": "SPIGOT"
-    },
-    {
-      "field": "select",
-      "label": "Version",
-      "name": "VERSION",
-      "options": [
-        "LATEST",
-        "SNAPSHOT",
-        "1.16.3",
-        "1.16.2",
-        "1.16.1",
-        "1.16"
-      ],
-      "value": "1.16.1"
+      "value": "FORGE"
     }
   ]
 }

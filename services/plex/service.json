@@ -9,6 +9,7 @@
     }
   ],
   "open_link": ":32400/web/index.html",
+  "needs_update": false,
   "var_fields": [
     {
       "field": "input",

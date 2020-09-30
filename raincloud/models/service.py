@@ -22,6 +22,11 @@ class Service(object):
         output = self.__run_command(command)
         self.set_status()
 
+        # set flag - new variables applied
+        settings = self.get_settings()
+        settings['needs_update'] = False
+        self.__save_settings(settings)
+        self.settings = self.get_settings()
         return output
 
     def disable(self):
@@ -55,7 +60,6 @@ class Service(object):
         return "{0}/service.json".format(self.__service_folder())
 
     def update_settings(self, variable):
-        service_file = "{0}/service.json".format(self.__service_folder())
         env_file = "{0}/.env".format(self.__service_folder())
         settings = self.get_settings()
 
@@ -66,22 +70,22 @@ class Service(object):
         new_vars = unchanged_vars
         new_vars.append(variable)
         settings['var_fields'] = new_vars
+        settings['needs_update'] = True
+        self.__save_settings(settings)
 
-        # create vars in .env format
+        # create vars in .env format for docker-compose
         env_vars = []
         for var in new_vars:
             env_vars.append("{0}={1}\n".format(var['name'], var['value']))
-
-        # Write to service.json
-        with open(service_file, mode='w') as f:
-            f.write(json.dumps(settings, indent=2))
 
         # Write to .env
         with open(env_file, mode='w') as f:
             for var in env_vars:
                 f.write(var)
 
-        return self.get_settings()
+        self.settings = self.get_settings()
+
+        return self.__dict__
 
     @classmethod
     def __services_folder(cls):
@@ -95,6 +99,11 @@ class Service(object):
 
         return subprocess.check_output(command, shell=True)
 
+    def __save_settings(self, settings):
+        service_file = "{0}/service.json".format(self.__service_folder())
+        # Write to service.json
+        with open(service_file, mode='w') as f:
+            f.write(json.dumps(settings, indent=2))
 
     def __service_folder(self):
         return os.path.join(Service.__services_folder(), self.name)

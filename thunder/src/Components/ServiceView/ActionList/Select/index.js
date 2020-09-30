@@ -9,6 +9,7 @@ import style from "./style.module.css";
 Select.propTypes = {
   field: PropTypes.object,
   service: PropTypes.object,
+  setService: PropTypes.func,
   closeModal: PropTypes.func,
 };
 
@@ -29,7 +30,7 @@ function Select(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        props.setService(data.data);
       });
     props.closeModal();
   };

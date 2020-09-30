@@ -10,7 +10,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-
+import { Alert, AlertTitle } from "@material-ui/lab";
 // Icons
 import LaunchIcon from "@material-ui/icons/Launch";
 import LoopIcon from "@material-ui/icons/Loop";
@@ -31,6 +31,7 @@ ActionList.propTypes = {
 function ActionList(props) {
   const [service, setService] = useState(props.service);
   const [loading, setLoading] = useState(false);
+  const [restarting, setRestarting] = useState(false);
 
   const enableService = () => {
     setLoading(true);
@@ -52,11 +53,23 @@ function ActionList(props) {
       });
   };
 
+  const restartService = () => {
+    setLoading(true);
+    setRestarting(true);
+    fetch(`/services/${props.service.name}/restart`, { method: "post" })
+      .then((res) => res.json())
+      .then((data) => {
+        setService(data.data);
+        setLoading(false);
+        setRestarting(false);
+      });
+  };
+
   const getField = (field) => {
     if (field.field === "input") {
-      return <Input field={field} service={service} />;
+      return <Input field={field} service={service} setService={setService} />;
     }
-    return <Select field={field} service={service} />;
+    return <Select field={field} service={service} setService={setService} />;
   };
 
   const showBtn = service.settings.open_link || service.status !== "enabled";
@@ -73,6 +86,9 @@ function ActionList(props) {
   };
 
   const getTopBtnText = () => {
+    if (restarting) {
+      return "Restarting";
+    }
     if (loading) {
       if (service.status === "enabled") {
         return "Stopping";
@@ -104,6 +120,19 @@ function ActionList(props) {
         )}
       </div>
       <List className={style.root}>
+        {service.settings.needs_update && (
+          <Alert
+            severity="info"
+            action={
+              <Button color="inherit" size="small" onClick={restartService}>
+                APPLY
+              </Button>
+            }
+          >
+            <AlertTitle>Info</AlertTitle>
+            These settings have not been applied.
+          </Alert>
+        )}
         {service.settings.var_fields.map((field) => {
           const List = (
             <ListItem button alignItems="center">

@@ -56,14 +56,30 @@ class Service(object):
 
     def update_settings(self, variable):
         service_file = "{0}/service.json".format(self.__service_folder())
+        env_file = "{0}/.env".format(self.__service_folder())
         settings = self.get_settings()
+
+        # filter out the var that has changed
         unchanged_vars = list(filter(lambda v: v['name'] != variable['name'], settings['var_fields']))
+
+        # add the new var
         new_vars = unchanged_vars
         new_vars.append(variable)
         settings['var_fields'] = new_vars
 
+        # create vars in .env format
+        env_vars = []
+        for var in new_vars:
+            env_vars.append("{0}={1}\n".format(var['name'], var['value']))
+
+        # Write to service.json
         with open(service_file, mode='w') as f:
-            f.write(json.dumps(settings))
+            f.write(json.dumps(settings, indent=2))
+
+        # Write to .env
+        with open(env_file, mode='w') as f:
+            for var in env_vars:
+                f.write(var)
 
         return self.get_settings()
 

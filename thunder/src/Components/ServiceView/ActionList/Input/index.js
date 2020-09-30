@@ -18,7 +18,7 @@ function Input(props) {
   const submit = () => {
     let field = props.field;
     field.value = value;
-    console.log(field);
+    console.log(JSON.stringify(field));
     fetch(`/services/${props.service.name}/vars`, {
       method: "post",
       headers: {

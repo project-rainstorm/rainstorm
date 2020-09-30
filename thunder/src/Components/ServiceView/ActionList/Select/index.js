@@ -16,7 +16,21 @@ function Select(props) {
   const [value, setValue] = useState(props.field.value);
 
   const submit = () => {
-    console.log("submit");
+    let field = props.field;
+    field.value = value;
+    console.log(JSON.stringify(field));
+    fetch(`/services/${props.service.name}/vars`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(field),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
     props.closeModal();
   };
 

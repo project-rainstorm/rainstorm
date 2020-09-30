@@ -9,7 +9,7 @@ services:
       - PGID=1000
       - VERSION=docker
     volumes:
-      - /mnt/usb/files:/data
+      - ${MEDIA_DIR}:/data
       - /mnt/usb/apps/plex/library:/config
       - /mnt/usb/apps/plex/transcode:/transcode
     restart: unless-stopped

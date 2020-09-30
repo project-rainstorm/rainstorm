@@ -11,10 +11,9 @@
   "open_link": false,
   "var_fields": [
     {
-      "name": "SERVER_TYPE",
-      "label": "Server Type",
       "field": "select",
-      "value": "SPIGOT",
+      "label": "Server Type",
+      "name": "SERVER_TYPE",
       "options": [
         "SPIGOT",
         "FORGE",
@@ -25,14 +24,22 @@
         "CATSERVER",
         "SPONGEVANILLA",
         "FABRIC"
-      ]
+      ],
+      "value": "SPIGOT"
     },
     {
-      "name": "VERSION",
-      "label": "Version",
       "field": "select",
-      "value": "LATEST",
-      "options": ["LATEST", "SNAPSHOT", "1.16.3", "1.16.2", "1.16.1", "1.16"]
+      "label": "Version",
+      "name": "VERSION",
+      "options": [
+        "LATEST",
+        "SNAPSHOT",
+        "1.16.3",
+        "1.16.2",
+        "1.16.1",
+        "1.16"
+      ],
+      "value": "1.16.1"
     }
   ]
 }

@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+  filebrowser:
+    container_name: filebrowser
+    volumes:
+      - /mnt/usb/apps/filebrowser/database.db:/database.db
+      - /mnt/usb/apps/filebrowser/.filebrowser.json:/.filebrowser.json
+      - "${ROOT_DIR}:/srv"
+    ports:
+      - "8081:80"
+    image: filebrowser/filebrowser:pi

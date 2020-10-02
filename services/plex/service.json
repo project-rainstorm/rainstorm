@@ -9,13 +9,12 @@
     }
   ],
   "open_link": ":32400/web/index.html",
-  "needs_update": false,
+  "needs_update": true,
   "var_fields": [
     {
       "field": "input",
       "label": "Media Directory",
-      "name": "MEDIA_DIR",
-      "value": "/mnt/usb/files"
+      "name": "MEDIA_DIR"
     }
   ]
 }

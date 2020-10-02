@@ -53,35 +53,25 @@ class Service(object):
         service_file = self.get_service_file()
         if os.path.isfile(service_file):
             with open(service_file) as f:
-                return json.load(f)
+                settings = json.load(f)
+                var_fields_with_values = []
+                # Parse field values from .env
+                for var in settings['var_fields']:
+                    var['value'] = self.__get_env_value(var['name'])
+                    var_fields_with_values.append(var)
+                settings['var_fields'] = var_fields_with_values
+                return settings
         return {}
 
     def get_service_file(self):
         return "{0}/service.json".format(self.__service_folder())
 
     def update_settings(self, variable):
-        env_file = "{0}/.env".format(self.__service_folder())
         settings = self.get_settings()
-
-        # filter out the var that has changed
-        unchanged_vars = list(filter(lambda v: v['name'] != variable['name'], settings['var_fields']))
-
         # add the new var
-        new_vars = unchanged_vars
-        new_vars.append(variable)
-        settings['var_fields'] = new_vars
         settings['needs_update'] = True
         self.__save_settings(settings)
-
-        # create vars in .env format for docker-compose
-        env_vars = []
-        for var in new_vars:
-            env_vars.append("{0}={1}\n".format(var['name'], var['value']))
-
-        # Write to .env
-        with open(env_file, mode='w') as f:
-            for var in env_vars:
-                f.write(var)
+        self.__save_env_var(variable)
 
         self.settings = self.get_settings()
 
@@ -101,9 +91,31 @@ class Service(object):
 
     def __save_settings(self, settings):
         service_file = "{0}/service.json".format(self.__service_folder())
-        # Write to service.json
         with open(service_file, mode='w') as f:
             f.write(json.dumps(settings, indent=2))
+
+    def __save_env_var(self, variable):
+        env_file = "{0}/.env".format(self.__service_folder())
+        vars = open(env_file, "r").readlines()
+        new_env = []
+        for assignment in vars:
+            name = assignment.split("=")[0]
+            if name == variable['name']:
+                new_env.append("{0}={1}\n".format(name, variable['value']))
+            else:
+                new_env.append(assignment)
+        with open(env_file, mode='w') as f:
+            for line in new_env:
+                f.write(line)
+
+    def __get_env_value(self, var_name):
+        env_file = "{0}/.env".format(self.__service_folder())
+        vars = open(env_file, "r").readlines()
+        for assignment in vars:
+            name, value = assignment.split("=")
+            if name == var_name:
+                return value
+
 
     def __service_folder(self):
         return os.path.join(Service.__services_folder(), self.name)

@@ -18,8 +18,7 @@
     {
       "name": "ROOT_DIR",
       "label": "Root Directory",
-      "field": "input",
-      "value": "/mnt/usb/files"
+      "field": "input"
     }
   ]
 }

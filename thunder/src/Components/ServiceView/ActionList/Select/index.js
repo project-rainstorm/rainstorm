@@ -10,11 +10,11 @@ Select.propTypes = {
   field: PropTypes.object,
   service: PropTypes.object,
   setService: PropTypes.func,
-  closeModal: PropTypes.func,
+  closeModal: PropTypes.func
 };
 
 function Select(props) {
-  const [value, setValue] = useState(props.field.value);
+  const [value, setValue] = useState(props.field.value || props.field.default);
 
   const submit = () => {
     let field = props.field;
@@ -24,12 +24,12 @@ function Select(props) {
       method: "post",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(field),
+      body: JSON.stringify(field)
     })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         props.setService(data.data);
       });
     props.closeModal();
@@ -42,12 +42,12 @@ function Select(props) {
           label={props.field.label}
           select
           SelectProps={{
-            native: true,
+            native: true
           }}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={e => setValue(e.target.value)}
         >
-          {props.field.options.map((option) => (
+          {props.field.options.map(option => (
             <option key={option} value={option}>
               {option}
             </option>

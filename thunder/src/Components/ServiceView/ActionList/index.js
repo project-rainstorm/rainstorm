@@ -22,7 +22,7 @@ import style from "./style.module.css";
 
 ActionList.propTypes = {
   url: PropTypes.object,
-  service: PropTypes.object,
+  service: PropTypes.object
 };
 
 function ActionList(props) {
@@ -33,8 +33,8 @@ function ActionList(props) {
   const enableService = () => {
     setLoading(true);
     fetch(`/services/${props.service.name}/enable`, { method: "post" })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         setService(data.data);
         setLoading(false);
       });
@@ -43,8 +43,8 @@ function ActionList(props) {
   const disableService = () => {
     setLoading(true);
     fetch(`/services/${props.service.name}/disable`, { method: "post" })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         setService(data.data);
         setLoading(false);
       });
@@ -54,15 +54,15 @@ function ActionList(props) {
     setLoading(true);
     setRestarting(true);
     fetch(`/services/${props.service.name}/restart`, { method: "post" })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         setService(data.data);
         setLoading(false);
         setRestarting(false);
       });
   };
 
-  const getField = (field) => {
+  const getField = field => {
     if (field.field === "input") {
       return <Input field={field} service={service} setService={setService} />;
     }
@@ -146,7 +146,7 @@ function ActionList(props) {
             These settings have not been applied.
           </Alert>
         )}
-        {service.settings.var_fields.map((field) => {
+        {service.settings.var_fields.map(field => {
           const List = (
             <ListItem button alignItems="center">
               <ListItemAvatar>
@@ -164,7 +164,7 @@ function ActionList(props) {
                       className={style.inline}
                       color="textPrimary"
                     ></Typography>
-                    {field.value}
+                    {field.value || field.default}
                   </React.Fragment>
                 }
               />

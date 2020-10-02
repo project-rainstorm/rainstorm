@@ -11,7 +11,8 @@
     {
       "name": "DOWNLOAD_DIR",
       "label": "Download Directory",
-      "field": "input"
+      "field": "input",
+      "default": "/mnt/usb/files/torrents/"
     }
   ]
 }

@@ -14,7 +14,9 @@
     {
       "field": "input",
       "label": "Media Directory",
-      "name": "MEDIA_DIR"
+      "name": "MEDIA_DIR",
+      "default": "/mnt/usb/files",
+      "value": null
     }
   ]
 }

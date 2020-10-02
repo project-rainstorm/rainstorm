@@ -10,11 +10,11 @@ Input.propTypes = {
   field: PropTypes.object,
   service: PropTypes.object,
   setService: PropTypes.func,
-  closeModal: PropTypes.func,
+  closeModal: PropTypes.func
 };
 
 function Input(props) {
-  const [value, setValue] = useState(props.field.value);
+  const [value, setValue] = useState(props.field.value || props.field.default);
 
   const submit = () => {
     let field = props.field;
@@ -24,12 +24,12 @@ function Input(props) {
       method: "post",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(field),
+      body: JSON.stringify(field)
     })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         props.setService(data.data);
       });
     props.closeModal();
@@ -41,7 +41,7 @@ function Input(props) {
         <TextField
           label={props.field.label}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={e => setValue(e.target.value)}
         />
       </div>
       <div className={style.btns}>

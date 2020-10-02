@@ -9,21 +9,14 @@
     }
   ],
   "open_link": false,
-  "needs_update": true,
+  "needs_update": false,
   "var_fields": [
     {
       "name": "VERSION",
       "label": "Version",
       "field": "select",
-      "options": [
-        "LATEST",
-        "SNAPSHOT",
-        "1.16.3",
-        "1.16.2",
-        "1.16.1",
-        "1.16"
-      ],
-      "value": "LATEST\n"
+      "options": ["LATEST", "SNAPSHOT", "1.16.3", "1.16.2", "1.16.1", "1.16"],
+      "default": "LATEST"
     },
     {
       "field": "select",
@@ -40,7 +33,7 @@
         "SPONGEVANILLA",
         "FABRIC"
       ],
-      "value": "SPIGOT\n"
+      "default": "SPIGOT"
     }
   ]
 }

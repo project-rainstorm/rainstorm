@@ -96,13 +96,18 @@ class Service(object):
 
     def __save_env_var(self, variable):
         env_file = "{0}/.env".format(self.__service_folder())
-        vars = open(env_file, "r").readlines()
+        values = open(env_file, "r").readlines()
+        vars = list(map(lambda val: val.split("=")[0], values))
+        print(vars)
         new_env = []
-        for assignment in vars:
-            name = assignment.split("=")[0]
+        # if saving a new var
+        if variable['name'] not in vars:
+            new_env.append("{0}={1}\n".format(variable['name'], variable['value']))
+        for name in vars:
+            # if changing an existing var
             if name == variable['name']:
                 new_env.append("{0}={1}\n".format(name, variable['value']))
-            else:
+            else: # include the unchanged var
                 new_env.append(assignment)
         with open(env_file, mode='w') as f:
             for line in new_env:
@@ -110,12 +115,13 @@ class Service(object):
 
     def __get_env_value(self, var_name):
         env_file = "{0}/.env".format(self.__service_folder())
+        if os.path.isfile(env_file):
+            open(env_file, "a").close()
         vars = open(env_file, "r").readlines()
         for assignment in vars:
             name, value = assignment.split("=")
             if name == var_name:
                 return value
-
 
     def __service_folder(self):
         return os.path.join(Service.__services_folder(), self.name)

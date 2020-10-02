@@ -18,7 +18,8 @@
     {
       "name": "ROOT_DIR",
       "label": "Root Directory",
-      "field": "input"
+      "field": "input",
+      "default": "/mnt/usb"
     }
   ]
 }

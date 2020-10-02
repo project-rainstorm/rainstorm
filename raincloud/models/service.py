@@ -49,17 +49,18 @@ class Service(object):
         except docker.errors.NotFound:
             return 'disabled'
 
-    def get_settings(self):
+    def get_settings(self, field_values=True):
         service_file = self.get_service_file()
         if os.path.isfile(service_file):
             with open(service_file) as f:
                 settings = json.load(f)
-                var_fields_with_values = []
-                # Parse field values from .env
-                for var in settings['var_fields']:
-                    var['value'] = self.__get_env_value(var['name'])
-                    var_fields_with_values.append(var)
-                settings['var_fields'] = var_fields_with_values
+                if field_values:
+                    var_fields_with_values = []
+                    # Parse field values from .env
+                    for var in settings['var_fields']:
+                        var['value'] = self.__get_env_value(var['name'])
+                        var_fields_with_values.append(var)
+                        settings['var_fields'] = var_fields_with_values
                 return settings
         return {}
 
@@ -67,7 +68,7 @@ class Service(object):
         return "{0}/service.json".format(self.__service_folder())
 
     def update_settings(self, variable):
-        settings = self.get_settings()
+        settings = self.get_settings(field_values=False)
         # add the new var
         settings['needs_update'] = True
         self.__save_settings(settings)
@@ -98,7 +99,6 @@ class Service(object):
         env_file = "{0}/.env".format(self.__service_folder())
         values = open(env_file, "r").readlines()
         vars = list(map(lambda val: val.split("=")[0], values))
-        print(vars)
         new_env = []
         # if saving a new var
         if variable['name'] not in vars:
@@ -115,13 +115,13 @@ class Service(object):
 
     def __get_env_value(self, var_name):
         env_file = "{0}/.env".format(self.__service_folder())
-        if os.path.isfile(env_file):
+        if not os.path.isfile(env_file):
             open(env_file, "a").close()
         vars = open(env_file, "r").readlines()
         for assignment in vars:
             name, value = assignment.split("=")
             if name == var_name:
-                return value
+                return value.strip()
 
     def __service_folder(self):
         return os.path.join(Service.__services_folder(), self.name)

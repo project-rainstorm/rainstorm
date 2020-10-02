@@ -22,7 +22,7 @@ import style from "./style.module.css";
 
 ActionList.propTypes = {
   url: PropTypes.object,
-  service: PropTypes.object,
+  service: PropTypes.object
 };
 
 function ActionList(props) {
@@ -33,8 +33,8 @@ function ActionList(props) {
   const enableService = () => {
     setLoading(true);
     fetch(`/services/${props.service.name}/enable`, { method: "post" })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         setService(data.data);
         setLoading(false);
       });
@@ -43,8 +43,8 @@ function ActionList(props) {
   const disableService = () => {
     setLoading(true);
     fetch(`/services/${props.service.name}/disable`, { method: "post" })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         setService(data.data);
         setLoading(false);
       });
@@ -54,24 +54,27 @@ function ActionList(props) {
     setLoading(true);
     setRestarting(true);
     fetch(`/services/${props.service.name}/restart`, { method: "post" })
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         setService(data.data);
         setLoading(false);
         setRestarting(false);
       });
   };
 
-  const getField = (field) => {
+  const getField = field => {
     if (field.field === "input") {
       return <Input field={field} service={service} setService={setService} />;
     }
     return <Select field={field} service={service} setService={setService} />;
   };
 
-  const showBtn = service.settings.open_link || service.status !== "enabled";
+  const hasAction = service.settings.open_link || service.status !== "enabled";
 
   const getTopBtnIcon = () => {
+    if (!hasAction) {
+      return <CheckIcon />;
+    }
     if (loading) {
       return <LoopIcon className={style.spin} />;
     }
@@ -83,6 +86,9 @@ function ActionList(props) {
   };
 
   const getTopBtnText = () => {
+    if (!hasAction) {
+      return "Running";
+    }
     if (restarting) {
       return "Restarting";
     }
@@ -96,25 +102,35 @@ function ActionList(props) {
     return service.status === "enabled" ? "Open" : "Enable";
   };
 
+  const getTopBtnOnClick = () => {
+    if (!hasAction) {
+      return null;
+    }
+    return service.status === "enabled" ? () => null : enableService;
+  };
+
+  const getTopBtnHref = () => {
+    if (!hasAction) {
+      return null;
+    }
+    return service.status === "enabled"
+      ? props.url.base + props.service.settings.open_link
+      : null;
+  };
+
   return (
     <div>
       <div className={style.bar}>
-        {showBtn && (
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            startIcon={getTopBtnIcon()}
-            onClick={service.status === "enabled" ? () => null : enableService}
-            href={
-              service.status === "enabled"
-                ? props.url.base + props.service.settings.open_link
-                : null
-            }
-          >
-            {getTopBtnText()}
-          </Button>
-        )}
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={getTopBtnIcon()}
+          onClick={getTopBtnOnClick()}
+          href={getTopBtnHref()}
+        >
+          {getTopBtnText()}
+        </Button>
       </div>
       <List className={style.root}>
         {service.settings.needs_update && (
@@ -130,7 +146,7 @@ function ActionList(props) {
             These settings have not been applied.
           </Alert>
         )}
-        {service.settings.var_fields.map((field) => {
+        {service.settings.var_fields.map(field => {
           const List = (
             <ListItem button alignItems="center">
               <ListItemAvatar>

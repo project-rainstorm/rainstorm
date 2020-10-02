@@ -16,7 +16,14 @@
       "label": "Version",
       "field": "select",
       "value": "LATEST",
-      "options": ["LATEST", "SNAPSHOT", "1.16.3", "1.16.2", "1.16.1", "1.16"]
+      "options": [
+        "LATEST",
+        "SNAPSHOT",
+        "1.16.3",
+        "1.16.2",
+        "1.16.1",
+        "1.16"
+      ]
     },
     {
       "field": "select",

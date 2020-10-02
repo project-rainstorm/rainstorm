@@ -21,6 +21,10 @@
   margin-top: 1.3em;
 }
 
+.link {
+  margin: 0em 0.5em 0em 0.5em;
+}
+
 .icon {
   height: 150px;
   width: 150px;

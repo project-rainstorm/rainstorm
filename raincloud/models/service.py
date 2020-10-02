@@ -8,6 +8,7 @@ class Service(object):
         self.name = name
         self.status = self.get_status()
         self.settings = self.get_settings()
+        self.needs_update = self.check_needs_update()
 
     @classmethod
     def all(cls):
@@ -21,12 +22,8 @@ class Service(object):
         command = "{0} up -d".format(self.__docker_command())
         output = self.__run_command(command)
         self.set_status()
-
-        # set flag - new variables applied
-        settings = self.get_settings()
-        settings['needs_update'] = False
-        self.__save_settings(settings)
-        self.settings = self.get_settings()
+        # set flag since any new variables were applied
+        self.set_needs_update(False)
         return output
 
     def disable(self):
@@ -49,34 +46,57 @@ class Service(object):
         except docker.errors.NotFound:
             return 'disabled'
 
-    def get_settings(self, field_values=True):
+    def get_settings(self):
         service_file = self.get_service_file()
+        env = self.__get_env_dict()
+        print(json.dumps(env))
         if os.path.isfile(service_file):
             with open(service_file) as f:
                 settings = json.load(f)
-                if field_values:
-                    var_fields_with_values = []
-                    # Parse field values from .env
-                    for var in settings['var_fields']:
-                        var['value'] = self.__get_env_value(var['name'])
-                        var_fields_with_values.append(var)
-                        settings['var_fields'] = var_fields_with_values
+                var_fields_with_values = []
+                # Parse field values from .env
+                for var in settings['var_fields']:
+                    print("var['name']=" + var['name'])
+                    try:
+                        var['value'] = env[var['name']]
+                    except:
+                        continue
+                    var_fields_with_values.append(var)
+                settings['var_fields'] = var_fields_with_values
                 return settings
         return {}
 
     def get_service_file(self):
         return "{0}/service.json".format(self.__service_folder())
 
-    def update_settings(self, variable):
-        settings = self.get_settings(field_values=False)
-        # add the new var
-        settings['needs_update'] = True
-        self.__save_settings(settings)
-        self.__save_env_var(variable)
+    def get_env_file(self):
+        return "{0}/.env".format(self.__service_folder())
 
+    def get_update_file(self):
+        return "{0}/.update".format(self.__service_folder())
+
+    def update_var(self, variable):
+        self.set_needs_update(True)
+        env = self.__get_env_dict()
+        env[variable['name']] = variable['value']
+        self.__save_env(env)
         self.settings = self.get_settings()
-
         return self.__dict__
+
+    def check_needs_update(self):
+        return os.path.isfile(self.get_update_file())
+
+    def set_needs_update(self, needs_update):
+        self.needs_update = needs_update
+        update_file = self.get_update_file()
+        if needs_update:
+            with open(update_file, 'w') as f:
+                pass
+        else:
+            if os.path.isfile(update_file):
+                os.remove(update_file)
+            else:
+                print("Update flag unset. Skipping...")
 
     @classmethod
     def __services_folder(cls):
@@ -90,38 +110,22 @@ class Service(object):
 
         return subprocess.check_output(command, shell=True)
 
-    def __save_settings(self, settings):
-        service_file = "{0}/service.json".format(self.__service_folder())
-        with open(service_file, mode='w') as f:
-            f.write(json.dumps(settings, indent=2))
+    def __get_env_dict(self):
+        env_file = self.get_env_file()
+        dict = {}
+        if os.path.isfile(env_file):
+            vars = open(env_file, "r").readlines()
+            for assignment in vars:
+                name, value = assignment.split("=")
+                dict[name] = value.strip()
+        return dict
 
-    def __save_env_var(self, variable):
-        env_file = "{0}/.env".format(self.__service_folder())
-        values = open(env_file, "r").readlines()
-        vars = list(map(lambda val: val.split("=")[0], values))
-        new_env = []
-        # if saving a new var
-        if variable['name'] not in vars:
-            new_env.append("{0}={1}\n".format(variable['name'], variable['value']))
-        for name in vars:
-            # if changing an existing var
-            if name == variable['name']:
-                new_env.append("{0}={1}\n".format(name, variable['value']))
-            else: # include the unchanged var
-                new_env.append(assignment)
+    def __save_env(self, dict):
+        env_file = self.get_env_file()
         with open(env_file, mode='w') as f:
-            for line in new_env:
-                f.write(line)
-
-    def __get_env_value(self, var_name):
-        env_file = "{0}/.env".format(self.__service_folder())
-        if not os.path.isfile(env_file):
-            open(env_file, "a").close()
-        vars = open(env_file, "r").readlines()
-        for assignment in vars:
-            name, value = assignment.split("=")
-            if name == var_name:
-                return value.strip()
+            for name in dict.keys():
+                assignment = "{0}={1}\n".format(name, dict[name])
+                f.write(assignment)
 
     def __service_folder(self):
         return os.path.join(Service.__services_folder(), self.name)

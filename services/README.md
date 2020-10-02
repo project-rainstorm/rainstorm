@@ -33,7 +33,7 @@ This file is tracked in git so do not use it like a database. This file is only 
 
 This file stores environment variables that are automatically applied to the `docker-compose.yml` file.
 
-Each user-defined variable is stored in the .env file. Other variables may be inserted if they are needed for docker.
+Each user-defined variable is stored in the .env file.
 
 This file is not tracked by git. The contents of your `.env` file are specific to your configuration.
 
@@ -41,10 +41,8 @@ This file is not tracked by git. The contents of your `.env` file are specific t
 
 1. create a folder here called `<service_name>`
 
-2. create a `docker-compose.yml` file which loads user-defined variables from `ENV`
+2. create a `docker-compose.yml` using variable names from the `.env`
 
-3. create a default `.env` with default variables set
+3. create a `service.json` with information and field definitions for all user-defined variables
 
-4. create a `service.json` with information and field definitions for all user-defined variables
-
-5. add a `.jpg` icon for the service to `raincloud/static/images/<service_name>.jpg`
+4. add a `.jpg` icon for the service to `raincloud/static/images/<service_name>.jpg`

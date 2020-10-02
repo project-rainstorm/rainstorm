@@ -20,30 +20,22 @@ Let's break down each of those files:
 This file is the heart of the service. It tells docker everything it needs to download,
 configure and run the service on the device.
 
-We use ARM-based images only at this time.
+We use ARM-based images only at this time. Only choose image repositories that are popular and well maintained.
 
 ### `service.json`
-
-This file is used to store arbitrary data about the service. Examples include, the
-name, description, helpful links, and most importantly, user-defined variables.
-
-The back-end uses this file like a database in order to read and store user-defined
-variables. The backend uses this file as the "source of truth" when it generates
-the `.env` file
 
 The contents of this file are passed to the front-end as `settings` JSON and used
 to render information and form fields for the user-defined variables.
 
+This file is tracked in git so do not use it like a database. This file is only meant to be read by the application. It is never to be written to.
+
 ### `.env`
 
-This file stores environment variables that are derived from the user-defined
-variables kept in `service.json`.
+This file stores environment variables that are automatically applied to the `docker-compose.yml` file.
 
-This file is automatically consumed by docker-compose when the command is run.
+Each user-defined variable is stored in the .env file. Other variables may be inserted if they are needed for docker.
 
-It is regenerated each time a user-defined variable changes for the service.
-
-The `.env` file is only needed if the service has user-defined variables.
+This file is not tracked by git. The contents of your `.env` file are specific to your configuration.
 
 # Adding a Service
 

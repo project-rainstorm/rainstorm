@@ -1,15 +1,15 @@
-version: '3'
+version: "3"
 services:
-    minecraft-server:
-        restart: always
-        environment:
-            - MEMOMRY=1G
-            - TYPE=SPIGOT
-            - VERSION=LATEST
-            - EULA=TRUE
-        volumes:
-            - '/mnt/usb/apps/minecraft_server/data:/data'
-        ports:
-            - '25565:25565'
-        container_name: mc
-        image: itzg/minecraft-server:multiarch
+  minecraft-server:
+    restart: always
+    environment:
+      - MEMOMRY=1G
+      - TYPE=${SERVER_TYPE}
+      - VERSION=${VERSION}
+      - EULA=TRUE
+    volumes:
+      - "/mnt/usb/apps/minecraft_server/data:/data"
+    ports:
+      - "25565:25565"
+    container_name: minecraft_server
+    image: itzg/minecraft-server:multiarch

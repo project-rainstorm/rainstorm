@@ -1,12 +1,21 @@
 {
-	"name": "Plex Media Server",
-	"maintainer": "count-null",
-	"description": "Plex brings together all the media that matters to you.",
-	"links": ["https://www.plex.tv/"],
-	"var_fields": [
-		{"name": "TV Shows Directory", "field": "input", "value": "/mnt/usb/files/Series"},
-		{"name": "Movies Directory", "field": "input", "value": "/mnt/usb/files/Movies"},
-		{"name": "Music Directory", "field": "input", "value": "/mnt/usb/files/Music"},
-		{"name": "Photos Directory", "field": "input", "value": "/mnt/usb/files/Photos"}
-	]
+  "name": "Plex Media Server",
+  "maintainer": "count-null",
+  "description": "Plex brings together all the media that matters to you.",
+  "links": [
+    {
+      "label": "Offical Site",
+      "url": "https://www.plex.tv/"
+    }
+  ],
+  "open_link": ":32400/web/index.html",
+  "needs_update": true,
+  "var_fields": [
+    {
+      "field": "input",
+      "label": "Media Directory",
+      "name": "MEDIA_DIR",
+      "default": "/mnt/usb/files"
+    }
+  ]
 }

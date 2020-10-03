@@ -1,0 +1,25 @@
+{
+  "name": "File Browser",
+  "maintainer": "count-null",
+  "description": "Manage your files.",
+  "needs_update": false,
+  "open_link": ":8081",
+  "links": [
+    {
+      "label": "Official Site",
+      "url": "https://filebrowser.org"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/filebrowser/filebrowser"
+    }
+  ],
+  "var_fields": [
+    {
+      "name": "ROOT_DIR",
+      "label": "Root Directory",
+      "field": "input",
+      "default": "/mnt/usb"
+    }
+  ]
+}

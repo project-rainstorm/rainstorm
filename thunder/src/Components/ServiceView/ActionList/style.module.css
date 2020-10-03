@@ -1,0 +1,33 @@
+.root {
+  width: 100%;
+  max-width: 100%;
+}
+.inline {
+  display: inline;
+}
+.bar {
+  margin: 3em;
+  display: flex;
+  justify-content: space-around;
+}
+.spin {
+  -webkit-animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(-360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(-360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}

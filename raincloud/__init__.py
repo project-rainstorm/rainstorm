@@ -109,15 +109,25 @@ def create_app(test_config=None):
         else:
             return { 'data': service.__dict__ }
 
+    @app.route('/services/<service_name>/restart', methods=['POST'])
+    @as_json
+    def restartService(service_name):
+        service = Service(service_name)
+        if service.status == 'enabled':
+            service.disable()
+            service.enable()
+        else:
+            service.enable()
+        return { 'data': service.__dict__ }
+
     @app.route('/services/<service_name>/vars', methods=['POST'])
     @as_json
     def vars(service_name):
         if request.is_json:
             service = Service(service_name)
-            variables = request.get_json()
-            
+            variable = request.get_json()
 
-            return { 'data': service.update_settings(variables) }
+            return { 'data': service.update_var(variable) }
 
     @app.route('/settings/system/info', methods=['GET'])
     @as_json
@@ -125,7 +135,7 @@ def create_app(test_config=None):
         # return some basic system info
         # size of HDD /dev/sda1, HDD usage, CPU percent, Mem, temp, uptime, etc.
         return { 'data': SystemStatus().__dict__ }
-    
+
     # TODO: shutdown the system
     @app.route('/settings/system/poweroff', methods=['POST'])
     def poweroff():

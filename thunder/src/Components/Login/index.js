@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import style from "./style.module.css";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -9,7 +11,11 @@ import Visibility from "@material-ui/icons/Visibility";
 import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 
-export default function Login(props) {
+Login.propTypes = {
+  setAppState: PropTypes.func,
+};
+
+function Login(props) {
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
@@ -47,10 +53,11 @@ export default function Login(props) {
           }
         />
         <br />
-        <Button variant="outlined" onClick={() => props.setAppState(1)}>
+        <Button variant="outlined" onClick={() => props.setAppState("app")}>
           Login
         </Button>
       </FormControl>
     </div>
   );
 }
+export default Login;

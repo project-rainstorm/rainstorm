@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import style from "./style.module.css";
 
-export default function ActivePage() {
-  const [services, setServices] = useState(null);
+import PropTypes from "prop-types";
+import Container from "@material-ui/core/Container";
+
+import ServiceList from "../ServiceList";
+
+ActivePage.propTypes = {
+  url: PropTypes.object,
+  setAppState: PropTypes.func,
+  setService: PropTypes.func,
+};
+
+function ActivePage(props) {
+  const [services, setServices] = useState([]);
 
   useEffect(() => {
     fetch("/services")
@@ -19,40 +23,15 @@ export default function ActivePage() {
   }, []);
 
   return (
-    <div>
-      <List className={style.root}>
-        {services &&
-          services.map((service) => {
-            return (
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar
-                    alt={service.name}
-                    src={
-                      "http://nuve.local:5000/static/images/" +
-                      service.name +
-                      ".jpg"
-                    }
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={service.settings.name}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className={style.inline}
-                        color="textPrimary"
-                      ></Typography>
-                      {service.settings.description}
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
-            );
-          })}
-      </List>
-    </div>
+    <Container maxWidth="md">
+      <ServiceList
+        url={props.url}
+        services={services.filter((s) => s.status === "enabled")}
+        setAppState={props.setAppState}
+        setService={props.setService}
+      />
+    </Container>
   );
 }
+
+export default ActivePage;

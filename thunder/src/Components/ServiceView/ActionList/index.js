@@ -30,8 +30,6 @@ function ActionList(props) {
   const [loading, setLoading] = useState(false);
   const [restarting, setRestarting] = useState(false);
 
-  console.log(service);
-
   const enableService = () => {
     setLoading(true);
     fetch(`/services/${props.service.name}/enable`, { method: "post" })

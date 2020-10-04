@@ -49,18 +49,16 @@ class Service(object):
     def get_settings(self):
         service_file = self.get_service_file()
         env = self.__get_env_dict()
-        print(json.dumps(env))
         if os.path.isfile(service_file):
             with open(service_file) as f:
                 settings = json.load(f)
                 var_fields_with_values = []
                 # Parse field values from .env
                 for var in settings['var_fields']:
-                    print("var['name']=" + var['name'])
                     try:
                         var['value'] = env[var['name']]
                     except:
-                        continue
+                        pass
                     var_fields_with_values.append(var)
                 settings['var_fields'] = var_fields_with_values
                 return settings

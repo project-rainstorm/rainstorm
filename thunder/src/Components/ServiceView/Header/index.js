@@ -8,7 +8,7 @@ import style from "./style.module.css";
 
 Header.propTypes = {
   service: PropTypes.object,
-  url: PropTypes.object
+  url: PropTypes.object,
 };
 
 function Header(props) {
@@ -23,7 +23,7 @@ function Header(props) {
         <Typography variant="h4">{props.service.settings.name}</Typography>
         <Typography>{props.service.settings.description}</Typography>
         <div className={style.links}>
-          {props.service.settings.links.map(link => (
+          {props.service.settings.links.map((link) => (
             <Chip
               key={link.label}
               label={link.label}

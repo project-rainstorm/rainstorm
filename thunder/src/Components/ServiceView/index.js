@@ -9,7 +9,7 @@ import Container from "@material-ui/core/Container";
 ServiceView.propTypes = {
   url: PropTypes.object,
   setAppState: PropTypes.func,
-  service: PropTypes.object
+  service: PropTypes.object,
 };
 
 function ServiceView(props) {

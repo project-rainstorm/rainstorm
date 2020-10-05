@@ -19,6 +19,7 @@ class Service(object):
         return [ f.name for f in os.scandir(cls.__services_folder()) if f.is_dir() ]
 
     def enable(self):
+        self.update_env()
         command = "{0} up -d".format(self.__docker_command())
         output = self.__run_command(command)
         self.set_status()
@@ -73,14 +74,21 @@ class Service(object):
     def get_update_file(self):
         return "{0}/.update".format(self.__service_folder())
 
+    def update_env(self, variable=False):
+         # update the .env with new default values
+         # preserve existing values
+         # replace values of variable if passed
+         env = self.__get_env_dict()
+         if variable:
+             env[variable['name']] = variable['value']
+         for var in self.settings['var_fields']:
+             if var['name'] not in env:
+                 env[var['name']] = var['default']
+         self.__save_env(env)
+
     def update_var(self, variable):
         self.set_needs_update(True)
-        env = self.__get_env_dict()
-        env[variable['name']] = variable['value']
-        for var in self.settings['var_fields']:
-            if var['name'] not in env:
-                env[var['name']] = var['default']
-        self.__save_env(env)
+        self.update_env(variable)
         self.settings = self.get_settings()
         return self.__dict__
 

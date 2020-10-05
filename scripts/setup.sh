@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
-# Check for root 
+# Check for root
 if [ $EUID != 0 ]; then
     sudo "$0" "$@"
     exit $?
@@ -362,6 +362,15 @@ Set hostname to "${HOSTNAME}"
 ${NC}
 EOF
 hostnamectl set-hostname $HOSTNAME
+
+cat <<EOF
+${RED}
+***
+Create docker network for services "${HOSTNAME}"
+***
+${NC}
+EOF
+docker network create traefik_net
 
 echo -e "${RED}"
 echo "***"

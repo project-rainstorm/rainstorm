@@ -8,6 +8,7 @@ import style from "./style.module.css";
 
 Header.propTypes = {
   service: PropTypes.object,
+  url: PropTypes.object
 };
 
 function Header(props) {
@@ -17,16 +18,12 @@ function Header(props) {
         <img
           className={style.icon}
           alt={props.service.name}
-          src={
-            "http://nuve.local:5000/static/images/" +
-            props.service.name +
-            ".jpg"
-          }
+          src={props.url.api + "/static/images/" + props.service.name + ".jpg"}
         />
         <Typography variant="h4">{props.service.settings.name}</Typography>
         <Typography>{props.service.settings.description}</Typography>
         <div className={style.links}>
-          {props.service.settings.links.map((link) => (
+          {props.service.settings.links.map(link => (
             <Chip
               key={link.label}
               label={link.label}

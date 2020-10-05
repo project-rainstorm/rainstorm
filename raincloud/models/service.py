@@ -77,6 +77,9 @@ class Service(object):
         self.set_needs_update(True)
         env = self.__get_env_dict()
         env[variable['name']] = variable['value']
+        for var in self.settings['var_fields']:
+            if var['name'] not in env:
+                env[var['name']] = var['default']
         self.__save_env(env)
         self.settings = self.get_settings()
         return self.__dict__

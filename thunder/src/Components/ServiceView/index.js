@@ -9,7 +9,7 @@ import Container from "@material-ui/core/Container";
 ServiceView.propTypes = {
   url: PropTypes.object,
   setAppState: PropTypes.func,
-  service: PropTypes.object,
+  service: PropTypes.object
 };
 
 function ServiceView(props) {
@@ -17,7 +17,7 @@ function ServiceView(props) {
     <div>
       <BackAppBar backTo="app" setAppState={props.setAppState} />
       <Container maxWidth="md">
-        <Header service={props.service} />
+        <Header url={props.url} service={props.service} />
         <ActionList url={props.url} service={props.service} />
       </Container>
     </div>

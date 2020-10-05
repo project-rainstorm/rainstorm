@@ -4,17 +4,22 @@ from flask import Flask
 from flask import request
 from raincloud.models.service import Service
 from raincloud.models.system import SystemStatus
+from raincloud.rainstick.security import authenticate, identity
+from flask_jwt import JWT, jwt_required, current_identity
 from flask_json import FlaskJSON, as_json
 import json
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    json = FlaskJSON(app)
+    jwt = JWT(app, authenticate, identity)
     app.config.from_mapping(
         SECRET_KEY='dev',
+        JWT_SECRET_KEY='secret',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
+
+    json = FlaskJSON(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -83,6 +88,7 @@ def create_app(test_config=None):
 
     @app.route('/services', methods=['GET'])
     @as_json
+    @jwt_required()
     def getServices():
         # return all the folder names in ~/project_rainstorm/services
         return { 'data': [service.__dict__ for service in Service.all()] }

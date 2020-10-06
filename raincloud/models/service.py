@@ -87,7 +87,8 @@ class Service(object):
          self.__save_env(env)
 
     def update_var(self, variable):
-        self.set_needs_update(True)
+        if self.status == 'enabled':
+            self.set_needs_update(True)
         self.update_env(variable)
         self.settings = self.get_settings()
         return self.__dict__

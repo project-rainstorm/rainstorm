@@ -95,6 +95,7 @@ def create_app(test_config=None):
 
     @app.route('/services/<service_name>/enable', methods=['POST'])
     @as_json
+    @jwt_required()
     def enableService(service_name):
         service = Service(service_name)
         command = service.enable()
@@ -105,6 +106,7 @@ def create_app(test_config=None):
             return { 'data': service.__dict__ }
 
     @app.route('/services/<service_name>/disable', methods=['POST'])
+    @jwt_required()
     @as_json
     def disableService(service_name):
         service = Service(service_name)
@@ -117,6 +119,7 @@ def create_app(test_config=None):
 
     @app.route('/services/<service_name>/restart', methods=['POST'])
     @as_json
+    @jwt_required()
     def restartService(service_name):
         service = Service(service_name)
         if service.status == 'enabled':
@@ -128,6 +131,7 @@ def create_app(test_config=None):
 
     @app.route('/services/<service_name>/vars', methods=['POST'])
     @as_json
+    @jwt_required
     def vars(service_name):
         if request.is_json:
             service = Service(service_name)
@@ -137,6 +141,7 @@ def create_app(test_config=None):
 
     @app.route('/settings/system/info', methods=['GET'])
     @as_json
+    @jwt_required()
     def getSysInfo():
         # return some basic system info
         # size of HDD /dev/sda1, HDD usage, CPU percent, Mem, temp, uptime, etc.

@@ -9,6 +9,18 @@
   "needs_update": false,
   "var_fields": [
     {
+      "name": "USER",
+      "label": "Username",
+      "field": "input",
+      "default": "drop"
+    },
+    {
+      "name": "PASS",
+      "label": "Password",
+      "field": "input",
+      "default": "drop"
+    },
+    {
       "name": "DOWNLOAD_DIR",
       "label": "Download Directory",
       "field": "input",

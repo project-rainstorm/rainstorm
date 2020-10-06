@@ -36,6 +36,12 @@ In the future, we'd also like to have...
 
 - ...and many more features!
 
+## Screenshots
+
+|            Home Screen            |             Service View              |             Device Settings             |
+| :-------------------------------: | :-----------------------------------: | :-------------------------------------: |
+| ![Home Screen](docs/img/home.png) | ![Service View](docs/img/service.png) | ![Settings Page](docs/img/settings.png) |
+
 ## Supported Devices
 
 - Raspberry Pi 4
@@ -67,10 +73,10 @@ You can also run Rainstorm on your own to modify, and update the software yourse
 
 `bash project_rainstorm/scripts/setup.sh`
 
-## Screenshots
-Home Screen             |  Service View         | Device Settings
-:-------------------------:|:-------------------------:|:-----------------:|
-![Home Screen](docs/img/home.png)  |  ![Service View](docs/img/service.png)  | ![Settings Page](docs/img/settings.png)
+## Adding a Service
 
+Rainstorm uses docker-compose for services. Pull requests are welcome. Checkout the [Services README.md](services/README.md) for more info on how to create services for Rainstorm.
 
+## Contributing
 
+The contribution workfloe is described in [CONTRIBUTING.md](docs/CONTRIBUTING.md).

@@ -68,7 +68,9 @@ You can also run Rainstorm on your own to modify, and update the software yourse
 `bash project_rainstorm/scripts/setup.sh`
 
 ## Screenshots
+Home Screen             |  Service View         | Device Settings
+:-------------------------:|:-------------------------:|:-----------------:|
+![Home Screen](docs/img/home.png)  |  ![Service View](docs/img/service.png)  | ![Settings Page](docs/img/settings.png)
 
-![Home Screen](docs/img/home.png)
-![Service View](docs/img/service.png)
-![Settings Page](docs/img/settings.png)
+
+

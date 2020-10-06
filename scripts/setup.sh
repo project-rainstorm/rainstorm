@@ -363,15 +363,6 @@ ${NC}
 EOF
 hostnamectl set-hostname $HOSTNAME
 
-cat <<EOF
-${RED}
-***
-Create docker network for services "${HOSTNAME}"
-***
-${NC}
-EOF
-docker network create traefik_net
-
 echo -e "${RED}"
 echo "***"
 echo "Finished with setup!"

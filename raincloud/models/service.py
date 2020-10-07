@@ -69,10 +69,10 @@ class Service(object):
         return "{0}/service.json".format(self.__service_folder())
 
     def get_env_file(self):
-        return "{0}/.env".format(self.__service_folder())
+        return "{0}/.env".format(self.__data_folder())
 
     def get_update_file(self):
-        return "{0}/.update".format(self.__service_folder())
+        return "{0}/.update".format(self.__data_folder())
 
     def update_env(self, variable=False):
          # update the .env with new default values
@@ -114,6 +114,10 @@ class Service(object):
 
         return os.path.join(base_dir, 'services')
 
+    def __data_folder(self):
+
+        return os.path.join("/mnt/usb/apps/", self.name)
+
     def __run_command(self, command):
         if self.name not in Service.all_folders():
             raise Exception('Service not enabled')
@@ -141,4 +145,4 @@ class Service(object):
         return os.path.join(Service.__services_folder(), self.name)
 
     def __docker_command(self):
-        return "docker-compose -f {0}/docker-compose.yml --env-file {0}/.env ".format(self.__service_folder())
+        return "docker-compose -f {0}/docker-compose.yml --env-file {1}/.env ".format(self.__service_folder(), self.__data_folder())

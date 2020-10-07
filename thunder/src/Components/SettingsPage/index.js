@@ -17,7 +17,7 @@ import style from "./style.module.css";
 SettingsPage.propTypes = {
   setAppState: PropTypes.func,
   darkMode: PropTypes.bool,
-  setDarkMode: PropTypes.func
+  setDarkMode: PropTypes.func,
 };
 
 function SettingsPage(props) {

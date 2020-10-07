@@ -38,14 +38,14 @@ App.propTypes = {
   setBottomNavValue: PropTypes.func,
   bottomNavValue: PropTypes.string,
   setDarkMode: PropTypes.func,
-  darkMode: PropTypes.bool
+  darkMode: PropTypes.bool,
 };
 
 function App(props) {
   // open/close the drawer
   const [drawerState, setDrawerState] = React.useState(false);
 
-  const toggleDrawer = open => event => {
+  const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -76,10 +76,10 @@ function App(props) {
         setDarkMode={props.setDarkMode}
         darkMode={props.darkMode}
       />
-    )
+    ),
   };
 
-  const list = anchor => (
+  const list = (anchor) => (
     <div
       className={style.fullList}
       role="presentation"

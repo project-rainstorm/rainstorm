@@ -10,10 +10,7 @@ import ServiceView from "../ServiceView";
 import Premium from "../Premium";
 import ChangePass from "../ChangePass";
 
-const baseUrl = window.location.href
-  .split(":")
-  .splice(0, 2)
-  .join(":");
+const baseUrl = window.location.href.split(":").splice(0, 2).join(":");
 const url = { base: baseUrl, api: baseUrl + ":5000" };
 
 export default function AppWrapper() {
@@ -22,18 +19,18 @@ export default function AppWrapper() {
   );
   const darkModeTheme = {
     primary: {
-      main: "#5ce1e6"
+      main: "#5ce1e6",
     },
     secondary: {
-      main: "#f50057"
-    }
+      main: "#f50057",
+    },
   };
   const theme = React.useMemo(() => {
     const buildTheme = () => ({
       palette: {
         type: darkMode ? "dark" : "light",
-        ...(darkMode && { ...darkModeTheme })
-      }
+        ...(darkMode && { ...darkModeTheme }),
+      },
     });
     return createMuiTheme(buildTheme());
   });
@@ -63,7 +60,7 @@ export default function AppWrapper() {
     ),
     shutdown: <Shutdown />,
     password: <ChangePass setAppState={setAppState} />,
-    premium: <Premium setAppState={setAppState} />
+    premium: <Premium setAppState={setAppState} />,
   };
 
   return (

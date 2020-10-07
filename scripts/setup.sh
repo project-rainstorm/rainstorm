@@ -144,6 +144,7 @@ if [ $FS_TYPE != 'ext4' ]; then
     echo "***"
     echo -e "${NC}"
     mkdir -p $SERVICE_DATA
+    chmod 0777 $SERVICE_DATA
     mkdir -p $FILE_STORAGE
   else
     echo -e "${RED}Unsupported drive format! Exiting${NC}"
@@ -195,6 +196,7 @@ else
     echo "***"
     echo -e "${NC}"
     mkdir -p $SERVICE_DATA
+    chmod 0777 $SERVICE_DATA
     mkdir -p $FILE_STORAGE
   fi
 fi

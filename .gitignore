@@ -5,7 +5,3 @@
 *node_modules
 *package-lock.json
 *yarn.lock
-
-# local service files
-*.env
-*.update

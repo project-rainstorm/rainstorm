@@ -22,7 +22,9 @@ function ActivePage(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('hello', data.status_code);
+        if (data.status_code == 401) {
+          props.setAppState('login');
+        }
         if (data.status_code >= 400) {
           throw new Error('Something went wrong');
         }

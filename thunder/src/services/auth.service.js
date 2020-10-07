@@ -3,17 +3,17 @@ class AuthService {
     return fetch('/auth', {
       method: 'post',
       headers: {
-				Accept: "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
-			body: JSON.stringify({
-				username: username,
+      body: JSON.stringify({
+        username: username,
         password: password
-			})
+      })
     })
       .then((res) => res.json())
       .then((data) => {
-				console.log('auth service', data);
+        console.log('auth service', data);
         if (data.access_token) {
           localStorage.setItem('user', JSON.stringify(data));
         }

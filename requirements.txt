@@ -6,6 +6,7 @@ decorator==4.4.2
 docker==4.3.1
 Flask==1.1.2
 Flask-JSON==0.3.4
+Flask-JWT==0.3.2
 flask-shell-ipython==0.4.1
 idna==2.10
 ipython==7.18.1
@@ -21,6 +22,7 @@ prompt-toolkit==3.0.7
 psutil==5.7.2
 ptyprocess==0.6.0
 Pygments==2.6.1
+PyJWT==1.4.2
 requests==2.24.0
 six==1.15.0
 traitlets==5.0.3

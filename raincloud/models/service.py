@@ -9,6 +9,7 @@ class Service(object):
         self.status = self.get_status()
         self.settings = self.get_settings()
         self.needs_update = self.check_needs_update()
+        self.installed = self.__is_installed()
 
     @classmethod
     def all(cls):
@@ -19,6 +20,10 @@ class Service(object):
         return [ f.name for f in os.scandir(cls.__services_folder()) if f.is_dir() ]
 
     def enable(self):
+        if not self.installed:
+            install_script = "bash {0}/install.sh".format(self.__service_folder())
+            output = subprocess.check_output(install_script, shell=True)
+
         self.update_env()
         command = "{0} up -d".format(self.__docker_command())
         output = self.__run_command(command)
@@ -118,6 +123,10 @@ class Service(object):
 
         return os.path.join("/mnt/usb/apps/", self.name)
 
+    def __is_installed(self):
+
+        return os.path.isdir(self.__data_folder())
+
     def __run_command(self, command):
         if self.name not in Service.all_folders():
             raise Exception('Service not enabled')
@@ -136,7 +145,7 @@ class Service(object):
 
     def __save_env(self, dict):
         env_file = self.get_env_file()
-        with open(env_file, mode='w') as f:
+        with open(env_file, 'w') as f:
             for name in dict.keys():
                 assignment = "{0}={1}\n".format(name, dict[name])
                 f.write(assignment)

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -8,11 +9,23 @@ import Container from "@material-ui/core/Container";
 
 // icons
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import BrightnessIcon from "@material-ui/icons/Brightness6";
 import LocalActivityIcon from "@material-ui/icons/LocalActivity";
-import PowerOffIcon from "@material-ui/icons/PowerOff";
+import PowerOffIcon from "@material-ui/icons/PowerSettingsNew";
 import style from "./style.module.css";
 
-export default function SettingsPage(props) {
+SettingsPage.propTypes = {
+  setAppState: PropTypes.func,
+  darkMode: PropTypes.bool,
+  setDarkMode: PropTypes.func,
+};
+
+function SettingsPage(props) {
+  const toggleDarkMode = () => {
+    props.setDarkMode(!props.darkMode);
+    localStorage.setItem("darkMode", !props.darkMode);
+  };
+
   return (
     <Container maxWidth="md">
       <List className={style.root}>
@@ -25,6 +38,18 @@ export default function SettingsPage(props) {
           <ListItemText
             primary="Activate Premium"
             secondary="Access backups, auto-updates, and more!"
+          />
+        </ListItem>
+
+        <ListItem button onClick={toggleDarkMode}>
+          <ListItemAvatar>
+            <Avatar>
+              <BrightnessIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            primary={`Turn ${props.darkMode ? "off" : "on"} Dark Mode`}
+            secondary="Toggle your prefered theme"
           />
         </ListItem>
         <ListItem button onClick={() => props.setAppState("password")}>
@@ -53,3 +78,4 @@ export default function SettingsPage(props) {
     </Container>
   );
 }
+export default SettingsPage;

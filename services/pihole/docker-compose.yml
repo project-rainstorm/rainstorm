@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "8091:80/tcp"
+      - "8092:443/tcp"
+    environment:
+      TZ: ${TIMEZONE}
+      WEBPASSWORD: ${PASS}
+    volumes:
+      - "/mnt/usb/apps/pihole/data:/etc/pihole/"
+      - "/mnt/usb/apps/pihole/dnsmasq:/etc/dnsmasq.d/"
+    # Recommended but not required (DHCP needs NET_ADMIN)
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped

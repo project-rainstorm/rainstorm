@@ -4,17 +4,22 @@ from flask import Flask
 from flask import request
 from raincloud.models.service import Service
 from raincloud.models.system import SystemStatus
+from raincloud.rainstick.security import authenticate, identity
+from flask_jwt import JWT, jwt_required, current_identity
 from flask_json import FlaskJSON, as_json
 import json
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    json = FlaskJSON(app)
+    jwt = JWT(app, authenticate, identity)
     app.config.from_mapping(
         SECRET_KEY='dev',
+        JWT_SECRET_KEY='secret',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
+
+    json = FlaskJSON(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -83,12 +88,14 @@ def create_app(test_config=None):
 
     @app.route('/services', methods=['GET'])
     @as_json
+    @jwt_required()
     def getServices():
         # return all the folder names in ~/project_rainstorm/services
         return { 'data': [service.__dict__ for service in Service.all()] }
 
     @app.route('/services/<service_name>/enable', methods=['POST'])
     @as_json
+    @jwt_required()
     def enableService(service_name):
         service = Service(service_name)
         command = service.enable()
@@ -99,6 +106,7 @@ def create_app(test_config=None):
             return { 'data': service.__dict__ }
 
     @app.route('/services/<service_name>/disable', methods=['POST'])
+    @jwt_required()
     @as_json
     def disableService(service_name):
         service = Service(service_name)
@@ -111,6 +119,7 @@ def create_app(test_config=None):
 
     @app.route('/services/<service_name>/restart', methods=['POST'])
     @as_json
+    @jwt_required()
     def restartService(service_name):
         service = Service(service_name)
         if service.status == 'enabled':
@@ -122,6 +131,7 @@ def create_app(test_config=None):
 
     @app.route('/services/<service_name>/vars', methods=['POST'])
     @as_json
+    @jwt_required
     def vars(service_name):
         if request.is_json:
             service = Service(service_name)
@@ -131,6 +141,7 @@ def create_app(test_config=None):
 
     @app.route('/settings/system/info', methods=['GET'])
     @as_json
+    @jwt_required()
     def getSysInfo():
         # return some basic system info
         # size of HDD /dev/sda1, HDD usage, CPU percent, Mem, temp, uptime, etc.

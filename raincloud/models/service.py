@@ -9,6 +9,7 @@ class Service(object):
         self.status = self.get_status()
         self.settings = self.get_settings()
         self.needs_update = self.check_needs_update()
+        self.installed = self.__is_installed()
 
     @classmethod
     def all(cls):
@@ -19,6 +20,11 @@ class Service(object):
         return [ f.name for f in os.scandir(cls.__services_folder()) if f.is_dir() ]
 
     def enable(self):
+        if not self.installed:
+            install_script = "bash {0}/install.sh".format(self.__service_folder())
+            output = subprocess.check_output(install_script, shell=True)
+
+        self.update_env()
         command = "{0} up -d".format(self.__docker_command())
         output = self.__run_command(command)
         self.set_status()
@@ -49,18 +55,16 @@ class Service(object):
     def get_settings(self):
         service_file = self.get_service_file()
         env = self.__get_env_dict()
-        print(json.dumps(env))
         if os.path.isfile(service_file):
             with open(service_file) as f:
                 settings = json.load(f)
                 var_fields_with_values = []
                 # Parse field values from .env
                 for var in settings['var_fields']:
-                    print("var['name']=" + var['name'])
                     try:
                         var['value'] = env[var['name']]
                     except:
-                        continue
+                        pass
                     var_fields_with_values.append(var)
                 settings['var_fields'] = var_fields_with_values
                 return settings
@@ -70,16 +74,27 @@ class Service(object):
         return "{0}/service.json".format(self.__service_folder())
 
     def get_env_file(self):
-        return "{0}/.env".format(self.__service_folder())
+        return "{0}/.env".format(self.__data_folder())
 
     def get_update_file(self):
-        return "{0}/.update".format(self.__service_folder())
+        return "{0}/.update".format(self.__data_folder())
+
+    def update_env(self, variable=False):
+         # update the .env with new default values
+         # preserve existing values
+         # replace values of variable if passed
+         env = self.__get_env_dict()
+         if variable:
+             env[variable['name']] = variable['value']
+         for var in self.settings['var_fields']:
+             if var['name'] not in env:
+                 env[var['name']] = var['default']
+         self.__save_env(env)
 
     def update_var(self, variable):
-        self.set_needs_update(True)
-        env = self.__get_env_dict()
-        env[variable['name']] = variable['value']
-        self.__save_env(env)
+        if self.status == 'enabled':
+            self.set_needs_update(True)
+        self.update_env(variable)
         self.settings = self.get_settings()
         return self.__dict__
 
@@ -104,6 +119,14 @@ class Service(object):
 
         return os.path.join(base_dir, 'services')
 
+    def __data_folder(self):
+
+        return os.path.join("/mnt/usb/apps/", self.name)
+
+    def __is_installed(self):
+
+        return os.path.isdir(self.__data_folder())
+
     def __run_command(self, command):
         if self.name not in Service.all_folders():
             raise Exception('Service not enabled')
@@ -122,7 +145,7 @@ class Service(object):
 
     def __save_env(self, dict):
         env_file = self.get_env_file()
-        with open(env_file, mode='w') as f:
+        with open(env_file, 'w') as f:
             for name in dict.keys():
                 assignment = "{0}={1}\n".format(name, dict[name])
                 f.write(assignment)
@@ -131,4 +154,4 @@ class Service(object):
         return os.path.join(Service.__services_folder(), self.name)
 
     def __docker_command(self):
-        return "docker-compose -f {0}/docker-compose.yml --env-file {0}/.env ".format(self.__service_folder())
+        return "docker-compose -f {0}/docker-compose.yml --env-file {1}/.env ".format(self.__service_folder(), self.__data_folder())

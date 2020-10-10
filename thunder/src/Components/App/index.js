@@ -37,6 +37,8 @@ App.propTypes = {
   setAppState: PropTypes.func,
   setBottomNavValue: PropTypes.func,
   bottomNavValue: PropTypes.string,
+  setDarkMode: PropTypes.func,
+  darkMode: PropTypes.bool,
 };
 
 function App(props) {
@@ -68,7 +70,13 @@ function App(props) {
         setAppState={props.setAppState}
       />
     ),
-    settings: <SettingsPage setAppState={props.setAppState} />,
+    settings: (
+      <SettingsPage
+        setAppState={props.setAppState}
+        setDarkMode={props.setDarkMode}
+        darkMode={props.darkMode}
+      />
+    ),
   };
 
   const list = (anchor) => (

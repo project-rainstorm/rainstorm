@@ -128,6 +128,7 @@ function ActionList(props) {
           startIcon={getTopBtnIcon()}
           onClick={getTopBtnOnClick()}
           href={getTopBtnHref()}
+          target="_blank"
         >
           {getTopBtnText()}
         </Button>

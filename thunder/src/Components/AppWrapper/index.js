@@ -1,4 +1,7 @@
 import React from "react";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 // Main App Views
 import App from "../App";
 import Login from "../Login";
@@ -11,6 +14,27 @@ const baseUrl = window.location.href.split(":").splice(0, 2).join(":");
 const url = { base: baseUrl, api: baseUrl + ":5000" };
 
 export default function AppWrapper() {
+  const [darkMode, setDarkMode] = React.useState(
+    localStorage.getItem("darkMode") ? true : false
+  );
+  const darkModeTheme = {
+    primary: {
+      main: "#5ce1e6",
+    },
+    secondary: {
+      main: "#f50057",
+    },
+  };
+  const theme = React.useMemo(() => {
+    const buildTheme = () => ({
+      palette: {
+        type: darkMode ? "dark" : "light",
+        ...(darkMode && { ...darkModeTheme }),
+      },
+    });
+    return createMuiTheme(buildTheme());
+  });
+
   // set app state
   const [appState, setAppState] = React.useState("app");
   // set selected service
@@ -27,6 +51,8 @@ export default function AppWrapper() {
         setService={setService}
         bottomNavValue={bottomNavValue}
         setBottomNavValue={setBottomNavValue}
+        setDarkMode={setDarkMode}
+        darkMode={darkMode}
       />
     ),
     service: (
@@ -37,5 +63,10 @@ export default function AppWrapper() {
     premium: <Premium setAppState={setAppState} />,
   };
 
-  return appKey[appState];
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {appKey[appState]}
+    </ThemeProvider>
+  );
 }

@@ -17,7 +17,7 @@ function ServiceView(props) {
     <div>
       <BackAppBar backTo="app" setAppState={props.setAppState} />
       <Container maxWidth="md">
-        <Header service={props.service} />
+        <Header url={props.url} service={props.service} />
         <ActionList url={props.url} service={props.service} />
       </Container>
     </div>

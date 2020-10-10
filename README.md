@@ -20,19 +20,25 @@ By running Rainstorm, you can quickly and cheaply deploy your own cloud infrastr
 
 Each installation of Rainstorm enables a number of wonderful features.
 
-- Nextcloud
-- Plex (Media Server)
-- Transmission (Torrent Client)
+- Plex Media Server
+- Transmission Torrent Client
+- Filebrowser
+- Minecraft Server
+- Pi-hole
 
 In the future, we'd also like to have...
 
-- VPN
+- Data backup solutions
+- Bitwarden Password Manager
+- Nextcloud
+- Wordpress Site
+- Matrix chat server
+- WireGaurd VPN
 - Tor Relay
-- Minecraft Spigot/Bukkit server
+- Bitcoin Full Node
 - Jitsi Server
-- RocketChat/Mattermost chat server
 - Email server
-- Data backup solutions (possibly using a public cloud like Tardigrade)
+- Any service from [this list of open source projects](https://github.com/awesome-selfhosted/awesome-selfhosted) can also be added.
 
 - ...and many more features!
 

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Container from "@material-ui/core/Container";
 
 import ServiceList from "../ServiceList";
-import authHeader from '../../services/auth-header'
+import authHeader from "../../services/auth-header";
 
 ActivePage.propTypes = {
   url: PropTypes.object,
@@ -16,22 +16,22 @@ function ActivePage(props) {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    console.log(authHeader())
+    console.log(authHeader());
     fetch("/services", {
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.status_code == 401) {
-          props.setAppState('login');
+          props.setAppState("login");
         }
         if (data.status_code >= 400) {
-          throw new Error('Something went wrong');
+          throw new Error("Something went wrong");
         }
         setServices(data.data);
       })
       .catch((data) => {
-        console.log('error');
+        console.log("error");
       });
   }, []);
 

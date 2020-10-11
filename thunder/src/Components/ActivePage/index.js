@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Container from "@material-ui/core/Container";
 
 import ServiceList from "../ServiceList";
-import authHeader from '../../services/auth-header'
+import authHeader from '../../services/auth-header';
 
 ActivePage.propTypes = {
   url: PropTypes.object,

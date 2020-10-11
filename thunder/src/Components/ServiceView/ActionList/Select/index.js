@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 import style from "./style.module.css";
+import authHeader from '../../../../services/auth-header';
 
 Select.propTypes = {
   field: PropTypes.object,
@@ -23,6 +24,7 @@ function Select(props) {
     fetch(`/services/${props.service.name}/vars`, {
       method: "post",
       headers: {
+        ...authHeader(),
         Accept: "application/json",
         "Content-Type": "application/json",
       },

@@ -19,6 +19,7 @@ import Select from "./Select";
 import ModalForm from "./ModalForm";
 
 import style from "./style.module.css";
+import authHeader from '../../../services/auth-header';
 
 ActionList.propTypes = {
   url: PropTypes.object,
@@ -32,7 +33,10 @@ function ActionList(props) {
 
   const enableService = () => {
     setLoading(true);
-    fetch(`/services/${props.service.name}/enable`, { method: "post" })
+    fetch(`/services/${props.service.name}/enable`, { 
+      method: "post",
+      headers: authHeader()
+    })
       .then((res) => res.json())
       .then((data) => {
         setService(data.data);

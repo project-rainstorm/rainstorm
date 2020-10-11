@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 import style from "./style.module.css";
+import authHeader from '../../../../services/auth-header'
 
 Input.propTypes = {
   field: PropTypes.object,
@@ -19,10 +20,11 @@ function Input(props) {
   const submit = () => {
     let field = props.field;
     field.value = value;
-    console.log(JSON.stringify(field));
+    console.log(authHeader());
     fetch(`/services/${props.service.name}/vars`, {
       method: "post",
       headers: {
+        ...authHeader(),
         Accept: "application/json",
         "Content-Type": "application/json",
       },

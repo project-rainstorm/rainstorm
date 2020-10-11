@@ -46,7 +46,10 @@ function ActionList(props) {
 
   const disableService = () => {
     setLoading(true);
-    fetch(`/services/${props.service.name}/disable`, { method: "post" })
+    fetch(`/services/${props.service.name}/disable`, { 
+      method: "post",
+      headers: authHeader()
+    })
       .then((res) => res.json())
       .then((data) => {
         setService(data.data);
@@ -57,7 +60,10 @@ function ActionList(props) {
   const restartService = () => {
     setLoading(true);
     setRestarting(true);
-    fetch(`/services/${props.service.name}/restart`, { method: "post" })
+    fetch(`/services/${props.service.name}/restart`, { 
+      method: "post",
+      headers: authHeader()
+    })
       .then((res) => res.json())
       .then((data) => {
         setService(data.data);

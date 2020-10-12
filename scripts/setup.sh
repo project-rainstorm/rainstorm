@@ -11,6 +11,7 @@ my_dir="$(dirname "$0")"
 source "$my_dir"/defaults.sh
 source "$my_dir"/functions.sh
 
+
 #
 # Package dependencies associative array
 #
@@ -37,7 +38,7 @@ if [ ! -e $PRIMARY_STORAGE ]; then
   _log "No external disk detected. Plug in your hard drive and run this script again."
   exit 1
 fi # check that disk plugged in
-
+cat ${my_dir}/motd
 if [ $# -ge 1 ]
 then
   if [ $1 = "--dev" ]

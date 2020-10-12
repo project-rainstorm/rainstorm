@@ -4,7 +4,8 @@
 # Change password for services
 # Write new password hash file
 #
-source "$HOME"/project_rainstorm/scripts/defaults.sh
+my_dir="$(dirname "$0")"
+source "$my_dir"/defaults.sh
 
 PASSWORD=$1
 HASH_SHA256=$(echo -n "$PASSWORD" | sha256sum | awk '{print $1}')

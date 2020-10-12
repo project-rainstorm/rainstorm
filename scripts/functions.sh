@@ -1,4 +1,23 @@
 #
+# Terminal Colors
+#
+RED=$(tput setaf 1)
+NC=$(tput sgr0)
+# No Color
+
+#
+# Fancy Logging
+# Usage: _log "your message here"
+#
+_log() {
+  echo -e "${RED}"
+  echo "***"
+  echo "$1"
+  echo "***"
+  echo -e "${NC}"
+}
+
+#
 # Create Filesystem
 #
 create_fs() {

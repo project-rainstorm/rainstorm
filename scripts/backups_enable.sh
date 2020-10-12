@@ -6,7 +6,8 @@
 # Set backup cron
 #
 
-source "$HOME"/project_rainstorm/scripts/defaults.sh
+my_dir="$(dirname "$0")"
+source "$my_dir"/defaults.sh
 
 #
 # aquire access grant if none

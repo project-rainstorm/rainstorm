@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source "$HOME"/project_rainstorm/scripts/defaults.sh
+my_dir="$(dirname "$0")"
+source "$my_dir"/defaults.sh
 
 # execute the backup
 restic --repo rclone:dropcloud:backups/$USER_KEY backup $BACKUP_TARGET_FOLDER --password-file $PW_HASH_FILE

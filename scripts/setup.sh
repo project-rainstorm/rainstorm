@@ -29,6 +29,9 @@ declare -A package_dependencies=(
 declare -A dev_package_dependencies=(
     [nodejs]=nodejs
 )
+cat ${my_dir}/motd
+
+_log "If you encounter any issues, report them on GitHub!"
 
 #
 # Validation
@@ -38,18 +41,24 @@ if [ ! -e $PRIMARY_STORAGE ]; then
   _log "No external disk detected. Plug in your hard drive and run this script again."
   exit 1
 fi # check that disk plugged in
-cat ${my_dir}/motd
 if [ $# -ge 1 ]
 then
   if [ $1 = "--dev" ]
   then
     INSTALL_DEV=1
-    _log "Developer Installation"
-    _log "Welcome aboard, fellow hacker."
+    _log "DEVELOPER: Welcome aboard, fellow hacker."
   fi
 fi # check for --dev argument
-_log "Setting up system in 10s..."
-_sleep 10
+_log "Starting setup in 10s..."
+_sleep 6
+_log "Three..."
+_sleep
+_log "Two..."
+_sleep
+_log "One..."
+_sleep
+_log "Liftoff!"
+_sleep
 
 _log "Creating ${PRIMARY_STORAGE_MOUNT} directory..."
 test -d $PRIMARY_STORAGE_MOUNT || mkdir -p $PRIMARY_STORAGE_MOUNT

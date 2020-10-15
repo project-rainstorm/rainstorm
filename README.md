@@ -1,4 +1,4 @@
-# Project Rainstorm
+![Rainstorm Logo](docs/img/logo.png)
 
 The easiest way to own your cloud. Your data. Your cloud. Rainstorm.
 

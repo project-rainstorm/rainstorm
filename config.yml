@@ -1,0 +1,23 @@
+#
+# Default
+#   changes can only be applied with setup.sh
+#
+default:
+  username: drop
+  password: drop
+  hostname: rainstorm
+  storage:
+    device: /dev/sda1
+    mount: /mnt/usb
+
+#
+# Paths
+#   remember to copy data if changing
+#
+path_to:
+  user_config: /home/$default_username/.rainstorm
+  service_data: $default_storage_mount/apps
+  file_storage: $default_storage_mount/files
+  password_hash_file: $path_to_user_config/pw_sha256
+  new_password_hash_file: $path_to_password_hash_file.new
+  premium_key_file: $path_to_user_config/premium.key

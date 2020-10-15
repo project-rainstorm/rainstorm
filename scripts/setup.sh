@@ -1,14 +1,17 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
+# Check for root
+if [ "$EUID" != 0 ]; then
+    sudo bash "$0" "$@"
+    exit $?
+fi
 
-#
-# Configuration
-#
-DEFAULT_USER="drop"
-DEFAULT_PASS="drop"
-HOSTNAME="rainstorm"
-REPO_NAME="project_rainstorm"
+# Imports
+scripts_dir="$(dirname "$0")"
+root_dir="$(dirname $scripts_dir)"
+source "$scripts_dir"/functions.sh
+eval $(_parse $root_dir/config.yml)
 
 #
 # Package dependencies associative array
@@ -16,6 +19,7 @@ REPO_NAME="project_rainstorm"
 declare -A package_dependencies=(
     [vim]=vim
     [git]=git
+    [restic]=restic
     [python3]=python3
     [python3-dev]=python3-dev
     [python3-pip]=python3-pip
@@ -23,201 +27,203 @@ declare -A package_dependencies=(
     [libssl-dev]=libssl-dev
 )
 
-#
-# Terminal Colors
-#
-RED=$(tput setaf 1)
-YELLOW=$(tput setaf 3)
-NC=$(tput sgr0)
-# No Color
+declare -A dev_package_dependencies=(
+    [nodejs]=nodejs
+)
+cat ${scripts_dir}/motd
+
+_log "If you encounter any issues, report them on GitHub!"
 
 #
-# Countdown timer
-# Usage: _sleep <seconds> --msg "your message"
+# Validation
 #
-_sleep() {
-    local secs msg verbose
-    secs=1 verbose=false
 
-    # Parse Arguments
-    while [ $# -gt 0 ]; do
-        case "$1" in
-            (*[0-9]*)
-                secs="$1"
-                shift
-                ;;
-            --msg)
-                msg="$2"
-                verbose=true
-                shift 2
-                ;;
-        esac
-    done
+if [ ! -e $default_storage_device ]; then
+  _log "No external disk detected. Plug in your hard drive and run this script again."
+  exit 1
+fi # check that disk plugged in
+if [ $# -ge 1 ]
+then
+  if [ $1 = "--dev" ]
+  then
+    INSTALL_DEV=1
+    _log "DEVELOPER: Welcome aboard, fellow hacker."
+  fi
+fi # check for --dev argument
+_log "Starting setup in 10s..."
+_sleep 6
+_log "Three..."
+_sleep
+_log "Two..."
+_sleep
+_log "One..."
+_sleep
+_log "Liftoff!"
+_sleep
 
-    while [ "$secs" -gt 0 ]; do
-        if $verbose; then
-            echo -ne "${msg} $secs\033[0K seconds...\r"
-        fi
-        sleep 1
-        : $((secs--))
-    done
-    echo -e "\n" # Add new line
-}
+_log "Creating ${default_storage_mount} directory..."
+test -d $default_storage_mount || mkdir -p $default_storage_mount
+_sleep 2
+# test for default_storage_mount directory, otherwise creates using mkdir
+# websearch "bash Logical OR (||)" for info
 
-echo -e "${RED}"
-echo "***"
-echo "Setting up system in 10s.."
-echo "***"
-echo -e "${NC}"
-_sleep 10
+_log "Mounting drive..."
+findmnt "${default_storage_device}" 1>/dev/null || mount "${default_storage_device}" "${default_storage_mount}"
+_sleep 2
 
-cat <<EOF
-${RED}
-***
-Create "${DEFAULT_USER}" user with defualt password
-***
-${NC}
-EOF
-useradd -m $DEFAULT_USER
-echo -e "${DEFAULT_PASS}\n${DEFAULT_PASS}" | passwd $DEFAULT_USER
-usermod -aG sudo $DEFAULT_USER
-cp -r /root/$REPO_NAME /home/drop
+FS_TYPE=$(df -Th | grep "^${default_storage_device}" | awk '{print $2}')
+if [ -z "$FS_TYPE" ]
+then
+  echo "Your external drive cannot be mounted."
+  echo "Erase everyting and try again? [y/N]"
+  read ANSWER
+  if [ $ANSWER = "y" ] || [ $ANSWER = "Y" ] || [ $ANSWER = "yes" ]; then
+    _log "Formatting the drive..."
+    _sleep 2
+
+    if ! create_fs --label "main" --device "${default_storage_device}" --mountpoint "${default_storage_mount}"; then
+      echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+      exit 1
+    fi
+  else
+      echo -e "${RED}Drive refused to mount! Exiting${NC}"
+      exit 1
+  fi
+fi
+# Get FS_TYPE again just in case it was unreadable the first time
+FS_TYPE=$(df -Th | grep "^${default_storage_device}" | awk '{print $2}')
+if [ $FS_TYPE != 'ext4' ]; then
+  echo "Your external drive is using an unsupported format (${FS_TYPE})."
+  echo "Erase everyting and format with ext4? [y/N]"
+  read ANSWER
+  if [ $ANSWER = "y" ] || [ $ANSWER = "Y" ] || [ $ANSWER = "yes" ]; then
+    _log "Formatting the drive..."
+    _sleep 2
+
+    if ! create_fs --label "main" --device "${default_storage_device}" --mountpoint "${default_storage_mount}"; then
+      echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+      exit 1
+    fi
+    _log "Initializing drive..."
+    mkdir -p $path_to_service_data
+    chmod 0777 $path_to_service_data
+    mkdir -p $path_to_file_storage
+  else
+    echo -e "${RED}Unsupported drive format! Exiting${NC}"
+    exit 1
+  fi
+else
+  if [ -e $path_to_service_data ]; then
+    _log "Familiar drive detected. Welcome back!"
+  else
+    echo "Your external drive is not from a previous installation."
+    echo "Erase everyting and initalize drive? (optional) [y/N]"
+    read ANSWER
+    if [ $ANSWER = "y" ] || [ $ANSWER = "Y" ] || [ $ANSWER = "yes" ]; then
+      _log "Unmounting drive..."
+      umount $default_storage_device
+      _sleep 2
+
+      _log "Formatting the Drive..."
+      _sleep 2
+
+      if ! create_fs --label "main" --device "${default_storage_device}" --mountpoint "${default_storage_mount}"; then
+        echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+        exit 1
+      fi
+
+    else
+      _log "Leaving existing files alone"
+      _sleep 2
+    fi
+    _log "Initializing drive..."
+    mkdir -p $path_to_service_data
+    chmod 0777 $path_to_service_data
+    mkdir -p $path_to_file_storage
+  fi
+fi
+_log "Displaying the name on the external disk..."
+_sleep 2
+lsblk -o NAME,SIZE,LABEL $default_storage_device
+_sleep 2
+# double-check that $default_storage_device exists, and that its storage capacity is what you expected
+_log "Check output above for ${default_storage_device} and make sure everything looks ok."
+df -h $default_storage_device
+_sleep 4
+# checks disk info
+
+if grep -Fxq $default_storage_device /etc/fstab
+then
+    # code if found
+    _log "Adding fstab entry to auto mount external disk..."
+    echo "${default_storage_device}    ${default_storage_mount}    ext4    defaults    0    0" >> /etc/fstab
+else
+    # code if not found
+    _log "Disk already set to mount at boot"
+fi
+
+_log "Create "${default_username}" user with defualt password"
+useradd -m $default_username
+echo -e "${default_password}\n${default_password}" | passwd $default_username
+usermod -aG sudo $default_username
+mkdir $path_to_user_config
+PW_HASH=$(echo -n $default_password | sha256sum)
+echo $PW_HASH > $path_to_password_hash_file
 
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
   if hash "${pkg}" 2>/dev/null; then
-    cat <<EOF
-${RED}
-***
-${package_dependencies[$pkg]} already installed...
-***
-${NC}
-EOF
+    _log "${package_dependencies[$pkg]} already installed..."
     _sleep
   else
-    cat <<EOF
-${RED}
-***
-Installing ${package_dependencies[$pkg]}...
-***
-${NC}
-EOF
+    _log "Installing ${package_dependencies[$pkg]}..."
     _sleep
     apt install -y "${package_dependencies[$pkg]}"
   fi
 done
 # websearch "bash associative array" for info
+_log "Install rclone binary..."
+curl https://rclone.org/install.sh | bash
 
-cat <<EOF
-${RED}
-***
-Install docker from get.docker.com...
-***
-${NC}
-EOF
+_log "Install docker from get.docker.com..."
 curl -sSL https://get.docker.com | sh
 
-cat <<EOF
-${RED}
-***
-Install docker-compose from pip...
-***
-${NC}
-EOF
+_log "Install docker-compose from pip..."
 pip3 install docker-compose
 
-cat <<EOF
-${RED}
-***
-Add user to docker group...
-***
-${NC}
-EOF
-usermod -aG docker $DEFAULT_USER
+_log "Add user to docker group..."
+usermod -aG docker $default_username
 
-cat <<EOF
-${RED}
-***
-Creating /mnt/usb directory...
-***
-${NC}
-EOF
-
-test -d /mnt/usb || mkdir /mnt/usb
-_sleep 2
-# test for /mnt/usb directory, otherwise creates using mkdir
-# websearch "bash Logical OR (||)" for info
-
-echo -e "${RED}"
-echo "***"
-echo "Mounting drive..."
-echo "***"
-echo -e "${NC}"
-_sleep 2
-mount /dev/sda1 /mnt/usb
-_sleep
-# mount main storage drive to /mnt/usb directory
-
-echo -e "${RED}"
-echo "***"
-echo "Displaying the name on the external disk..."
-echo "***"
-echo -e "${NC}"
-_sleep 2
-lsblk -o NAME,SIZE,LABEL /dev/sda1
-_sleep 2
-# double-check that /dev/sda exists, and that its storage capacity is what you expected
-
-echo -e "${RED}"
-echo "***"
-echo "Check output above for /dev/sda1 and make sure everything looks ok."
-echo "***"
-echo -e "${NC}"
-df -h /dev/sda1
-_sleep 4
-# checks disk info
-
-if grep -Fxq "/dev/sda1" /etc/fstab
+# BEGIN developer install
+if [ $INSTALL_DEV -eq 1 ]
 then
-    # code if found
-    echo -e "${RED}"
-    echo "***"
-    echo "Adding fstab entry to auto mount external disk..."
-    echo "***"
-    echo -e "${NC}"
-    echo '/dev/sda1    /mnt/usb    ext4    defaults    0    0' >> /etc/fstab
-else
-    # code if not found
-    echo -e "${RED}"
-    echo "***"
-    echo "Disk already set to mount at boot"
-    echo "***"
-    echo -e "${NC}"
-fi
+  # Install system dependencies
+  for pkg in "${!dev_package_dependencies[@]}"; do
+    if hash "${pkg}" 2>/dev/null; then
+      _log "${package_dependencies[$pkg]} already installed..."
+      _sleep
+    else
+      _log "Installing ${dev_package_dependencies[$pkg]}..."
+      _sleep
+      apt install -y "${dev_package_dependencies[$pkg]}"
+    fi
+  done
+  # websearch "bash associative array" for info
+  _log "DEVELOPER: Installing yarn from yarnpkg.com..."
+  curl -o- -L https://yarnpkg.com/install.sh | bash
 
-cat <<EOF
-${RED}
-***
-Set hostname to "${HOSTNAME}"
-***
-${NC}
-EOF
-hostnamectl set-hostname $HOSTNAME
+  _log "DEVELOPER: Installing virtualenv with pip..."
+  pip3 install virtualenv
+fi # END developer install
 
-echo -e "${RED}"
-echo "***"
-echo "Finished with setup!"
-echo "***"
-echo -e "${NC}"
+_log "Set hostname to "${default_hostname}""
+hostnamectl set-hostname $default_hostname
+
+_log "Finished with setup!"
 _sleep 3
 
-echo -e "${RED}"
-echo "***"
-echo "You will be logged out of root in 10s..."
-echo "***"
-echo -e "${NC}"
+_log "You will be logged out of root in 10s..."
 _sleep 10
-rm -r /root/$REPO_NAME
-cd /home/$DEFAULT_USER
-su $DEFAULT_USER
+cd /home/$default_username
+su $default_username
 bash # start a new shell to apply hostname changes

@@ -28,15 +28,9 @@ create_fs() {
         case "$1" in
             --fstype|-fs)
                 if [[ ! "${supported_filesystems[*]}" =~ ${2} ]]; then
-                    cat <<EOF
-${RED}
-***
-Error: unsupported filesystem type ${2}
-Available options are: ${supported_filesystems[@]}
-Exiting!
-***
-${NC}
-EOF
+                    _log "Error: unsupported filesystem type ${2}"
+                    _log "Available options are: ${supported_filesystems[@]}"
+                    _log "Exiting"
                     return 1
                 else
                     local fstype="$2"
@@ -64,13 +58,7 @@ EOF
 
     # Create mount point directory if not available
     if [ ! -d "${mountpoint}" ]; then
-        cat <<EOF
-${RED}
-***
-Creating ${mountpoint} directory...
-***
-${NC}
-EOF
+        _log "Creating ${mountpoint} directory..."
         sudo mkdir -p "${mountpoint}" || return 1
     elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
         # Make sure to stop tor and docker when mount point is ${INSTALL_DIR}
@@ -106,14 +94,7 @@ EOF
         # Create a partition table with a single partition that takes the whole disk
         echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
     fi
-
-    cat <<EOF
-${RED}
-***
-Using ${fstype} filesystem format for ${device} partition...
-***
-${NC}
-EOF
+    _log "Using ${fstype} filesystem format for ${device} partition..."
 
     # Create filesystem
     if [[ $fstype =~ 'ext' ]]; then
@@ -137,13 +118,7 @@ EOF
     fi
 
     if ! grep "${uuid}" /etc/systemd/system/"${systemd_mountpoint}".mount &>/dev/null; then
-        cat <<EOF
-${RED}
-***
-Adding device ${device} to systemd.mount unit file
-***
-${NC}
-EOF
+        _log "Adding device ${device} to systemd.mount unit file"
         sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
 [Unit]
 Description=Mount External SSD Drive ${device}
@@ -158,13 +133,7 @@ Options=defaults
 WantedBy=multi-user.target
 EOF"
         # Mount filesystem
-        cat <<EOF
-${RED}
-***
-Mounting ${device} to ${mountpoint}
-***
-${NC}
-EOF
+        _log "Mounting ${device} to ${mountpoint}"
     fi
 
     if $systemd_mount; then
@@ -211,4 +180,26 @@ _sleep() {
         : $((secs--))
     done
     echo -e "\n" # Add new line
+}
+
+#
+# Parse YAML into ENV Vars
+# Usage: _parse filename.yml
+#
+
+function _parse {
+   local prefix=$2
+   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+   sed -ne "s|^\($s\):|\1|" \
+        -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+   awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
+      }
+   }'
 }

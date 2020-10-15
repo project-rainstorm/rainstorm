@@ -7,10 +7,11 @@ if [ "$EUID" != 0 ]; then
     exit $?
 fi
 
-my_dir="$(dirname "$0")"
-source "$my_dir"/defaults.sh
-source "$my_dir"/functions.sh
-
+# Imports
+scripts_dir="$(dirname "$0")"
+root_dir="$(dirname $scripts_dir)"
+source "$scripts_dir"/functions.sh
+eval $(_parse $root_dir/config.yml)
 
 #
 # Package dependencies associative array
@@ -29,7 +30,7 @@ declare -A package_dependencies=(
 declare -A dev_package_dependencies=(
     [nodejs]=nodejs
 )
-cat ${my_dir}/motd
+cat ${scripts_dir}/motd
 
 _log "If you encounter any issues, report them on GitHub!"
 
@@ -37,7 +38,7 @@ _log "If you encounter any issues, report them on GitHub!"
 # Validation
 #
 
-if [ ! -e $PRIMARY_STORAGE ]; then
+if [ ! -e $default_storage_device ]; then
   _log "No external disk detected. Plug in your hard drive and run this script again."
   exit 1
 fi # check that disk plugged in
@@ -60,17 +61,17 @@ _sleep
 _log "Liftoff!"
 _sleep
 
-_log "Creating ${PRIMARY_STORAGE_MOUNT} directory..."
-test -d $PRIMARY_STORAGE_MOUNT || mkdir -p $PRIMARY_STORAGE_MOUNT
+_log "Creating ${default_storage_mount} directory..."
+test -d $default_storage_mount || mkdir -p $default_storage_mount
 _sleep 2
-# test for PRIMARY_STORAGE_MOUNT directory, otherwise creates using mkdir
+# test for default_storage_mount directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
 
 _log "Mounting drive..."
-findmnt "${PRIMARY_STORAGE}" 1>/dev/null || mount "${PRIMARY_STORAGE}" "${PRIMARY_STORAGE_MOUNT}"
+findmnt "${default_storage_device}" 1>/dev/null || mount "${default_storage_device}" "${default_storage_mount}"
 _sleep 2
 
-FS_TYPE=$(df -Th | grep "^${PRIMARY_STORAGE}" | awk '{print $2}')
+FS_TYPE=$(df -Th | grep "^${default_storage_device}" | awk '{print $2}')
 if [ -z "$FS_TYPE" ]
 then
   echo "Your external drive cannot be mounted."
@@ -80,7 +81,7 @@ then
     _log "Formatting the drive..."
     _sleep 2
 
-    if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${PRIMARY_STORAGE_MOUNT}"; then
+    if ! create_fs --label "main" --device "${default_storage_device}" --mountpoint "${default_storage_mount}"; then
       echo -e "${RED}Filesystem creation failed! Exiting${NC}"
       exit 1
     fi
@@ -90,7 +91,7 @@ then
   fi
 fi
 # Get FS_TYPE again just in case it was unreadable the first time
-FS_TYPE=$(df -Th | grep "^${PRIMARY_STORAGE}" | awk '{print $2}')
+FS_TYPE=$(df -Th | grep "^${default_storage_device}" | awk '{print $2}')
 if [ $FS_TYPE != 'ext4' ]; then
   echo "Your external drive is using an unsupported format (${FS_TYPE})."
   echo "Erase everyting and format with ext4? [y/N]"
@@ -99,20 +100,20 @@ if [ $FS_TYPE != 'ext4' ]; then
     _log "Formatting the drive..."
     _sleep 2
 
-    if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${PRIMARY_STORAGE_MOUNT}"; then
+    if ! create_fs --label "main" --device "${default_storage_device}" --mountpoint "${default_storage_mount}"; then
       echo -e "${RED}Filesystem creation failed! Exiting${NC}"
       exit 1
     fi
     _log "Initializing drive..."
-    mkdir -p $SERVICE_DATA
-    chmod 0777 $SERVICE_DATA
-    mkdir -p $FILE_STORAGE
+    mkdir -p $path_to_service_data
+    chmod 0777 $path_to_service_data
+    mkdir -p $path_to_file_storage
   else
     echo -e "${RED}Unsupported drive format! Exiting${NC}"
     exit 1
   fi
 else
-  if [ -e $SERVICE_DATA ]; then
+  if [ -e $path_to_service_data ]; then
     _log "Familiar drive detected. Welcome back!"
   else
     echo "Your external drive is not from a previous installation."
@@ -120,13 +121,13 @@ else
     read ANSWER
     if [ $ANSWER = "y" ] || [ $ANSWER = "Y" ] || [ $ANSWER = "yes" ]; then
       _log "Unmounting drive..."
-      umount $PRIMARY_STORAGE
+      umount $default_storage_device
       _sleep 2
 
       _log "Formatting the Drive..."
       _sleep 2
 
-      if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${PRIMARY_STORAGE_MOUNT}"; then
+      if ! create_fs --label "main" --device "${default_storage_device}" --mountpoint "${default_storage_mount}"; then
         echo -e "${RED}Filesystem creation failed! Exiting${NC}"
         exit 1
       fi
@@ -136,39 +137,38 @@ else
       _sleep 2
     fi
     _log "Initializing drive..."
-    mkdir -p $SERVICE_DATA
-    chmod 0777 $SERVICE_DATA
-    mkdir -p $FILE_STORAGE
+    mkdir -p $path_to_service_data
+    chmod 0777 $path_to_service_data
+    mkdir -p $path_to_file_storage
   fi
 fi
 _log "Displaying the name on the external disk..."
 _sleep 2
-lsblk -o NAME,SIZE,LABEL $PRIMARY_STORAGE
+lsblk -o NAME,SIZE,LABEL $default_storage_device
 _sleep 2
-# double-check that $PRIMARY_STORAGE exists, and that its storage capacity is what you expected
-_log "Check output above for ${PRIMARY_STORAGE} and make sure everything looks ok."
-df -h $PRIMARY_STORAGE
+# double-check that $default_storage_device exists, and that its storage capacity is what you expected
+_log "Check output above for ${default_storage_device} and make sure everything looks ok."
+df -h $default_storage_device
 _sleep 4
 # checks disk info
 
-if grep -Fxq $PRIMARY_STORAGE /etc/fstab
+if grep -Fxq $default_storage_device /etc/fstab
 then
     # code if found
     _log "Adding fstab entry to auto mount external disk..."
-    echo "${PRIMARY_STORAGE}    ${PRIMARY_STORAGE_MOUNT}    ext4    defaults    0    0" >> /etc/fstab
+    echo "${default_storage_device}    ${default_storage_mount}    ext4    defaults    0    0" >> /etc/fstab
 else
     # code if not found
     _log "Disk already set to mount at boot"
 fi
 
-_log "Create "${DEFAULT_USER}" user with defualt password"
-useradd -m $DEFAULT_USER
-echo -e "${DEFAULT_PASS}\n${DEFAULT_PASS}" | passwd $DEFAULT_USER
-usermod -aG sudo $DEFAULT_USER
-cp -r /root/$REPO_NAME /home/$DEFAULT_USER
-mkdir $USER_CONFIG_FOLDER
-PW_HASH=$(echo -n $DEFAULT_PASS | sha256sum)
-echo $PW_HASH > $USER_CONFIG_FOLDER/pw_sha256
+_log "Create "${default_username}" user with defualt password"
+useradd -m $default_username
+echo -e "${default_password}\n${default_password}" | passwd $default_username
+usermod -aG sudo $default_username
+mkdir $path_to_user_config
+PW_HASH=$(echo -n $default_password | sha256sum)
+echo $PW_HASH > $path_to_password_hash_file
 
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
@@ -192,7 +192,7 @@ _log "Install docker-compose from pip..."
 pip3 install docker-compose
 
 _log "Add user to docker group..."
-usermod -aG docker $DEFAULT_USER
+usermod -aG docker $default_username
 
 # BEGIN developer install
 if [ $INSTALL_DEV -eq 1 ]
@@ -216,14 +216,14 @@ then
   pip3 install virtualenv
 fi # END developer install
 
-_log "Set hostname to "${HOSTNAME}""
-hostnamectl set-hostname $HOSTNAME
+_log "Set hostname to "${default_hostname}""
+hostnamectl set-hostname $default_hostname
 
 _log "Finished with setup!"
 _sleep 3
 
 _log "You will be logged out of root in 10s..."
 _sleep 10
-cd /home/$DEFAULT_USER
-su $DEFAULT_USER
+cd /home/$default_username
+su $default_username
 bash # start a new shell to apply hostname changes

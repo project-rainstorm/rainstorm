@@ -1,7 +1,7 @@
 import os
 import subprocess
 import docker
-import json
+import yaml
 
 class Service(object):
     def __init__(self, name):
@@ -57,7 +57,7 @@ class Service(object):
         env = self.__get_env_dict()
         if os.path.isfile(service_file):
             with open(service_file) as f:
-                settings = json.load(f)
+                settings = yaml.load(f)
                 var_fields_with_values = []
                 # Parse field values from .env
                 for var in settings['var_fields']:
@@ -71,7 +71,7 @@ class Service(object):
         return {}
 
     def get_service_file(self):
-        return "{0}/service.json".format(self.__service_folder())
+        return "{0}/service.yml".format(self.__service_folder())
 
     def get_env_file(self):
         return "{0}/.env".format(self.__data_folder())

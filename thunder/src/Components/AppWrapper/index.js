@@ -15,7 +15,7 @@ const url = { base: baseUrl, api: baseUrl + ":5000" };
 
 export default function AppWrapper() {
   const [darkMode, setDarkMode] = React.useState(
-    localStorage.getItem("darkMode") ? true : false
+    localStorage.getItem("darkMode") === "true" ? true : false
   );
   const darkModeTheme = {
     primary: {
@@ -32,6 +32,7 @@ export default function AppWrapper() {
         ...(darkMode && { ...darkModeTheme }),
       },
     });
+    console.log({ buildTheme: buildTheme() });
     return createMuiTheme(buildTheme());
   });
 

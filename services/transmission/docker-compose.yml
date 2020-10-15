@@ -2,7 +2,7 @@
 version: "2.1"
 services:
   transmission:
-    image: linuxserver/transmission
+    image: linuxserver/transmission:latest
     container_name: transmission
     environment:
       - PUID=1000

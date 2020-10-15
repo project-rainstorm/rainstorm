@@ -8,7 +8,7 @@ They are stored here in this folder and you can add one if you'd like!
 Each service folder can contain up to 3 files.
 
 - `docker-compose.yml`
-- `service.json`
+- `service.yml`
 - `install.sh`
 
 Additionally, each service has files which are in other folders.
@@ -27,7 +27,7 @@ configure and run the service on the device.
 
 We use ARM-based images only at this time. Only choose image repositories that are popular and well maintained.
 
-### `service.json`
+### `service.yml`
 
 This file is required.
 
@@ -44,7 +44,7 @@ This is the icon used for the service.
 
 ### `/mnt/usb/apps/<service_name>/.env`
 
-This file is optional. It will be generated automatically based on the `var_fields` in `service.json`.
+This file is optional. It will be generated automatically based on the `var_fields` in `service.yml`.
 
 This file stores environment variables that are automatically applied to the `docker-compose.yml` file.
 
@@ -64,6 +64,6 @@ If your service requires additional configuration for docker to do its thing, yo
 
 2. create a `docker-compose.yml` using variable names from the `.env`
 
-3. create a `service.json` with information and field definitions for all user-defined variables
+3. create a `service.yml` with information and field definitions for all user-defined variables
 
 4. add a `.jpg` icon for the service to `raincloud/static/images/<service_name>.jpg`

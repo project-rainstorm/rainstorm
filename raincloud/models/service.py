@@ -24,8 +24,7 @@ class Service(object):
     def enable(self):
         if not self.installed:
             install_script = "bash {0}/install.sh".format(self.__service_folder())
-            output = subprocess.check_output(install_script, shell=True)
-
+            output = subprocess.check_output(install_script, shell=True, env=app_config)
         self.update_env()
         command = "{0} up -d".format(self.__docker_command())
         output = self.__run_command(command)

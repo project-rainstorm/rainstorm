@@ -9,7 +9,7 @@ import authHeader from "../../services/auth-header";
 AddPage.propTypes = {
   url: PropTypes.object,
   setAppState: PropTypes.func,
-  setService: PropTypes.func,
+  setService: PropTypes.func
 };
 
 function AddPage(props) {
@@ -17,11 +17,11 @@ function AddPage(props) {
 
   useEffect(() => {
     fetch("/services", {
-      headers: authHeader(),
+      headers: authHeader()
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status_code == 401) {
+      .then(res => res.json())
+      .then(data => {
+        if (data.status_code === 401) {
           props.setAppState("login");
         }
         setServices(data.data);
@@ -32,7 +32,7 @@ function AddPage(props) {
     <Container maxWidth="md">
       <ServiceList
         url={props.url}
-        services={services.filter((s) => s.status !== "enabled")}
+        services={services.filter(s => s.status !== "enabled")}
         setAppState={props.setAppState}
         setService={props.setService}
       />

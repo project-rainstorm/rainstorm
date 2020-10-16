@@ -1,0 +1,16 @@
+version: "3.3"
+
+services:
+  matrix:
+    image: black0/synapse:latest
+    container_name: matrix
+    command: ${COMMAND}
+    restart: unless-stopped
+    environment:
+      - SYNAPSE_SERVER_NAME=${HOSTNAME}
+      - SYNAPSE_REPORT_STATS=yes
+    ports:
+      - "8448:8448"
+      - "8008:8008"
+    volumes:
+      - /mnt/usb/apps/matrix/data:/data

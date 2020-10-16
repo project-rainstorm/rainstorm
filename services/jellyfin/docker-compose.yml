@@ -1,0 +1,15 @@
+---
+version: "2.1"
+services:
+  jellyfin:
+    image: linuxserver/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /mnt/usb/apps/jellyfin/config:/config
+      - /mnt/usb/files/:/data
+    ports:
+      - 8096:8096
+    restart: unless-stopped

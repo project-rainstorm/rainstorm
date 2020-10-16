@@ -58,6 +58,8 @@ The system will detect if this is the first time running a service. If there is 
 
 If your service requires additional configuration for docker to do its thing, you can define that configuration here.
 
+The variables defined in `config.yml` (from the project root) are available to use in this file.
+
 # Adding a Service
 
 1. create a folder here called `<service_name>`

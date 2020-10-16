@@ -6,4 +6,6 @@ services:
     image: bitwardenrs/server:raspberry
     volumes:
       - /mnt/usb/apps/bitwarden/data:/data
+    ports:
+      - "8015:80"
     restart: unless-stopped

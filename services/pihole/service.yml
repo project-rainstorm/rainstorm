@@ -8,7 +8,6 @@ links:
   - label: Docker Hub
     url: https://hub.docker.com/r/pihole/pihole
 open_link: ":8091/admin"
-needs_update: false
 var_fields:
   - name: PASS
     label: Web Password

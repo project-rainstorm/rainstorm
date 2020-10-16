@@ -6,7 +6,6 @@ links:
   - label: Offical Site
     url: https://www.plex.tv/
 open_link: ":32400/web/index.html"
-needs_update: true
 var_fields:
   - field: input
     label: Media Directory

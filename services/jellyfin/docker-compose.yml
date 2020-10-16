@@ -9,7 +9,7 @@ services:
       - PGID=1000
     volumes:
       - /mnt/usb/apps/jellyfin/config:/config
-      - /mnt/usb/files/:/data
+      - ${MEDIA_DIR}:/data
     ports:
       - 8096:8096
     restart: unless-stopped

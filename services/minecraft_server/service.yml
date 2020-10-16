@@ -6,7 +6,6 @@ links:
   - label: Docker Image GitHub
     url: https://github.com/itzg/docker-aminecraft-server
 open_link: false
-needs_update: false
 var_fields:
   - name: VERSION
     label: Version

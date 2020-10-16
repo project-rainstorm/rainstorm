@@ -6,7 +6,6 @@ links:
   - label: GitHub
     url: https://github.com/Secretmapper/combustion
 open_link: ":9091"
-needs_update: false
 var_fields:
   - name: USER
     label: Username

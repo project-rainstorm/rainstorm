@@ -2,7 +2,6 @@
 name: File Browser
 maintainer: count-null
 description: Manage your files.
-needs_update: false
 open_link: ":8081"
 links:
   - label: Official Site

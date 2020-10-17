@@ -162,7 +162,7 @@ else
     _log "Disk already set to mount at boot"
 fi
 
-_log "Create "${default_username}" user with defualt password"
+_log "Create "${default_username}" user with default password"
 useradd -m $default_username
 echo -e "${default_password}\n${default_password}" | passwd $default_username
 usermod -aG sudo $default_username

@@ -219,6 +219,13 @@ fi # END developer install
 _log "Set hostname to "${default_hostname}""
 hostnamectl set-hostname $default_hostname
 
+isInFile=$(cat /etc/hosts | grep -c "127.0.0.1        rainstorm")
+
+if [ $isInFile -eq 0 ]; then
+   #string not contained in file
+   echo  "127.0.0.1        rainstorm" >> /etc/hosts
+fi
+
 _log "Finished with setup!"
 _sleep 3
 

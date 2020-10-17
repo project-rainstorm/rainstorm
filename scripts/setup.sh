@@ -195,7 +195,7 @@ _log "Add user to docker group..."
 usermod -aG docker $default_username
 
 # BEGIN developer install
-if [ $INSTALL_DEV -eq 1 ]
+if [ "$INSTALL_DEV" -eq 1 ]
 then
   # Install system dependencies
   for pkg in "${!dev_package_dependencies[@]}"; do

@@ -77,7 +77,9 @@ You can also run Rainstorm on your own to modify, and update the software yourse
 
 Log back in as the default user `drop` with password `drop`. 
 
-Or with the user/password you set in `config.yml`
+Or log in with the user/password you set in `config.yml`
+
+The cloned repository has been moved to the new user's home directory. 
 
 ## Development Setup
 

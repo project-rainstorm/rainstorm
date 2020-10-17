@@ -222,8 +222,6 @@ hostnamectl set-hostname $default_hostname
 _log "Finished with setup!"
 _sleep 3
 
-_log "You will be logged out of root in 10s..."
+_log "You should restart to apply changes..."
 _sleep 10
-cd /home/$default_username
-su $default_username
-bash # start a new shell to apply hostname changes
+mv $root_dir /home/$default_username

@@ -131,7 +131,7 @@ def create_app(test_config=None):
 
     @app.route('/services/<service_name>/vars', methods=['POST'])
     @as_json
-    @jwt_required
+    @jwt_required()
     def vars(service_name):
         if request.is_json:
             service = Service(service_name)

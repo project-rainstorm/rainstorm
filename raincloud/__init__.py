@@ -7,6 +7,7 @@ from raincloud.models.system import SystemStatus
 from raincloud.rainstick.security import authenticate, identity
 from flask_jwt import JWT, jwt_required, current_identity
 from flask_json import FlaskJSON, as_json
+from datetime import timedelta
 import json
 
 def create_app(test_config=None):
@@ -16,6 +17,7 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
         JWT_SECRET_KEY='secret',
+        JWT_EXPIRATION_DELTA=timedelta(seconds=86400),
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 

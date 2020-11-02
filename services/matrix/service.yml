@@ -1,0 +1,19 @@
+---
+name: Matrix Chat
+maintainer: count-null
+description: An open network for secure, decentralized communication
+open_link: ":8008"
+links:
+  - label: Official Site
+    url: https://matrix.org/
+  - label: Client Download
+    url: https://element.io/
+var_fields:
+  - name: HOSTNAME
+    label: Server Name
+    field: input
+    default: nuve.local
+  - name: COMMAND
+    label: Run Command
+    field: input
+    default: generate

@@ -10,7 +10,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Visibility from "@material-ui/icons/Visibility";
 import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
-import AuthService from "../../services/auth.service"
+import AuthService from "../../services/auth.service";
 
 Login.propTypes = {
   setAppState: PropTypes.func,
@@ -32,14 +32,12 @@ function Login(props) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  
+
   const handleLogin = () => {
-    AuthService
-      .login(values.username, values.password)
-      .then(() => {
-        props.setAppState('app');
-      })
-  }
+    AuthService.login(values.username, values.password).then(() => {
+      props.setAppState("app");
+    });
+  };
 
   return (
     <div>
@@ -57,7 +55,9 @@ function Login(props) {
 
       <div className={style.login}>
         <FormControl className={style.textField}>
-          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+          <InputLabel htmlFor="standard-adornment-password">
+            Password
+          </InputLabel>
           <Input
             id="standard-adornment-password"
             type={values.showPassword ? "text" : "password"}
@@ -81,7 +81,7 @@ function Login(props) {
           </Button>
         </FormControl>
       </div>
-   </div>
+    </div>
   );
 }
 export default Login;

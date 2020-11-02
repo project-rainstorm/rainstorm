@@ -1,7 +1,9 @@
 import os
 import subprocess
 import docker
-import json
+import yaml
+from raincloud.rainstick.config import app_config
+
 
 class Service(object):
     def __init__(self, name):
@@ -22,8 +24,7 @@ class Service(object):
     def enable(self):
         if not self.installed:
             install_script = "bash {0}/install.sh".format(self.__service_folder())
-            output = subprocess.check_output(install_script, shell=True)
-
+            output = subprocess.check_output(install_script, shell=True, env=app_config)
         self.update_env()
         command = "{0} up -d".format(self.__docker_command())
         output = self.__run_command(command)
@@ -57,7 +58,7 @@ class Service(object):
         env = self.__get_env_dict()
         if os.path.isfile(service_file):
             with open(service_file) as f:
-                settings = json.load(f)
+                settings = yaml.safe_load(f)
                 var_fields_with_values = []
                 # Parse field values from .env
                 for var in settings['var_fields']:
@@ -71,13 +72,15 @@ class Service(object):
         return {}
 
     def get_service_file(self):
-        return "{0}/service.json".format(self.__service_folder())
+        return "{0}/service.yml".format(self.__service_folder())
 
     def get_env_file(self):
         return "{0}/.env".format(self.__data_folder())
 
     def get_update_file(self):
         return "{0}/.update".format(self.__data_folder())
+
+
 
     def update_env(self, variable=False):
          # update the .env with new default values
@@ -121,7 +124,7 @@ class Service(object):
 
     def __data_folder(self):
 
-        return os.path.join("/mnt/usb/apps/", self.name)
+        return os.path.join(app_config['path_to_service_data'], self.name)
 
     def __is_installed(self):
 

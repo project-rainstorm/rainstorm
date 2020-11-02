@@ -18,11 +18,13 @@ MarkupSafe==1.1.1
 parso==0.7.1
 pexpect==4.8.0
 pickleshare==0.7.5
+pkg-resources==0.0.0
 prompt-toolkit==3.0.7
 psutil==5.7.2
 ptyprocess==0.6.0
 Pygments==2.6.1
 PyJWT==1.4.2
+PyYAML==5.3.1
 requests==2.24.0
 six==1.15.0
 traitlets==5.0.3

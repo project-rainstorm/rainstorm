@@ -1,0 +1,13 @@
+---
+name: Plex Media Server
+maintainer: count-null
+description: Plex brings together all the media that matters to you.
+links:
+  - label: Offical Site
+    url: https://www.plex.tv/
+open_link: ":32400/web/index.html"
+var_fields:
+  - field: input
+    label: Media Directory
+    name: MEDIA_DIR
+    default: "/mnt/usb/files"

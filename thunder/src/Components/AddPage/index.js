@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Container from "@material-ui/core/Container";
 
 import ServiceList from "../ServiceList";
-import authHeader from '../../services/auth-header'
+import authHeader from "../../services/auth-header";
 
 AddPage.propTypes = {
   url: PropTypes.object,
@@ -17,12 +17,12 @@ function AddPage(props) {
 
   useEffect(() => {
     fetch("/services", {
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.status_code == 401) {
-          props.setAppState('login');
+        if (data.status_code === 401) {
+          props.setAppState("login");
         }
         setServices(data.data);
       });

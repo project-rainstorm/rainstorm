@@ -162,7 +162,7 @@ else
     _log "Disk already set to mount at boot"
 fi
 
-_log "Create "${default_username}" user with defualt password"
+_log "Create "${default_username}" user with default password"
 useradd -m $default_username
 echo -e "${default_password}\n${default_password}" | passwd $default_username
 usermod -aG sudo $default_username
@@ -195,7 +195,7 @@ _log "Add user to docker group..."
 usermod -aG docker $default_username
 
 # BEGIN developer install
-if [ $INSTALL_DEV -eq 1 ]
+if [ "$INSTALL_DEV" -eq 1 ]
 then
   # Install system dependencies
   for pkg in "${!dev_package_dependencies[@]}"; do
@@ -219,11 +219,16 @@ fi # END developer install
 _log "Set hostname to "${default_hostname}""
 hostnamectl set-hostname $default_hostname
 
+isInFile=$(cat /etc/hosts | grep -c "127.0.0.1        rainstorm")
+
+if [ $isInFile -eq 0 ]; then
+   #string not contained in file
+   echo  "127.0.0.1        rainstorm" >> /etc/hosts
+fi
+
 _log "Finished with setup!"
 _sleep 3
 
-_log "You will be logged out of root in 10s..."
+_log "You should restart to apply changes..."
 _sleep 10
-cd /home/$default_username
-su $default_username
-bash # start a new shell to apply hostname changes
+mv $root_dir /home/$default_username

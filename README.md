@@ -79,6 +79,38 @@ You can also run Rainstorm on your own to modify, and update the software yourse
 
 `bash project_rainstorm/scripts/setup.sh`
 
+`sudo reboot`
+
+Log back in as the default user `drop` with password `drop`. 
+
+Or log in with the user/password you set in `config.yml`
+
+The cloned repository has been moved to the new user's home directory. 
+
+## Development Setup
+
+After following the build instructions, you can run the app in development.
+
+To run the API:
+
+- 1. Create a virtual environemnt `python3 -m venv env`
+
+- 2. Activate the virtual environment `source env/bin/activate`
+
+- 3. Install packages `pip3 install -r requiremnets.txt`
+
+- 4. `bash run_server.sh`
+
+To run the react server:
+
+- 1. `cd thunder`
+
+- 2. Install packages `yarn install`
+
+- 3. `yarn start`
+
+Visit `http://rainstrorm.local:3000` 
+
 ## Adding a Service
 
 Rainstorm uses docker-compose for services. Pull requests are welcome. Checkout the [Services README.md](services/README.md) for more info on how to create services for Rainstorm.

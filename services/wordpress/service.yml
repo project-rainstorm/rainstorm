@@ -1,0 +1,20 @@
+name: Wordpress
+maintainer: count-null
+description: Create a beautiful website, blog, or app
+links:
+  - label: Official Site
+    url: https://wordpress.org/
+open_link: ":9022"
+var_fields:
+  - name: DB_USER
+    label: Database User
+    field: input
+    default: wordpress
+  - name: DB_PASS
+    label: Database Password
+    field: input
+    default: wordpress
+  - name: DB_ROOT_PASS
+    label: MySQL Root Password
+    field: input
+    default: somewordpress

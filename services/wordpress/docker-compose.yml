@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+  db:
+    container_name: wordpress_db
+    image: hypriot/rpi-mysql
+    volumes:
+      - /mnt/usb/apps/wordpress/mysql:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+
+  wordpress:
+    container_name: wordpress
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - /mnt/usb/apps/wordpress/html:/var/www/html
+    ports:
+      - "9022:80"
+    restart: unless-stopped
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASS}
+      WORDPRESS_DB_NAME: wordpress
+volumes:
+  db_data: {}

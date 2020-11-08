@@ -1,7 +1,6 @@
----
 name: Transmission Torrent Client
 maintainer: count-null
-description: Download and seed torrents directly from your device.
+description: Download and seed torrents directly from your device
 links:
   - label: GitHub
     url: https://github.com/Secretmapper/combustion

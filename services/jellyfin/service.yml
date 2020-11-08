@@ -1,7 +1,6 @@
----
 name: Jellyfin
 maintainer: count-null
-description: The Free Software Media System.
+description: The Free Software Media System
 open_link: ":8096"
 links:
   - label: Official Site

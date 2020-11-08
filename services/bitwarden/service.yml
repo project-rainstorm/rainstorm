@@ -1,7 +1,6 @@
----
 name: Bitwarden
 maintainer: count-null
-description: A password manager that you control.
+description: A password manager that you control
 open_link: ":8015"
 links:
   - label: Official Site

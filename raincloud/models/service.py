@@ -23,8 +23,9 @@ class Service(object):
 
     def enable(self):
         if not self.installed:
-            install_script = "bash {0}/install.sh".format(self.__service_folder())
-            output = subprocess.check_output(install_script, shell=True, env=app_config)
+            install_script = "{0}/install.sh".format(self.__service_folder())
+            if os.path.isfile(install_script):
+                output = subprocess.check_output("bash {0}".format(install_script), shell=True, env=app_config)
         self.update_env()
         command = "{0} up -d".format(self.__docker_command())
         output = self.__run_command(command)
@@ -148,6 +149,8 @@ class Service(object):
 
     def __save_env(self, dict):
         env_file = self.get_env_file()
+        if not os.path.exists(self.__data_folder()):
+            os.makedirs(self.__data_folder())
         with open(env_file, 'w') as f:
             for name in dict.keys():
                 assignment = "{0}={1}\n".format(name, dict[name])

@@ -1,7 +1,6 @@
----
 name: Plex Media Server
 maintainer: count-null
-description: Plex brings together all the media that matters to you.
+description: Plex brings together all the media that matters to you
 links:
   - label: Offical Site
     url: https://www.plex.tv/

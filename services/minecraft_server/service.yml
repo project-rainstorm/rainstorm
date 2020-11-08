@@ -1,7 +1,6 @@
----
 name: Minecraft Server
 maintainer: count-null
-description: Run a minecraft server.
+description: Run a minecraft server
 links:
   - label: Docker Image GitHub
     url: https://github.com/itzg/docker-aminecraft-server

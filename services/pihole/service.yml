@@ -1,7 +1,6 @@
----
 name: Pi-hole Adblocker
 maintainer: count-null
-description: A black hole for internet advertisements.
+description: A black hole for internet advertisements
 links:
   - label: Official Site
     url: https://pi-hole.net

@@ -7,7 +7,9 @@ docker==4.3.1
 Flask==1.1.2
 Flask-JSON==0.3.4
 Flask-JWT==0.3.2
+Flask-JWT-Extended==3.24.1
 flask-shell-ipython==0.4.1
+gunicorn==20.0.4
 idna==2.10
 ipython==7.18.1
 ipython-genutils==0.2.0
@@ -22,7 +24,7 @@ prompt-toolkit==3.0.7
 psutil==5.7.2
 ptyprocess==0.6.0
 Pygments==2.6.1
-PyJWT==1.4.2
+PyJWT==1.7.1
 requests==2.24.0
 six==1.15.0
 traitlets==5.0.3

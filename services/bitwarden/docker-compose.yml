@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  bitwarden:
+    container_name: bitwarden
+    image: bitwardenrs/server:raspberry
+    volumes:
+      - /mnt/usb/apps/bitwarden/data:/data
+    ports:
+      - "8015:80"
+    restart: unless-stopped

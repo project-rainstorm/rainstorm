@@ -1,0 +1,10 @@
+name: Bitwarden
+maintainer: count-null
+description: A password manager that you control
+open_link: ":8015"
+links:
+  - label: Official Site
+    url: https://bitwarden.com/
+  - label: GitHub
+    url: https://github.com/dani-garcia/bitwarden_rs
+var_fields: []

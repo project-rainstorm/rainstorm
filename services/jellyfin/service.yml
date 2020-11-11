@@ -1,0 +1,12 @@
+name: Jellyfin
+maintainer: count-null
+description: The Free Software Media System
+open_link: ":8096"
+links:
+  - label: Official Site
+    url: https://jellyfin.org/
+var_fields:
+  - name: MEDIA_DIR
+    label: Media Directory
+    field: input
+    default: "/mnt/usb/files"

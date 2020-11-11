@@ -19,7 +19,7 @@ import Select from "./Select";
 import ModalForm from "./ModalForm";
 
 import style from "./style.module.css";
-import authHeader from '../../../services/auth-header';
+import authHeader from "../../../services/auth-header";
 
 ActionList.propTypes = {
   url: PropTypes.object,
@@ -33,9 +33,9 @@ function ActionList(props) {
 
   const enableService = () => {
     setLoading(true);
-    fetch(`/services/${props.service.name}/enable`, { 
+    fetch(`/services/${props.service.name}/enable`, {
       method: "post",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -46,9 +46,9 @@ function ActionList(props) {
 
   const disableService = () => {
     setLoading(true);
-    fetch(`/services/${props.service.name}/disable`, { 
+    fetch(`/services/${props.service.name}/disable`, {
       method: "post",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -60,9 +60,9 @@ function ActionList(props) {
   const restartService = () => {
     setLoading(true);
     setRestarting(true);
-    fetch(`/services/${props.service.name}/restart`, { 
+    fetch(`/services/${props.service.name}/restart`, {
       method: "post",
-      headers: authHeader()
+      headers: authHeader(),
     })
       .then((res) => res.json())
       .then((data) => {

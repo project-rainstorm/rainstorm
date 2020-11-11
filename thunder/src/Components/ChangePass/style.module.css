@@ -1,0 +1,9 @@
+.textField {
+  width: 50%;
+}
+.login {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}

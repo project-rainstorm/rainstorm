@@ -16,18 +16,19 @@ function ActivePage(props) {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    console.log(authHeader());
     fetch("/services", {
       headers: authHeader(),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status_code === 401) {
+      .then((res) => {
+        if (res.status === 401) {
           props.setAppState("login");
-        }
-        if (data.status_code >= 400) {
+          return;
+        } else if (res.status >= 400) {
           throw new Error("Something went wrong");
         }
+        return res.json();
+      })
+      .then((data) => {
         setServices(data.data);
       })
       .catch((data) => {

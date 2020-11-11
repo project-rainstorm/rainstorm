@@ -19,11 +19,14 @@ function AddPage(props) {
     fetch("/services", {
       headers: authHeader(),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status_code === 401) {
+      .then((res) => {
+        if (res.status === 401) {
           props.setAppState("login");
+          return;
         }
+        return res.json();
+      })
+      .then((data) => {
         setServices(data.data);
       });
   }, []);

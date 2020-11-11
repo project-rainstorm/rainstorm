@@ -1,20 +1,13 @@
-from werkzeug.security import safe_str_cmp
-from raincloud.models.user import User
+from raincloud.rainstick.config import app_config
+import hashlib
 
-users = [
-        User(1, 'test', 'passy')
-        ]
+def pwhash(pw):
+    return hashlib.sha256(bytes(pw, 'utf-8')).hexdigest()
 
-username_table = { u.username: u for u in users }
-userid_table = { u.id: u for u in users }
+def authenticate(pw):
+    user_password_hashed = open(app_config['path_to_password_hash_file']).read().replace(' -\n', '').strip()
+    return pwhash(pw) == user_password_hashed
 
-def authenticate(username, password):
-    user = username_table.get(username, None)
-
-    if user and safe_str_cmp(user.password, password):
-        return user
-
-def identity(payload):
-    userid = payload['identity']
-
-    return userid_table.get(userid, None)
+def chpass(pw):
+    with open(app_config['path_to_password_hash_file'], "w") as f:
+        f.write(pwhash(pw))

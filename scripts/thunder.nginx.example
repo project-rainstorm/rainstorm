@@ -1,6 +1,6 @@
 server {
   listen 8000;
-  root /home/memoya/project_rainstorm/thunder/build;
+  root /home/drop/project_rainstorm/thunder/build;
   index index.html;
 
   location / {

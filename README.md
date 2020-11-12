@@ -12,7 +12,7 @@ Alternatively, you can install on your own device (see Build Instructions)
 Rainstorm aims to be the easiest way to to run a dedicated, easy to use,
 home server leveraging many popular and open source cloud alternatives that give you complete ownership and control of your data.
 
-With the increasing power and affordability of small board computers like the Raspberry Pi, we believe its finally feasible for everyone to own their cloud instead of giving everything they own to the cloud.
+With the increasing power and affordability of small board computers like the Raspberry Pi, we believe it's finally feasible for everyone to own their cloud instead of giving everything they own to the cloud.
 
 By running Rainstorm, you can quickly and cheaply deploy your own cloud infrastructure all from the web browser with ZERO terminal commands necessary.
 
@@ -97,7 +97,7 @@ To run the API:
 
 - 2. Activate the virtual environment `source env/bin/activate`
 
-- 3. Install packages `pip3 install -r requiremnets.txt`
+- 3. Install packages `pip3 install -r requirements.txt`
 
 - 4. `bash run_server.sh`
 
@@ -117,4 +117,4 @@ Rainstorm uses docker-compose for services. Pull requests are welcome. Checkout 
 
 ## Contributing
 
-The contribution workfloe is described in [CONTRIBUTING.md](docs/CONTRIBUTING.md).
+The contribution workflow is described in [CONTRIBUTING.md](docs/CONTRIBUTING.md).

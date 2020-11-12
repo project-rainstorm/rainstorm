@@ -1,18 +1,34 @@
 sudo apt-get install nginx
 
-yarn --cwd /home/drop/project_rainstorm/thunder run build
+scripts_dir="$(dirname "$(readlink -f "$0")")"
+root_dir="$(dirname "$(readlink -f $scripts_dir)")"
 
-sudo cp /home/drop/project_rainstorm/scripts/thunder.nginx.example /etc/nginx/sites-available/thunder.conf
+yarn --cwd "$root_dir/thunder" run build
+
+if [ -d "$root_dir/venv" ]; then
+  python3 -m venv "$root_dir/venv"
+fi
+
 
 sudo rm /etc/nginx/sites-enabled/thunder.conf
+
+cp "$scripts_dir/thunder.nginx.example" "$scripts_dir/thunder.nginx"
+
+sed -i "s~<root_dir>~$root_dir~g" $scripts_dir/thunder.nginx
+
+sudo mv "$scripts_dir/thunder.nginx" /etc/nginx/sites-available/thunder.conf
 
 sudo ln -s /etc/nginx/sites-available/thunder.conf /etc/nginx/sites-enabled/thunder.conf
 
 sudo rm /etc/nginx/sites-enabled/default
 
-sudo cp /home/drop/project_rainstorm/scripts/rainstorm.service.example /etc/systemd/system/rainstorm.service
+sudo cp "$scripts_dir/raincloud.service.example" "$scripts_dir/raincloud.service"
+
+sed -i "s~<root_dir>~$root_dir~g" $scripts_dir/raincloud.service
+
+sudo mv "$scripts_dir/raincloud.service" /etc/systemd/system/raincloud.service
 
 sudo systemctl daemon-reload
-sudo sytemctl start rainstorm
+sudo sytemctl start raincloud
 
 sudo service nginx restart

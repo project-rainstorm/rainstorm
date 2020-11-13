@@ -29,6 +29,7 @@ sed -i "s~<root_dir>~$root_dir~g" $scripts_dir/raincloud.service
 sudo mv "$scripts_dir/raincloud.service" /etc/systemd/system/raincloud.service
 
 sudo systemctl daemon-reload
-sudo sytemctl start raincloud
+sudo systemctl start raincloud
+sudo systemctl enable raincloud
 
 sudo service nginx restart

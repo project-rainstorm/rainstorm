@@ -3,7 +3,7 @@ Description=Backend for the rainstorm project
 After=network.target
 
 [Service]
-User=drop
+User=<user>
 WorkingDirectory=<root_dir>
 ExecStart=<root_dir>/venv/bin/gunicorn -b 127.0.0.1:5000 'raincloud:create_app()'
 Restart=always

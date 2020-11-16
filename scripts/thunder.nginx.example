@@ -1,0 +1,13 @@
+server {
+  listen 8000;
+  root <root_dir>/thunder/build;
+  index index.html;
+
+  location / {
+    try_files $uri $uri/ @backend;
+  }
+
+  location @backend {
+    proxy_pass http://127.0.0.1:5000;
+  }
+}

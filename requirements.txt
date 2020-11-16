@@ -8,6 +8,7 @@ Flask==1.1.2
 Flask-JSON==0.3.4
 Flask-JWT==0.3.2
 flask-shell-ipython==0.4.1
+gunicorn==20.0.4
 idna==2.10
 ipython==7.18.1
 ipython-genutils==0.2.0

@@ -11,7 +11,6 @@ class Service(object):
         self.status = self.get_status()
         self.settings = self.get_settings()
         self.needs_update = self.check_needs_update()
-        self.installed = self.__is_installed()
 
     @classmethod
     def all(cls):
@@ -22,7 +21,7 @@ class Service(object):
         return [ f.name for f in os.scandir(cls.__services_folder()) if f.is_dir() ]
 
     def enable(self):
-        if not self.installed:
+        if not self.__is_installed():
             install_script = "{0}/install.sh".format(self.__service_folder())
             if os.path.isfile(install_script):
                 output = subprocess.check_output("bash {0}".format(install_script), shell=True, env=app_config)

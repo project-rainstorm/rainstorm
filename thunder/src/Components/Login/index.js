@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 import style from "./style.module.css";
@@ -14,6 +14,8 @@ import AuthService from "../../services/auth.service";
 
 Login.propTypes = {
   setAppState: PropTypes.func,
+  url: PropTypes.object,
+  showAlert: PropTypes.func,
 };
 
 function Login(props) {
@@ -21,6 +23,15 @@ function Login(props) {
     password: "",
     showPassword: false,
   });
+
+  useEffect(() => {
+    AuthService.refreshAccessToken().then((refreshWasSuccessful) => {
+      if (refreshWasSuccessful) {
+        props.setAppState("app");
+      }
+    });
+  });
+
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -34,25 +45,23 @@ function Login(props) {
   };
 
   const handleLogin = () => {
-    AuthService.login(values.username, values.password).then(() => {
-      props.setAppState("app");
+    AuthService.login(values.password).then((data) => {
+      console.log({ data });
+      if (data.message) {
+        props.showAlert(data.message, data.severity);
+      } else {
+        props.setAppState("app");
+      }
     });
   };
 
   return (
-    <div>
-      <div className={style.login}>
-        <FormControl className={style.textField}>
-          <InputLabel htmlFor="standard-username">Username</InputLabel>
-          <Input
-            id="standard-username"
-            type="text"
-            value={values.username}
-            onChange={handleChange("username")}
-          />
-        </FormControl>
-      </div>
-
+    <div className={style.loginContainer}>
+      <img
+        className={style.login}
+        src={props.url.api + "/static/images/rainstorm_full.png"}
+        alt="Rainstorm Logo"
+      />
       <div className={style.login}>
         <FormControl className={style.textField}>
           <InputLabel htmlFor="standard-adornment-password">

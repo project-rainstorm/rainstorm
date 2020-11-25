@@ -30,6 +30,7 @@ import AddPage from "../AddPage";
 import SettingsPage from "../SettingsPage";
 
 import style from "./style.module.css";
+import AuthService from "../../services/auth.service";
 
 App.propTypes = {
   url: PropTypes.object,
@@ -53,6 +54,11 @@ function App(props) {
       return;
     }
     setDrawerState(open);
+  };
+
+  const logout = () => {
+    AuthService.logout();
+    props.setAppState("login");
   };
 
   const navKey = {
@@ -96,7 +102,7 @@ function App(props) {
       </List>
       <Divider />
       <List>
-        <ListItem button onClick={() => props.setAppState("login")}>
+        <ListItem button onClick={logout}>
           <ListItemIcon>
             <LockIcon />
           </ListItemIcon>

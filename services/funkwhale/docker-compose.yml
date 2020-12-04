@@ -1,0 +1,20 @@
+version: "3"
+services:
+  funkwhale:
+    container_name: funkwhale
+    restart: unless-stopped
+    # change version number here when you want to do an upgrade
+    image: funkwhale/all-in-one:1.0.1
+    environment:
+        - FUNKWHALE_HOSTNAME=${FUNKWHALE_HOSTNAME}
+        - FUNKWHALE_PROTOCOL=${FUNKWHALE_PROTOCOL}
+        - NGINX_MAX_BODY_SIZE=100M
+        - FUNKWHALE_API_IP=127.0.0.1
+        - FUNKWHALE_API_PORT=5002
+        - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+        - NESTED_PROXY=1
+    volumes:
+      - /mnt/usb/apps/funkwhale/data:/data
+      - ${FUNKWHALE_LIBRARY_PATH}:/music:ro
+    ports:
+      - "5002:80"

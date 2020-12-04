@@ -1,0 +1,24 @@
+name: Funkwhale
+maintainer: count-null
+description: Your free and decentralized audio platform
+links:
+  - label: Offical Site
+    url: https://funkwhale.audio
+open_link: ":5002"
+var_fields:
+  - field: input
+    label: Music Directory
+    name: FUNKWHALE_LIBRARY_PATH
+    default: /mnt/usb/files/music
+  - field: input
+    label: Funkwhale Hostname
+    name: FUNKWHALE_HOSTNAME
+    default: your.funkwhale.example
+  - field: select
+    label: Funkwhale Protocol
+    name: FUNKWHALE_PROTOCOL
+    options:
+      - http
+      - https
+    default: https
+

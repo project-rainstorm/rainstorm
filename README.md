@@ -52,6 +52,10 @@ In the future, we'd also like to have...
 
 - Raspberry Pi 4
 
+## Adding a Service
+
+Rainstorm uses docker-compose for services. Pull requests are welcome. Checkout the [Services README.md](services/README.md) for more info on how to create services for Rainstorm.
+
 ## Running Rainstorm
 
 You can run Rainstorm on your own device in just a few easy steps!
@@ -69,15 +73,25 @@ You can run Rainstorm on your own device in just a few easy steps!
 
 ## Build Instructions
 
-You can also run Rainstorm on your own to modify, and update the software yourself.
+You can also run Rainstorm on your own.
 
-`sudo su -`
+Download the `config.yml`.
 
-`git clone https://github.com/project-rainstorm/project_rainstorm.git`
+`curl -fsSL https://raw.githubusercontent.com/project-rainstorm/rainstorm/master/config.yml -o config.yml`
 
-**WARNING** Running this script will make changes to your system. This is meant to be run on a dedicated device with a freshly installed OS (RPi4 running Raspberry Pi OS Lite recommended)
+Download the setup script in the same directory as `config.yml`
 
-`bash project_rainstorm/scripts/setup.sh`
+`curl -fsSL https://raw.githubusercontent.com/project-rainstorm/rainstorm/master/scripts/setup.sh -o setup.sh`
+
+**WARNING** Running this script will make changes to your system. This is meant to be run on a dedicated device with a freshly installed OS (RPi4 running Raspberry Pi OS Lite recommended. You are responsible for what you run.)
+
+`bash setup.sh`
+
+If you are a developer
+
+`bash setup.sh --dev`
+
+The script will walk you thru the installation. Check for any errors in the log. 
 
 `sudo reboot`
 
@@ -85,7 +99,9 @@ Log back in as the default user `drop` with password `drop`.
 
 Or log in with the user/password you set in `config.yml`
 
-The cloned repository has been moved to the new user's home directory. 
+Now you can clone this repo in your home directory
+
+`cd && git clone https://github.com/project-rainstorm/rainstorm.git `
 
 ## Development Setup
 
@@ -110,10 +126,6 @@ To run the react server:
 - 3. `yarn start`
 
 Visit `http://rainstrorm.local:3000` 
-
-## Adding a Service
-
-Rainstorm uses docker-compose for services. Pull requests are welcome. Checkout the [Services README.md](services/README.md) for more info on how to create services for Rainstorm.
 
 ## Contributing
 
